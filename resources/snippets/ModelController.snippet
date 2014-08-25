@@ -1,0 +1,37 @@
+package %{packages};
+
+import java.lang.reflect.InvocationTargetException;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+import ve.gob.cnti.gestion.bonita.IController;
+import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
+import ve.gob.cnti.gestion.utils.FacesHandler;
+import ve.gob.cnti.gestion.utils.Utils;
+import %{packageBean}.%{NameBean};
+
+@ManagedBean(name = "%{nameController}", eager = true)
+@RequestScoped
+public class %{NameController} {
+
+    private FacesHandler facesHandler = new FacesHandler();
+    private IController iController = new ControllerImpl();
+    private Utils util = new Utils();
+
+    private %{NameBean} bean = new %{NameBean}();
+
+    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{     
+        iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
+        return "executeTask";
+    }
+
+    public %{NameBean} getBean() {
+        return bean;
+    }
+
+    public void setBean(%{NameBean} bean) {
+        this.bean = bean;
+    }       
+
+}
