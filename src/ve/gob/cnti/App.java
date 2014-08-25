@@ -35,8 +35,8 @@ public class App {
 		String ROOT_CONTROLLER = props.getProperty("ROOT_CONTROLLER");
 		String ROOT_BEAN = props.getProperty("ROOT_BEAN");
 		String ROOT_SNIPPET = props.getProperty("ROOT_SNIPPET");
-		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKEGE_BEAN");
-		String NAME_PACKE_CONTROLLER = props.getProperty("NAME_PACKE_CONTROLLER");
+		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKAGE_BEAN");
+		String NAME_PACKE_CONTROLLER = props.getProperty("NAME_PACKAGE_CONTROLLER");
 		
 				
 		this.xmlFile = XML_FILE; 
