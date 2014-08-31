@@ -94,13 +94,13 @@ public class GenerateBean {
 
 	private String createAttribute(String name, String type) {
 
-		return "private " + type + " " + name + ";\n";
+		return "private " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
 	}
 
 	private String createSetMethod(String name, String type) {
 
 		String method = "public void set" + LibUtils.firstLetterUpper(name)
-				+ "(" + type + " " + name + " ) {\n" + "\t this." + name
+				+ "(" + LibUtils.changeToPrimitiveType(type) + " " + name + " ) {\n" + "\t this." + name
 				+ " = " + name + ";\n" + "}\n";
 
 		return method;
@@ -108,7 +108,7 @@ public class GenerateBean {
 
 	private String createGetMethod(String name, String type) {
 
-		String method = "public " + type + " get"
+		String method = "public " + LibUtils.changeToPrimitiveType(type) + " get"
 				+ LibUtils.firstLetterUpper(name) + "() {\n"
 				+ "\t return this." + name + ";\n" + "}\n";
 

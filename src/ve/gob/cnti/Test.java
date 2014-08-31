@@ -45,6 +45,7 @@ public class Test {
 					System.out.println("\t\t Label Field: "+field.getLabelField());
 					System.out.println("\t\t Name Field: "+field.getNameField());
 					System.out.println("\t\t Type Field: "+field.getTypeField());
+					System.out.println("\t\t Return Type Field: "+LibUtils.changeToPrimitiveType(field.getReturnType().substring(field.getReturnType().lastIndexOf(".")+1)));
 					System.out.println("\t\t Var Field: "+field.getVarName());
 					
 					List<Validator> validators = field.getListValidators();
