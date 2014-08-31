@@ -1,37 +1,25 @@
 package ve.gob.cnti.output.view;
 
 import ve.gob.cnti.helper.output.WriteFile;
+import ve.gob.cnti.helper.util.LibUtils;
 
-public class CreateViewFile {
+//import ve.gob.cnti.helper.output.WriteFile;
 
-	private String file;
+public class GenerateView {
+
+	private String snippetFile = null;
+	private String origSnippetFile = null;
 	private WriteFile wf = null;
+	private String pathOutputFile = null;
 
-	public CreateViewFile(String file) {		
-		this.file = file;
+		
+	public GenerateView(String pathFile, String pathOutputFile) {
+		
+		this.origSnippetFile = LibUtils.readSnippetFile(pathFile);
+		this.pathOutputFile = pathOutputFile;
 		this.wf = new WriteFile();
 	}
 
-	public void createView() {
-		// TODO Verificar, si no es en un entorno multihilo utilizar
-		// StringBuilder
-		StringBuffer sb = new StringBuffer();
-
-		sb.append( "<html>\n"
-				 + " <head>\n"
-				 + "  <title>\n"
-				 + "    Hola Mundo\n"
-				 + "  </title>\n"
-				 + " </head>\n"
-				 + " <body>\n"
-				 + "   %{form}"
-				 + " </body>\n"
-				 + "</html>");
-		
-		String form = translateField2View("nombre", "nombre1", "TEXTBOX");
-
-		this.wf.writeFile(this.file, sb.toString().replaceAll("%\\{form\\}", form));
-	}
 	
 	private String translateField2View(String label, String name, String type){
 		
