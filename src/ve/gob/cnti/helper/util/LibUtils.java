@@ -75,4 +75,31 @@ public class LibUtils {
 		return props;
 	}
 	
+	public static String changeToPrimitiveType(String objectType){
+		
+		String primitiveType = null;
+		
+		if("Byte".equals(objectType)){
+			primitiveType = "byte";
+		}else if("Short".equals(objectType)){
+			primitiveType = "short";
+		}else if ("Integer".equals(objectType)){
+			primitiveType = "int";
+		}else if ("Long".equals(objectType)){
+			primitiveType = "long";
+		}else if ("Float".equals(objectType)){
+			primitiveType = "float";
+		}else if ("Double".equals(objectType)){
+			primitiveType = "double";
+		}else if ("Character".equals(objectType)){
+			primitiveType = "char";
+		}else if ("Boolean".equals(objectType)){
+			primitiveType = "boolean";
+		}else{
+			primitiveType = objectType;
+		}
+		
+		return primitiveType;
+	}
+	
 }
