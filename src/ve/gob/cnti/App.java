@@ -26,17 +26,30 @@ public class App {
 	private String pathControllerOutputFile = null;
 	private String namePackageController = null;
 	
+	private String snippetFileView = null;
+	private String pathViewOutputFile = null;
+	private String dirNameInstitucion = null;
+	private String pathDirFormView = null;
+	
+	private String controllerButtonNameSubmit = null;
+	private String controllerButtonIdSubmit = null;
+	
 	public App(){
 		
 		Properties props = LibUtils.loadFileProperties(FILE_PROPS);
 		
 		String XML_FILE = props.getProperty("XML_FILE");
-//		String ROOT_VIEW = props.getProperty("ROOT_VIEW");
+		String ROOT_VIEW = props.getProperty("ROOT_VIEW");
 		String ROOT_CONTROLLER = props.getProperty("ROOT_CONTROLLER");
 		String ROOT_BEAN = props.getProperty("ROOT_BEAN");
 		String ROOT_SNIPPET = props.getProperty("ROOT_SNIPPET");
 		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKAGE_BEAN");
 		String NAME_PACKE_CONTROLLER = props.getProperty("NAME_PACKAGE_CONTROLLER");
+		String DIR_INSTITUCION = props.getProperty("DIR_INSTITUCION");
+		String PATH_DIR_FORM_VIEW = props.getProperty("PATH_DIR_FORM_VIEW");
+		
+		String CONTROLLER_BUTTON_NAME_SUBMIT = props.getProperty("CONTROLLER_BUTTON_NAME_SUBMIT");
+		String CONTROLLER_BUTTON_ID_SUBMIT = props.getProperty("CONTROLLER_BUTTON_ID_SUBMIT");
 		
 				
 		this.xmlFile = XML_FILE; 
@@ -48,6 +61,15 @@ public class App {
 		this.snippetFileController = ROOT_SNIPPET+"ModelController.snippet";
 		this.pathControllerOutputFile = ROOT_CONTROLLER;
 		this.namePackageController = NAME_PACKE_CONTROLLER;
+		
+		this.snippetFileView = ROOT_SNIPPET+"View.snippet";
+		this.pathViewOutputFile = ROOT_VIEW;
+		this.dirNameInstitucion = DIR_INSTITUCION;
+		this.pathDirFormView = PATH_DIR_FORM_VIEW;
+		
+		this.controllerButtonNameSubmit = CONTROLLER_BUTTON_NAME_SUBMIT;
+		this.controllerButtonIdSubmit = CONTROLLER_BUTTON_ID_SUBMIT;
+		
 		
 		try {
 			pxf = new PaserXmltoForm(xmlFile);
@@ -73,16 +95,23 @@ public class App {
 		gf.setPathOutputFileController(this.pathControllerOutputFile);
 		gf.setPackageNameController(this.namePackageController);
 		
+		gf.setPathSnippetView(this.snippetFileView);
+		gf.setPathOutputFileView(this.pathViewOutputFile);
+		gf.setDirNameAndPathFormToInstitucion(this.dirNameInstitucion+this.pathDirFormView);
+		
+		gf.setControllerButtonNameSubmit(this.controllerButtonNameSubmit);
+		gf.setControllerButtonIdSubmit(this.controllerButtonIdSubmit);
+		
 		gf.generate();
 	}
 	
 	public static void main(String[] args) {
 		App tp = new App();
 		
-		Test t = new Test();
-		t.showListOutput(tp.pxf.parse());
+//		Test t = new Test();
+//		t.showListOutput(tp.pxf.parse());
 		
-		//tp.generateFiles();
+		tp.generateFiles();
 		
 		System.out.println("Listo...");
 	}
