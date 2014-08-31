@@ -11,7 +11,6 @@ import ve.gob.cnti.helper.form.Validator;
 import ve.gob.cnti.helper.input.ReadFile;
 import ve.gob.cnti.helper.output.WriteFile;
 import ve.gob.cnti.helper.util.LibUtils;
-import ve.gob.cnti.output.view.CreateViewFile;
 
 public class Test {
 
@@ -63,13 +62,6 @@ public class Test {
 		}
 	}
 	
-	
-	public void testWriteFile(){
-		CreateViewFile chf = new CreateViewFile("resources/outputs/views/prueba.html");
-		
-		chf.createView();
-	}
-	
 	public void testReadFile(){
 		ReadFile rf = new ReadFile();
 		WriteFile wf = new WriteFile();
@@ -88,10 +80,4 @@ public class Test {
 		wf.writeFile(file, textFile);
 		
 	}
-	
-	
-//	public void testCreateSetMethod(){
-//		System.out.println(LibUtils.createSetMethod("nombre"));
-//	}
-
 }
