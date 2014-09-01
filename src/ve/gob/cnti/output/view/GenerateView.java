@@ -99,7 +99,7 @@ public class GenerateView {
 		}else if ("NumericIntegerFieldValidator".equalsIgnoreCase(nameValidator)){
 			
 		}else if ("MailValidator".equalsIgnoreCase(nameValidator)){
-			
+			this.validator += "\t<f:validator validatorId=\"ve.gob.cnti.gestion.utils.validators.EmailValidator\" for=\""+nameField+"\"/>\n";
 		}else if ("DateFieldValidator".equalsIgnoreCase(nameValidator)){
 			
 		}else if ("NumericDoubleFieldValidator".equalsIgnoreCase(nameValidator)){
@@ -175,7 +175,7 @@ public class GenerateView {
 			fieldInput += "<p:selectOneRadio id=\""+name+"\" value=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\">\n";
 			fieldInput += "\t<f:selectItem itemLabel=\"Aceptar\" itemValue=\"true\" />\n";
 			fieldInput += "\t<f:selectItem itemLabel=\"Rechazar\" itemValue=\"false\" />\n"; 
-			fieldInput += "</p:selectOneRadio>";
+			fieldInput += "</p:selectOneRadio>\n";
 		}else if ("SUGGESTBOX".equalsIgnoreCase(type)){
 			
 		}
