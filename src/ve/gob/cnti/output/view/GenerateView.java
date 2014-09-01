@@ -91,9 +91,9 @@ public class GenerateView {
 		}if ("readonly".equalsIgnoreCase(nameValidator)){
 			this.readOnly = "readonly=\"true\"";
 		}else if ("LengthValidator".equalsIgnoreCase(nameValidator)){
-			this.validator += "<f:validateLength maximum=\"20\" minimum=\"3\" for=\""+nameField+"\"/>\n";
+			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\""+nameField+"\"/>\n";
 		}else if ("EmailValidator".equalsIgnoreCase(nameValidator)){
-			this.validator += "<f:validator validatorId=\"ve.gob.cnti.gestion.utils.validators.EmailValidator\" for=\""+nameField+"\"/>\n";
+			this.validator += "\t<f:validator validatorId=\"ve.gob.cnti.gestion.utils.validators.EmailValidator\" for=\""+nameField+"\"/>\n";
 		}else if ("CharFieldValidator".equalsIgnoreCase(nameValidator)){
 			
 		}else if ("NumericIntegerFieldValidator".equalsIgnoreCase(nameValidator)){
@@ -172,7 +172,10 @@ public class GenerateView {
 		}else if ("LISTBOX_MULTIPLE".equalsIgnoreCase(type)){
 			
 		}else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)){
-			
+			fieldInput += "<p:selectOneRadio id=\""+name+"\" value=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\">\n";
+			fieldInput += "\t<f:selectItem itemLabel=\"Aceptar\" itemValue=\"true\" />\n";
+			fieldInput += "\t<f:selectItem itemLabel=\"Rechazar\" itemValue=\"false\" />\n"; 
+			fieldInput += "</p:selectOneRadio>";
 		}else if ("SUGGESTBOX".equalsIgnoreCase(type)){
 			
 		}
@@ -208,7 +211,7 @@ public class GenerateView {
 		if ("BUTTON_SUBMIT".equalsIgnoreCase(type)){
 			
 			buttoInput += "<h:commandButton value=\"Enviar\" action=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.executeTask}\">\n";
-			buttoInput += "<f:param name=\""+controllerIdSubmit+"\" value=\"#{"+controllerNameSubmit+"."+controllerIdSubmit+"}\"/>\n";
+			buttoInput += "\t<f:param name=\""+controllerIdSubmit+"\" value=\"#{"+controllerNameSubmit+"."+controllerIdSubmit+"}\"/>\n";
 			buttoInput += "</h:commandButton>";
 			
 		}else if ("BUTTON_NEXT".equalsIgnoreCase(type)){
