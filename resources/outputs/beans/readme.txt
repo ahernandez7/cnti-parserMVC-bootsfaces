@@ -1,0 +1,1 @@
+Creado solo para indexar el directorio beans en el git
