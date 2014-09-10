@@ -39,14 +39,14 @@ public class GenerateFiles {
 
 	public void generate() {
 
-		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean());
-		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController());
-		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView());
+		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
+		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
+		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
 
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
 
-		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion(), this.nameApp);
+		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 
 		String[] controllersNameSubmit = getControllerButtonNameSubmit().split(",");
 		String[] controllersIdSubmit = getControllerButtonIdSubmit().split(",");

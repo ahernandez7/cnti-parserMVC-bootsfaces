@@ -9,12 +9,14 @@ public class GenerateController {
 	private String origSnippetFile = null;
 	private WriteFile wf = null;
 	private String pathOutputFile = null;
+	private String nameApp = null;
 
-	public GenerateController(String pathFile, String pathOutputFile) {
+	public GenerateController(String pathFile, String pathOutputFile, String nameApp) {
 
 		this.origSnippetFile = LibUtils.readSnippetFile(pathFile);
 		this.pathOutputFile = pathOutputFile;
 		this.wf = new WriteFile();
+		this.nameApp = nameApp;
 	}
 	
 	public void replaceNameBeanAndNameClassBeanController(String nameBean) {
@@ -24,11 +26,11 @@ public class GenerateController {
 
 		if (!Character.isLowerCase(nameBean.charAt(0))) {
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean,this.snippetFile);
-			this.snippetFile = LibUtils.replacePattern("%\\{nameController\\}",LibUtils.firstLetterLower(nameBean)+"Controller", this.snippetFile);
+			this.snippetFile = LibUtils.replacePattern("%\\{nameController\\}",this.nameApp+"_"+LibUtils.firstLetterLower(nameBean)+"Controller", this.snippetFile);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameController\\}", nameBean+"Controller",this.snippetFile);
 		} else {
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", LibUtils.firstLetterUpper(nameBean),this.snippetFile);
-			this.snippetFile = LibUtils.replacePattern("%\\{nameController\\}", nameBean+"Controller",this.snippetFile);
+			this.snippetFile = LibUtils.replacePattern("%\\{nameController\\}", this.nameApp+"_"+nameBean+"Controller",this.snippetFile);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameController\\}", LibUtils.firstLetterUpper(nameBean)+"Controller",this.snippetFile);
 		}
 	}

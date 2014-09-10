@@ -92,7 +92,7 @@ public class PaserXmltoForm {
 			List<Element> pages = formE.getChild("pages").getChildren("page");
 			for (int i = 0; i < pages.size(); i++) {
 				Element pageElem = pages.get(i);
-
+				
 				Page page = new Page();
 				idPage = pageElem.getAttributeValue("id");
 				page.setId(idPage);
@@ -100,7 +100,6 @@ public class PaserXmltoForm {
 				List<Element> widgets = pageElem.getChild("widgets").getChildren("widget");
 				for (int j = 0; j < widgets.size(); j++) {
 					Element widget = widgets.get(j);
-
 					if (widget.getChild("initial-value") != null) {
 						varName = widget.getChild("initial-value").getChild("expression").getChild("name").getValue();
 						returnType = widget.getChild("initial-value").getChild("expression").getChild("return-type").getValue();
@@ -108,8 +107,13 @@ public class PaserXmltoForm {
 						varName = "";
 						returnType = "";
 					}
-
-					labelField = widget.getChild("label").getChild("expression").getChild("name").getValue();
+					
+					if (widget.getChild("label")!=null) {
+						labelField = widget.getChild("label").getChild("expression").getChild("name").getValue();
+					} else {
+						labelField = widget.getAttributeValue("id"); 
+					}
+					
 					nameField = widget.getAttributeValue("id");
 					typeField = widget.getAttributeValue("type");
 

@@ -25,13 +25,16 @@ public class GenerateView {
 	
 	private Map<String,String> controllersNameSubmitMap = null;
 	private Map<String,String> controllersIdSubmitMap = null;
+	
+	private String nameApp = null;
 
 		
-	public GenerateView(String pathFile, String pathOutputFile) {
+	public GenerateView(String pathFile, String pathOutputFile, String nameApp) {
 		
 		this.origSnippetFile = LibUtils.readSnippetFile(pathFile);
 		this.pathOutputFile = pathOutputFile;
 		this.wf = new WriteFile();
+		this.nameApp = nameApp;
 	}
 		
 	public Map<String, String> getControllersNameSubmitMap() {
@@ -70,9 +73,9 @@ public class GenerateView {
 		this.button = button;
 	}
 
-	public boolean createDirViewAndFormToInst(String dirNameAndFormToInstitucion, String nameApp) {
+	public boolean createDirViewAndFormToInst(String dirNameAndFormToInstitucion) {
 		this.pathOutputFile += dirNameAndFormToInstitucion;
-		this.pathOutputFile = LibUtils.replacePattern("%\\{processName\\}",nameApp,this.pathOutputFile);
+		this.pathOutputFile = LibUtils.replacePattern("%\\{processName\\}",this.nameApp,this.pathOutputFile);
 		return LibUtils.createDirs(this.pathOutputFile);
 	}
 	
@@ -140,19 +143,25 @@ public class GenerateView {
 		
 		if ("TEXTBOX".equalsIgnoreCase(type)){
 			
-			fieldInput += "<p:inputText id=\""+name+"\" value=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\" "+this.required+" "+this.readOnly+">\n"; 
+			fieldInput += "<p:inputText id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\" "+this.required+" "+this.readOnly+">\n"; 
 			fieldInput += this.validator;
 			fieldInput += "</p:inputText>\n";
 		    
 		}else if ("DATE".equalsIgnoreCase(type)){
 			
-			fieldInput += "<p:calendar id=\""+name+"\" value=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"} locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" "; 
+			fieldInput += "<p:calendar id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"} locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" "; 
 			fieldInput += this.required+" "+this.readOnly+">\n";
 			fieldInput += this.validator;
 			fieldInput += "</p:calendar>\n";
 			
 		}else if ("CHECKBOX".equalsIgnoreCase(type)){
 			
+		}else if ("HIDDEN".equalsIgnoreCase(type)){
+//			if (){
+//				fieldInput +="";
+//			}else{
+//				fieldInput +="";
+//			}
 		}else if ("PASSWORD".equalsIgnoreCase(type)){
 			
 		}else if ("TEXTAREA".equalsIgnoreCase(type)){
@@ -172,7 +181,7 @@ public class GenerateView {
 		}else if ("LISTBOX_MULTIPLE".equalsIgnoreCase(type)){
 			
 		}else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)){
-			fieldInput += "<p:selectOneRadio id=\""+name+"\" value=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\">\n";
+			fieldInput += "<p:selectOneRadio id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\">\n";
 			fieldInput += "\t<f:selectItem itemLabel=\"Aceptar\" itemValue=\"true\" />\n";
 			fieldInput += "\t<f:selectItem itemLabel=\"Rechazar\" itemValue=\"false\" />\n"; 
 			fieldInput += "</p:selectOneRadio>\n";
@@ -210,7 +219,7 @@ public class GenerateView {
 		
 		if ("BUTTON_SUBMIT".equalsIgnoreCase(type)){
 			
-			buttoInput += "<h:commandButton value=\"Enviar\" action=\"#{"+LibUtils.firstLetterLower(getNameBean())+"Controller.executeTask}\">\n";
+			buttoInput += "<h:commandButton value=\"Enviar\" action=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.executeTask}\">\n";
 			buttoInput += "\t<f:param name=\""+controllerIdSubmit+"\" value=\"#{"+controllerNameSubmit+"."+controllerIdSubmit+"}\"/>\n";
 			buttoInput += "</h:commandButton>";
 			

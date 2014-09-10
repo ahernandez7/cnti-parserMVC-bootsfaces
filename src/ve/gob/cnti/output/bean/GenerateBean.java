@@ -15,13 +15,15 @@ public class GenerateBean {
 	private String imports = null;
 	private String attributes = null;
 	private String setAndGetMethods = null;
+	private String nameApp = null;
 	
 
-	public GenerateBean(String pathFile, String pathOutputFile) {
+	public GenerateBean(String pathFile, String pathOutputFile, String nameApp) {
 		
 		this.origSnippetFile = LibUtils.readSnippetFile(pathFile);
 		this.pathOutputFile = pathOutputFile;
 		this.wf = new WriteFile();
+		this.nameApp = nameApp;
 	}
 	
 	public void setImports(String imports) {
@@ -42,10 +44,10 @@ public class GenerateBean {
 		this.snippetFile = this.origSnippetFile;
 
 		if (!Character.isLowerCase(nameBean.charAt(0))) {
-			this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}",LibUtils.firstLetterLower(nameBean), this.snippetFile);
+			this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}",this.nameApp+"_"+LibUtils.firstLetterLower(nameBean), this.snippetFile);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean,this.snippetFile);
 		} else {
-			this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}", nameBean,this.snippetFile);
+			this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}", this.nameApp+"_"+nameBean,this.snippetFile);
 			nameBean = LibUtils.firstLetterUpper(nameBean);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean,this.snippetFile);
 		}
