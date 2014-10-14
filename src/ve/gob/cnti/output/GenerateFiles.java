@@ -89,6 +89,25 @@ public class GenerateFiles {
 				gc.replaceNameBeanAndNameClassBeanController(nameBean);
 				gc.replacePackagesNameBeanController(getPackageNameBean());
 				gc.replacePackagesNameController(getPackageNameController());
+				
+				String files="";
+				String filesSettersAndGetters="";
+				String typeFile="";
+				for (int j = 0; j < fields.size(); j++) {
+					Field field = fields.get(j);					
+					if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){						
+						typeFile= "UploadedFile";
+						files += "private "+typeFile+" "+field.getVarName()+";\n";
+						filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);						
+					}else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
+						typeFile= "StreamedContent";
+						files += "private "+typeFile+" "+field.getVarName()+";\n";
+						filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
+					}
+				}				
+				gc.replaceFilesAttributes(files);
+				gc.replaceFilesSettersAndGetters(filesSettersAndGetters);
+				
 				gc.writeFileConroller(nameBean);
 
 				gb.setImports("");

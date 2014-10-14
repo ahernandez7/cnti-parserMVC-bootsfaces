@@ -137,6 +137,7 @@ public class PaserXmltoForm {
 							Validator val = new Validator();
 							val.setNameValidator("readonly");
 							field.addValidator(val);
+							field.setIsActuation(false);
 						}
 					}
 

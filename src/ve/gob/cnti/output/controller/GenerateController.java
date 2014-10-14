@@ -57,5 +57,13 @@ public class GenerateController {
 				
 		this.wf.writeFile(this.pathOutputFile+"/"+nameController+"Controller.java", this.snippetFile);
 	}
+	
+	public void replaceFilesAttributes(String files) {		
+		this.snippetFile = LibUtils.replacePattern("%\\{files\\}",files, this.snippetFile);
+	}
+	
+	public void replaceFilesSettersAndGetters(String filesSettersAndGetters) {		
+		this.snippetFile = LibUtils.replacePattern("%\\{filesSettersAndGetters\\}",filesSettersAndGetters, this.snippetFile);
+	}
 
 }

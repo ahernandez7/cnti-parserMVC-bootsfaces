@@ -10,6 +10,7 @@ public class Field {
 	private String typeField;
 	private String varName;
 	private String returnType;
+	private boolean isActuation;
 	private List<Validator> listValidators;
 
 	public Field() {
@@ -18,8 +19,16 @@ public class Field {
 		this.typeField = null;
 		this.varName = null;
 		this.returnType = null;
-		
+		this.isActuation = true;
 		this.listValidators = new ArrayList<Validator>();
+	}
+
+	public boolean isActuation() {
+		return isActuation;
+	}
+
+	public void setIsActuation(boolean isActuation) {
+		this.isActuation = isActuation;
 	}
 
 	public String getLabelField() {

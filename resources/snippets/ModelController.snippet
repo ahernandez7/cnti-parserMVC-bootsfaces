@@ -1,16 +1,19 @@
 package %{packages};
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-
+import org.primefaces.model.UploadedFile;
+import org.primefaces.model.StreamedContent;
 import ve.gob.cnti.gestion.bonita.IController;
 import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
 import ve.gob.cnti.gestion.utils.FacesHandler;
 import ve.gob.cnti.gestion.utils.Utils;
 import %{packageBean}.%{NameBean};
 
+@SuppressWarnings("unused")
 @ManagedBean(name = "%{nameController}", eager = true)
 @RequestScoped
 public class %{NameController} {
@@ -18,13 +21,20 @@ public class %{NameController} {
     private FacesHandler facesHandler = new FacesHandler();
     private IController iController = new ControllerImpl();
     private Utils util = new Utils();
+    
+    %{files}
 
     private %{NameBean} bean = new %{NameBean}();
 
     public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{     
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
-        return "executeTask";
+        return "/views/vp/%{NameBean}/forms/success.xhtml";
     }
+    
+    public %{NameBean} getBeanToBPM(String idCase) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{				
+		
+		return (%{NameBean}) util.convertListMapToObject(iController.getVariablesValues(idCase), bean);
+	}
 
     public %{NameBean} getBean() {
         return bean;
@@ -33,5 +43,7 @@ public class %{NameController} {
     public void setBean(%{NameBean} bean) {
         this.bean = bean;
     }       
+    
+    %{filesSettersAndGetters}
 
 }

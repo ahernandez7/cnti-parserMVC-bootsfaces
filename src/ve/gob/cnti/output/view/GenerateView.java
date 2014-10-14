@@ -132,13 +132,19 @@ public class GenerateView {
 		
 		//TODO: Completar el resto de tipos de datos del campo en el formulario
 		String label = field.getLabelField();  
-		String name =  field.getNameField();
+//		String name =  field.getNameField();
+		String name = field.getVarName();
 		String type =  field.getTypeField();
 		
 		String fieldInput = "";
 		
+		//Construye el label 
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)){
-			fieldInput = "<p:outputLabel for=\""+name+"\" value=\""+label+"\"/>\n";
+			if (name.matches("^_FILE_.*$")){
+				fieldInput = "<p:outputLabel for=\""+name+"\" value=\""+label.replace("_FILE_", "")+"\"/>\n";				
+			}else{
+				fieldInput = "<p:outputLabel for=\""+name+"\" value=\""+label.replace("_FILE_", "")+"\"/>\n";
+			}
 		}
 		
 		if ("TEXTBOX".equalsIgnoreCase(type)){
@@ -149,7 +155,7 @@ public class GenerateView {
 		    
 		}else if ("DATE".equalsIgnoreCase(type)){
 			
-			fieldInput += "<p:calendar id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"} locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" "; 
+			fieldInput += "<p:calendar id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\" locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" "; 
 			fieldInput += this.required+" "+this.readOnly+">\n";
 			fieldInput += this.validator;
 			fieldInput += "</p:calendar>\n";
@@ -157,11 +163,18 @@ public class GenerateView {
 		}else if ("CHECKBOX".equalsIgnoreCase(type)){
 			
 		}else if ("HIDDEN".equalsIgnoreCase(type)){
-//			if (){
-//				fieldInput +="";
-//			}else{
-//				fieldInput +="";
-//			}
+			if (name.matches("^_FILE_.*$")){
+				if ("".equals(this.readOnly)){
+					fieldInput += "<p:fileUpload id=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\" mode=\"simple\"/>\n";
+					System.out.println("subiendo");
+				}else{					
+					System.out.println("bajando");
+					fieldInput +="<p:commandButton id=\""+name+"\" value=\"Bajar Archivo\" ajax=\"false\" icon=\"ui-icon-arrowthick-1-s\">\n";
+					fieldInput +="\t<p:fileDownload value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.getFile()}\" />\n";
+					fieldInput +="\t<f:param name=\""+name+"\" value=\"#{"+this.nameApp+"_"+LibUtils.firstLetterLower(getNameBean())+"Controller.bean."+name+"}\" />\n";	
+					fieldInput +="</p:commandButton>\n";
+				}
+			}
 		}else if ("PASSWORD".equalsIgnoreCase(type)){
 			
 		}else if ("TEXTAREA".equalsIgnoreCase(type)){
@@ -189,10 +202,18 @@ public class GenerateView {
 			
 		}
 		
+		//Contruye el mensaje
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)){
-			fieldInput += "<p:message for=\""+name+"\" id=\""+name+"Message\" style=\"color:red\"/>\n";
-		}
-		
+			if (name.matches("^_FILE_.*$")){
+				if (!"".equals(this.readOnly)){
+					fieldInput += "<p:messages for=\""+name+"\" id=\""+name+"Message\" style=\"color:red\" showDetail=\"true\"/>\n";
+				}else{					
+					fieldInput += "<p:message for=\""+name+"\" id=\""+name+"Message\" style=\"color:red\"/>\n";
+				}
+			}else{
+				fieldInput += "<p:message for=\""+name+"\" id=\""+name+"Message\" style=\"color:red\"/>\n";
+			}
+		}		
 		return fieldInput;
 	}
 	

@@ -1,7 +1,5 @@
 package ve.gob.cnti.output.bean;
-
 import ve.gob.cnti.helper.form.Field;
-
 import ve.gob.cnti.helper.output.WriteFile;
 import ve.gob.cnti.helper.util.LibUtils;
 
@@ -40,7 +38,7 @@ public class GenerateBean {
 
 	public void replaceNameBeanAndNameClassBean(String nameBean) {
 		
-		//Para colocar la variable con el snippet original en la siguiete iteración
+		//Para colocar la variable con el snippet original en la siguiente iteración
 		this.snippetFile = this.origSnippetFile;
 
 		if (!Character.isLowerCase(nameBean.charAt(0))) {
@@ -65,10 +63,10 @@ public class GenerateBean {
 				this.imports += createImports(field.getReturnType());
 			}
 			
-			String nameField = field.getNameField();
+			String nameField = field.getVarName();
 			String returnTypes = field.getReturnType().substring(field.getReturnType().lastIndexOf(".")+1);
-			
-			this.attributes += createAttribute(nameField, returnTypes);
+				
+			this.attributes += createAttribute(nameField, returnTypes,field.isActuation());
 			this.setAndGetMethods += createSetMethod(nameField, returnTypes)+"\n";
 			this.setAndGetMethods += createGetMethod(nameField, returnTypes)+"\n";
 		}
@@ -94,12 +92,17 @@ public class GenerateBean {
 		return "import " + imports + ";\n";
 	}
 
-	private String createAttribute(String name, String type) {
-
-		return "private " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
+	private String createAttribute(String name, String type, boolean isReadOnly) {
+		if(isReadOnly){
+			return "@FieldIsActuacion\nprivate " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
+		}else{
+			return "private " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
+		}
+			
+		
 	}
 
-	private String createSetMethod(String name, String type) {
+	public String createSetMethod(String name, String type) {
 
 		String method = "public void set" + LibUtils.firstLetterUpper(name)
 				+ "(" + LibUtils.changeToPrimitiveType(type) + " " + name + " ) {\n" + "\t this." + name
@@ -108,7 +111,7 @@ public class GenerateBean {
 		return method;
 	}
 
-	private String createGetMethod(String name, String type) {
+	public String createGetMethod(String name, String type) {
 
 		String method = "public " + LibUtils.changeToPrimitiveType(type) + " get"
 				+ LibUtils.firstLetterUpper(name) + "() {\n"
