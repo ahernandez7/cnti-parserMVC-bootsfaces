@@ -12,6 +12,8 @@ public class Field {
 	private String returnType;
 	private boolean isActuation;
 	private List<Validator> listValidators;
+	private List<String> optionValue;
+	private String description;
 
 	public Field() {
 		this.labelField = null;
@@ -86,5 +88,25 @@ public class Field {
 	public Validator getValidator(int index){
 		return this.listValidators.get(index);
 	}
+
+	public List<String> getOptionValue() {
+		return optionValue;
+	}
+
+	public void setOptionValue(List<String> optionValue) {
+		this.optionValue = optionValue;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
+	
+	
 
 }

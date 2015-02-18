@@ -35,6 +35,15 @@ public class GenerateController {
 		}
 	}
 	
+	
+	//Convierte el nombre del paquete definido en el configuracion.properties en una ruta de directorio valida
+	/*
+	 * Ejemplo:
+	 * entrada
+	 * ve.gob.vicepresidencia.jubilacionespecial.controller
+	 * salida
+	 * /ve/gob/vicepresidencia/jubilacionespecial/controller
+	 */
 	public boolean createPackageDirsController(String packages) {
 		String pathPackage = LibUtils.convertPackage2Dirs(packages);
 		this.pathOutputFile += pathPackage;

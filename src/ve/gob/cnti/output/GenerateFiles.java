@@ -43,11 +43,14 @@ public class GenerateFiles {
 		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
 		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
 
+		//crear los directorios de los beans y controladores en funcion de los paquetes
+		//definidos en el configuracion.properties
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
 
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 
+		//TODO revisar si se debe eliminar
 		String[] controllersNameSubmit = getControllerButtonNameSubmit().split(",");
 		String[] controllersIdSubmit = getControllerButtonIdSubmit().split(",");
 

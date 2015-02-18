@@ -82,6 +82,15 @@ public class GenerateBean {
 		this.wf.writeFile(this.pathOutputFile+"/"+nameBean+".java", this.snippetFile);
 	}
 
+	
+	//Convierte el nombre del paquetre definido en el configuracion.properties en una ruta de directorio valida
+	/*
+	 * Ejemplo:
+	 * entrada
+	 * ve.gob.vicepresidencia.jubilacionespecial.model
+	 * salida
+	 * /ve/gob/vicepresidencia/jubilacionespecial/model
+	 */
 	public boolean createPackageDirsBean(String packages) {
 		String pathPackage = LibUtils.convertPackage2Dirs(packages);
 		this.pathOutputFile += pathPackage;

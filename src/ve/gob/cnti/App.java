@@ -108,10 +108,10 @@ public class App {
 	public static void main(String[] args) {
 		App tp = new App();
 		
-//		Test t = new Test();
-//		t.showListOutput(tp.pxf.parse());
+		Test t = new Test();
+		t.showListOutput(tp.pxf.parse());
 		
-		tp.generateFiles();
+//		tp.generateFiles();
 		
 		System.out.println("Listo...");
 	}

@@ -7,10 +7,13 @@ public class Page {
 
 	private String id;
 	private List<Field> listFields;
+	private String name;
+	private String nextPage;
 	
 	public Page() {
 		this.id = null;
 		this.listFields = new ArrayList<Field>();
+		
 	}
 	
 	public String getId() {
@@ -35,6 +38,22 @@ public class Page {
 	
 	public Field getField(int index){
 		return this.listFields.get(index);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNextPage() {
+		return nextPage;
+	}
+
+	public void setNextPage(String nextPage) {
+		this.nextPage = nextPage;
 	}
 
 }

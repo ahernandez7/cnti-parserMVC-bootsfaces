@@ -34,6 +34,8 @@ public class Test {
 			for(int i = 0; i < pages.size(); i++){
 				Page page = pages.get(i);
 				System.out.println("\t id page: "+page.getId());
+				System.out.println("\t name Page: "+page.getName());
+				System.out.println("\t next Page: "+page.getNextPage());
 				
 				List<Field> fields = page.getListField();
 				
@@ -46,6 +48,8 @@ public class Test {
 					System.out.println("\t\t Type Field: "+field.getTypeField());
 					System.out.println("\t\t Return Type Field: "+LibUtils.changeToPrimitiveType(field.getReturnType().substring(field.getReturnType().lastIndexOf(".")+1)));
 					System.out.println("\t\t Var Field: "+field.getVarName());
+					System.out.println("\t\t description Field: "+field.getDescription());
+
 					
 					List<Validator> validators = field.getListValidators();
 					System.out.println("");
@@ -55,6 +59,17 @@ public class Test {
 						System.out.println("\t\t\t Name Validator: "+validator.getNameValidator());
 						
 					}
+					
+					List<String> options = field.getOptionValue();
+					System.out.println("");
+					for(int k = 0; k < options.size(); k++){
+						String option = options.get(k);
+						
+						System.out.println("\t\t\t Name Options: "+option);
+						
+					}
+					
+					
 					
 					System.out.println("=====================================================");
 				}
