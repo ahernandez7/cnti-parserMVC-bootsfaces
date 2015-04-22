@@ -27,6 +27,8 @@ public class App {
 	private String namePackageController = null;
 	
 	private String snippetFileView = null;
+	private String snippetFileViewTab = null;
+	private String snippetFileViewTabSummary = null;
 	private String pathViewOutputFile = null;
 	private String dirNameInstitucion = null;
 	private String pathDirFormView = null;
@@ -63,6 +65,8 @@ public class App {
 		this.namePackageController = NAME_PACKE_CONTROLLER;
 		
 		this.snippetFileView = ROOT_SNIPPET+"View.snippet";
+		this.snippetFileViewTab = ROOT_SNIPPET+"Tab.snippet";
+		this.snippetFileViewTabSummary = ROOT_SNIPPET+"TabSummary.snippet";
 		this.pathViewOutputFile = ROOT_VIEW;
 		this.dirNameInstitucion = DIR_INSTITUCION;
 		this.pathDirFormView = PATH_DIR_FORM_VIEW;
@@ -96,6 +100,8 @@ public class App {
 		gf.setPackageNameController(this.namePackageController);
 		
 		gf.setPathSnippetView(this.snippetFileView);
+		gf.setPathSnippetViewTab(this.snippetFileViewTab);
+		gf.setPathSnippetViewTabSummay(this.snippetFileViewTabSummary);
 		gf.setPathOutputFileView(this.pathViewOutputFile);
 		gf.setDirNameAndPathFormToInstitucion(this.dirNameInstitucion+this.pathDirFormView);
 		
@@ -106,12 +112,12 @@ public class App {
 	}
 	
 	public static void main(String[] args) {
+		
 		App tp = new App();
+		tp.generateFiles();
 		
-		Test t = new Test();
-		t.showListOutput(tp.pxf.parse());
-		
-//		tp.generateFiles();
+//		Test t = new Test();
+//		t.showListOutput(tp.pxf.parse());
 		
 		System.out.println("Listo...");
 	}

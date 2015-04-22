@@ -1,1 +1,0 @@
-Creado solo para indexar el directorio views en el git

@@ -19,15 +19,15 @@ public class Test {
 	
 	public void showListOutput(Application app){
 		
-		System.out.println("Nombre de aplicacion: "+app.getAppName());
+		System.out.println("\nNombre de aplicacion: "+app.getAppName());
 		
 		Map<String, Form> mapForms = app.getMapForms();
 		
 		for (String key : mapForms.keySet()) {
 			
-			System.out.println("Nombres de formularios: "+key);
-			
 			Form formE = mapForms.get(key);
+			
+			System.out.println("Nombres de formularios: "+key);
 			
 			List<Page> pages = formE.getListPages();
 			

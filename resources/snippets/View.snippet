@@ -9,15 +9,21 @@
 
      <h:head></h:head>
      <h:body>
-     <h3>%{nameTask}</h3>
-     <h:form>
-     	<h:panelGrid columns="3">
-
-     		%{inputsElements}
-
-     	</h:panelGrid>      
-     	
-     	%{submitButton}
-     </h:form>
+     #{FacesHandler.removeBeanFromSessionScoped("%{nameTask}Controller")}
+     #{%{nameTask}Controller.setBean(%{nameTask}Controller.getBeanToBPM(TaskController.task.caseId))}
+     <p:tooltip />
+		<h:form enctype="multipart/form-data" id="form">
+			<div style="">
+			<p:panel header="%{nameTask}Controller.getHumanNameTask" id="panelC">
+			
+			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
+				flowListener="#{%{nameTask}Controller.onFlowProcess}">	
+				
+				%{tabsElements}
+			     				
+			</p:wizard>
+			</p:panel>
+     		</div>
+		</h:form>
     </h:body>
 </f:view>

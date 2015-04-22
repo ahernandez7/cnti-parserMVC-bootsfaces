@@ -107,7 +107,6 @@ public class PaserXmltoForm {
 				page.setId(idPage);				
 				namePage = pageElem.getChild("page-label").getChild("expression").getChild("name").getValue();
 				page.setName(namePage);
-				System.out.print(namePage);
 				if(pageElem.getChild("next-page")!=null){
 					nextPage = pageElem.getChild("next-page").getChild("expression").getChild("name").getValue();
 				}else{
@@ -220,9 +219,6 @@ public class PaserXmltoForm {
 							field.addValidator(val);
 						}
 					}
-					
-					
-					//System.out.println("nombre campo"+field.getNameField()+"nombre variable"+field.getVarName()+"nombre etiqueta"+field.getLabelField()+"descripcion"+field.getDescription()+"tipo de dato"+field.getTypeField());
 
 					page.addField(field);
 

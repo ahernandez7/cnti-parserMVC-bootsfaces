@@ -1,6 +1,6 @@
 package ve.gob.cnti.output;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +20,8 @@ public class GenerateFiles {
 	private String pathSnippetController = null;
 	private String pathOutputFileController = null;
 	private String pathSnippetView = null;
+	private String pathSnippetViewTab = null;
+	private String pathSnippetViewTabSummay = null;
 	private String pathOutputFileView = null;
 	private String packageNameBean = null;
 	private String packageNameController = null;
@@ -37,113 +39,147 @@ public class GenerateFiles {
 		this.nameApp = app.getAppName();
 	}
 
+	// Método constructor del MVC de la aplicación
 	public void generate() {
 
 		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
 		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
 		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
 
-		//crear los directorios de los beans y controladores en funcion de los paquetes
-		//definidos en el configuracion.properties
+		// crear los directorios de los beans y controladores en funcion de los paquetes
+		// definidos en el configuracion.properties
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
-
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
-
-		//TODO revisar si se debe eliminar
-		String[] controllersNameSubmit = getControllerButtonNameSubmit().split(",");
-		String[] controllersIdSubmit = getControllerButtonIdSubmit().split(",");
-
-		Map<String, String> controllersNameSubmitMap = new HashMap<String, String>();
-
-		for (int i = 0; i < controllersNameSubmit.length; i++) {
-			String[] controllerSubmitName = controllersNameSubmit[i].split("\\.");
-			controllersNameSubmitMap.put(controllerSubmitName[0].trim(), controllerSubmitName[1].trim());
-		}
-
-		Map<String, String> controllersIdSubmitMap = new HashMap<String, String>();
-
-		for (int i = 0; i < controllersIdSubmit.length; i++) {
-			String[] controllerSubmitId = controllersIdSubmit[i].split("\\.");
-			controllersIdSubmitMap.put(controllerSubmitId[0].trim(), controllerSubmitId[1].trim());
-		}
-
-		gv.setControllersNameSubmitMap(controllersNameSubmitMap);
-		gv.setControllersIdSubmitMap(controllersIdSubmitMap);
 
 		for (String key : this.mapForms.keySet()) {
 
-			gv.replaceNameTask(key);
-
+			// Tareas
 			Form formE = this.mapForms.get(key);
-
+			// Formularios de dicha tarea
 			List<Page> pages = formE.getListPages();
 
-			for (int i = 0; i < pages.size(); i++) {
+			String nameBean = formE.getNameForm();
 
-				Page page = pages.get(i);
-				List<Field> fields = page.getListField();
+			gv.setNameBean(nameBean);
+			gv.replaceNameTask(key);
 
-				String nameBean = page.getId();
+			gv.setInputElements("");
+			gv.setButton("");
+			gv.setTabsReferences("");
 
+			List<Field> fieldsComplete = new ArrayList<Field>();
+			for (int i = 0; i <= pages.size(); i++) {
+				
 				gb.replaceNameBeanAndNameClassBean(nameBean);
 				gb.replacePackagesNameBean(getPackageNameBean());
-
+				
+				gb.setImports("");
+				gb.setAttributes("");
+				gb.setSetAndGetMethods("");
+				
 				gc.replaceNameBeanAndNameClassBeanController(nameBean);
 				gc.replacePackagesNameBeanController(getPackageNameBean());
 				gc.replacePackagesNameController(getPackageNameController());
 				
-				String files="";
-				String filesSettersAndGetters="";
-				String typeFile="";
-				for (int j = 0; j < fields.size(); j++) {
-					Field field = fields.get(j);					
-					if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){						
-						typeFile= "UploadedFile";
-						files += "private "+typeFile+" "+field.getVarName()+";\n";
-						filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);						
-					}else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
-						typeFile= "StreamedContent";
-						files += "private "+typeFile+" "+field.getVarName()+";\n";
-						filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
-					}
-				}				
-				gc.replaceFilesAttributes(files);
-				gc.replaceFilesSettersAndGetters(filesSettersAndGetters);
-				
-				gc.writeFileConroller(nameBean);
+				GenerateView gv_tab;
+				if (i < pages.size())
+					gv_tab = new GenerateView(getPathSnippetViewTab(), getPathOutputFileView(), this.nameApp);
+				else
+					gv_tab = new GenerateView(getPathSnippetViewTabSummay(), getPathOutputFileView(), this.nameApp);
 
-				gb.setImports("");
-				gb.setAttributes("");
-				gb.setSetAndGetMethods("");
+				gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), nameBean);
 
-				gv.setNameBean(nameBean);
-				gv.setInputElements("");
-				gv.setButton("");
+				gv_tab.setNameBean(nameBean);
+				gv_tab.replaceNameTask(key);
 
-				for (int j = 0; j < fields.size(); j++) {
-					Field field = fields.get(j);
+				List<Field> fields = new ArrayList<Field>();
+				boolean containsFiles = false;
 
-					gb.createImpAttAndMethos(field);
-
-					gv.setValidator("");
-
-					List<Validator> validators = field.getListValidators();
-					for (int k = 0; k < validators.size(); k++) {
-						Validator validator = validators.get(k);
-						gv.createValidator(validator.getNameValidator(), field.getNameField());
-					}
-
-					gv.createInputElement(field);
-					gv.createButton(field);
+				if (i < pages.size()) {
+					Page page = pages.get(i);
+					fields = page.getListField();
+					gv_tab.replaceIdAndNameTab(page.getId(), page.getName());
+					gv_tab.setInputElements("");
+					gv_tab.setButton("");
+				} else {
+					fields = fieldsComplete;
+					gv_tab.insertFileTable("TabResumen", true);
 				}
 
-				gb.replaceVaraiablesAndWriteFile(nameBean);
+				for (int j = 0; j < fields.size(); j++) {
 
-				gv.writeFileAndCreateDirToView(nameBean);
+					Field field = fields.get(j);
+					if (i < pages.size()) {
+						if (!containsFiles && (field.getVarName().contains("_FILE") || field.getVarName().contains("_MFILE")))
+							containsFiles = true;
+
+						gv_tab.setValidator("");
+
+						List<Validator> validators = field.getListValidators();
+						for (int k = 0; k < validators.size(); k++) {
+							Validator validator = validators.get(k);
+							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
+						}
+
+						gv_tab.insertMessageTag("Tab" + (i + 1), containsFiles);
+						gv_tab.createInputElement(field);
+						gv_tab.insertFileTable("Tab" + (i + 1), containsFiles);
+
+						fieldsComplete.add(field);
+					} else {
+						if (!field.getVarName().contains("_FILE") && !field.getVarName().contains("_MFILE"))
+							gv_tab.createOutputElement(field);
+						
+						gb.createImpAttAndMethos(field);
+						
+					}	
+
+				}
+
+				gv_tab.writeFileAndCreateDirToView(nameBean, "tab" + (i + 1));
+				gv.createTabReference(nameBean, "tab" + (i + 1), getDirNameAndPathFormToInstitucion());
 
 			}
+			gb.replaceVaraiablesAndWriteFile(nameBean);
+			
+			gv.replaceTabsReferences();
+			gv.writeFileAndCreateDirToView(nameBean);
+
+			// TODO
+			// Ejecutar la logica de consttrucción del controlador de la tarea
+
+			
+			//
+			// gc.replaceNameBeanAndNameClassBeanController(nameBean);
+			// gc.replacePackagesNameBeanController(getPackageNameBean());
+			// gc.replacePackagesNameController(getPackageNameController());
+
+			// TODO
+			// Colocar esta lógica en la clase Generate controller
+			// String files="";
+			// String filesSettersAndGetters="";
+			// String typeFile="";
+			// for (int j = 0; j < fields.size(); j++) {
+			// Field field = fields.get(j);
+			// if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
+			// typeFile= "UploadedFile";
+			// files += "private "+typeFile+" "+field.getVarName()+";\n";
+			// filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
+			// }else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
+			// typeFile= "StreamedContent";
+			// files += "private "+typeFile+" "+field.getVarName()+";\n";
+			// filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
+			// }
+			// }
+			// gc.replaceFilesAttributes(files);
+			// gc.replaceFilesSettersAndGetters(filesSettersAndGetters);
+			//
+			// gc.writeFileConroller(nameBean);
+			//
+			
 		}
+
 	}
 
 	public String getPathSnippetBean() {
@@ -232,6 +268,22 @@ public class GenerateFiles {
 
 	public void setControllerButtonIdSubmit(String controllerButtonIdSubmit) {
 		this.controllerButtonIdSubmit = controllerButtonIdSubmit;
+	}
+
+	public String getPathSnippetViewTab() {
+		return pathSnippetViewTab;
+	}
+
+	public void setPathSnippetViewTab(String pathSnippetViewTab) {
+		this.pathSnippetViewTab = pathSnippetViewTab;
+	}
+
+	public String getPathSnippetViewTabSummay() {
+		return pathSnippetViewTabSummay;
+	}
+
+	public void setPathSnippetViewTabSummay(String pathSnippetViewTabSummay) {
+		this.pathSnippetViewTabSummay = pathSnippetViewTabSummay;
 	}
 
 }

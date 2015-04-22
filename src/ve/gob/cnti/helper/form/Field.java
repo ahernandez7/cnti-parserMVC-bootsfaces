@@ -104,6 +104,12 @@ public class Field {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@Override
+	public String toString() {
+		return "Field [labelField=" + labelField + ", nameField=" + nameField + ", typeField=" + typeField + ", varName=" + varName + ", returnType=" + returnType + ", isActuation=" + isActuation + ", listValidators=" + listValidators + ", optionValue=" + optionValue + ", description="
+				+ description + "]";
+	}
 	
 	
 	
