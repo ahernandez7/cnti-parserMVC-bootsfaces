@@ -151,7 +151,7 @@ public class GenerateView {
 		} else if ("TEXTAREA".equalsIgnoreCase(type)) {
 
 			fieldInput += "<p:inputTextarea id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" rows=\"5\" cols=\"50\" counter=\"display\" ";
-			fieldInput += "maxlength=\"255\" counterTemplate=\"Restan {0} caracteres.\"" + this.required + " " + this.readOnly + ">\n";
+			fieldInput += "maxlength=\"255\" counterTemplate=\"Restan {0} caracteres.\"" + this.required + " " + this.readOnly + "/>\n";
 			fieldInput += this.validator;
 			fieldInput += "<h:outputText id=\"display\"/>";
 
@@ -159,8 +159,8 @@ public class GenerateView {
 			fieldInput += "<p:selectOneMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
-			fieldInput += "<f:selectItem itemLabel=\"\" itemValue=\"\" />\n";
-			fieldInput += "\t<f:selectItem value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + "option" + name + "}\">\n";
+			fieldInput += "<f:selectItems itemLabel=\"\" itemValue=\"\" />\n";
+			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\"/>\n";
 			fieldInput += "</p:selectOneMenu>\n";
 
 		} else if ("RICH_TEXTAREA".equalsIgnoreCase(type)) {
@@ -178,14 +178,14 @@ public class GenerateView {
 			fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
-			fieldInput += "\t<f:selectItem value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + "option" + name + "}\" >\n";
-			fieldInput += "</selectCheckboxMenu>\n";
+			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
+			fieldInput += "</p:selectCheckboxMenu>\n";
 
 		} else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)) {
-			fieldInput += "<p:selectOneRadio id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"";
+			fieldInput += "<p:selectOneRadio id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
-			fieldInput += "\t<f:selectItem value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + "option" + name + "}\" itemLabel=\"#{" + name + "}\" itemValue=\"#{" + name + "}\">\n";
+			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" itemLabel=\"#{" + name + "}\" itemValue=\"#{" + name + "}\"/>\n";
 			fieldInput += "</p:selectOneRadio>\n";
 		} else if ("SUGGESTBOX".equalsIgnoreCase(type)) {
 
