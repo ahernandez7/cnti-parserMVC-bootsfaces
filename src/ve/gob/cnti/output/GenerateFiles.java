@@ -22,6 +22,7 @@ public class GenerateFiles {
 	private String pathSnippetView = null;
 	private String pathSnippetViewTab = null;
 	private String pathSnippetViewTabSummay = null;
+	private String pathSnippetViewSuccess = null;
 	private String pathOutputFileView = null;
 	private String packageNameBean = null;
 	private String packageNameController = null;
@@ -45,12 +46,14 @@ public class GenerateFiles {
 		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
 		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
 		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
-
+		GenerateView gvSuccess = new GenerateView(getPathSnippetViewSuccess(), getPathOutputFileView(), this.nameApp);
+		
 		// crear los directorios de los beans y controladores en funcion de los paquetes
 		// definidos en el configuracion.properties
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
+		
 
 		for (String key : this.mapForms.keySet()) {
 
@@ -131,54 +134,48 @@ public class GenerateFiles {
 						if (!field.getVarName().contains("_FILE") && !field.getVarName().contains("_MFILE"))
 							gv_tab.createOutputElement(field);
 						
+						gc.insertFilesInController(fields);
 						gb.createImpAttAndMethos(field);
-						
 					}	
 
 				}
 
 				gv_tab.writeFileAndCreateDirToView(nameBean, "tab" + (i + 1));
 				gv.createTabReference(nameBean, "tab" + (i + 1), getDirNameAndPathFormToInstitucion());
-
 			}
 			gb.replaceVaraiablesAndWriteFile(nameBean);
 			
 			gv.replaceTabsReferences();
 			gv.writeFileAndCreateDirToView(nameBean);
-
-			// TODO
-			// Ejecutar la logica de consttrucción del controlador de la tarea
-
+//			gvSucess.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion())
 			
-			//
-			// gc.replaceNameBeanAndNameClassBeanController(nameBean);
-			// gc.replacePackagesNameBeanController(getPackageNameBean());
-			// gc.replacePackagesNameController(getPackageNameController());
+			gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
+			
+			gc.writeFileConroller(nameBean);
+			
 
 			// TODO
-			// Colocar esta lógica en la clase Generate controller
-			// String files="";
-			// String filesSettersAndGetters="";
-			// String typeFile="";
-			// for (int j = 0; j < fields.size(); j++) {
-			// Field field = fields.get(j);
-			// if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
-			// typeFile= "UploadedFile";
-			// files += "private "+typeFile+" "+field.getVarName()+";\n";
-			// filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
-			// }else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
-			// typeFile= "StreamedContent";
-			// files += "private "+typeFile+" "+field.getVarName()+";\n";
-			// filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
-			// }
-			// }
-			// gc.replaceFilesAttributes(files);
-			// gc.replaceFilesSettersAndGetters(filesSettersAndGetters);
-			//
-			// gc.writeFileConroller(nameBean);
-			//
+////			 Colocar esta lógica en la clase Generate controller
+//			 String files="";
+//			 String filesSettersAndGetters="";
+//			 String typeFile="";
+//			 for (int j = 0; j < fields.size(); j++) {
+//				 Field field = fields.get(j);
+//				 if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
+//					 typeFile= "UploadedFile";
+//					 files += "private "+typeFile+" "+field.getVarName()+";\n";
+//					 filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
+//				 }else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
+//					 typeFile= "StreamedContent";
+//					 files += "private "+typeFile+" "+field.getVarName()+";\n";
+//					 filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
+//				 }
+//			 }
+			
+			
 			
 		}
+		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
 
 	}
 
@@ -284,6 +281,14 @@ public class GenerateFiles {
 
 	public void setPathSnippetViewTabSummay(String pathSnippetViewTabSummay) {
 		this.pathSnippetViewTabSummay = pathSnippetViewTabSummay;
+	}
+
+	public String getPathSnippetViewSuccess() {
+		return pathSnippetViewSuccess;
+	}
+
+	public void setPathSnippetViewSuccess(String pathSnippetViewSuccess) {
+		this.pathSnippetViewSuccess = pathSnippetViewSuccess;
 	}
 
 }

@@ -3,38 +3,247 @@ package %{packages};
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.component.fileupload.FileUpload;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
+
 import ve.gob.cnti.gestion.bonita.IController;
 import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
 import ve.gob.cnti.gestion.utils.FacesHandler;
 import ve.gob.cnti.gestion.utils.Utils;
+import ve.gob.cnti.gestion.alfresco.ICmisController;
+import ve.gob.cnti.gestion.alfresco.impl.AlfrescoLoadFiles;
+
+import ve.gob.cnti.gestion.controller.beanFiles.BeanFile;
+import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
+
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
 @ManagedBean(name = "%{nameController}", eager = true)
-@RequestScoped
+@SessionScoped
 public class %{NameController} {
 
+	private ICmisController iCmis = new AlfrescoLoadFiles();
     private FacesHandler facesHandler = new FacesHandler();
     private IController iController = new ControllerImpl();
     private Utils util = new Utils();
+    private UploadedFile uploadfile;
+	
+	private BeanFile fileBean;
+	private BeanFileServices fileServices = new BeanFileServices();
+	private List<BeanFile> beanFiles = new ArrayList<BeanFile>();
+	private Map<String, Integer> archivosProcesados = new HashMap<String, Integer>();
     
     %{files}
 
     private %{NameBean} bean = new %{NameBean}();
 
     public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{     
+        
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
-        return "/views/vp/%{NameBean}/forms/success.xhtml";
+        
+        
+        
+        return "%{DirViewSuccess}";
     }
     
     public %{NameBean} getBeanToBPM(String idCase) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{				
 		
-		return (%{NameBean}) util.convertListMapToObject(iController.getVariablesValues(idCase), bean);
+		if(idCase != null){
+		
+			%{NameBean} cd = null;
+			try {
+				cd = (%{NameBean}) util.convertListMapToObject(
+						iController.getVariablesValues(idCase), bean);
+			} catch (IllegalAccessException e) {
+			} catch (IllegalArgumentException e) {
+			} catch (InvocationTargetException e) {
+			} catch (ParseException e) {
+			}
+	
+			if (cd == null) {
+				return new %{NameBean}();
+			}
+			return cd;
+			
+		}else
+			return new %{NameBean}();	
 	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean uploadFilesToAlfresco(String pathFolder)
+			throws NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException {
+
+		Iterator<BeanFile> it = beanFiles.iterator();
+		while (it.hasNext()) {
+			BeanFile beanF = it.next();
+
+			// TODO Obetener la lista de archivos con reflections
+			Field variable = this.getClass().getDeclaredField(
+					beanF.getVarName());
+
+			Field archVar = bean.getClass().getDeclaredField(
+					beanF.getVarName());
+
+			archVar.setAccessible(true);
+			variable.setAccessible(true);
+
+			List<UploadedFile> temp = new ArrayList<UploadedFile>();
+			List<String> stringTemps = new ArrayList<String>();
+
+			temp = (List<UploadedFile>) variable.get(this);
+			int i = 1;
+			for (UploadedFile arch : temp) {
+				if (!beanF.isMultiple()) {
+					archVar.set(
+							bean,
+							iCmis.uploadDocument(arch, pathFolder,
+									beanF.getNombreOficial()));
+				} else{
+					stringTemps.add(iCmis.uploadDocument(arch, pathFolder,
+							beanF.getNombreOficial() + "_" + i));					
+				}
+				i++;
+			}
+			if (beanF.isMultiple())
+				archVar.set(bean,stringTemps);
+			
+		}
+		
+		return true;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public void fileUploadListener(FileUploadEvent e)
+			throws IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException {
+
+		FileUpload uploadComponent = (FileUpload) e.getComponent();
+
+		fileBean = fileServices.obtenerBeanFile(archivosProcesados,
+				uploadComponent, beanFiles);
+
+		if (fileServices.archivoValido(fileBean, e.getFile())) {
+
+			// TODO Obetener la lista de archivos con reflections
+			Field variable = this.getClass().getDeclaredField(
+					uploadComponent.getId());
+
+			variable.setAccessible(true);
+			List<UploadedFile> temp = new ArrayList<UploadedFile>();
+
+			if (!fileBean.isMultiple() && fileBean.getFileNames().size() > 0) {
+
+				fileBean.getFileNames().set(0, e.getFile().getFileName());
+
+				temp.add(e.getFile());
+				variable.set(this, temp);
+
+			} else {
+				if (variable.get(this) != null)
+					temp = (List<UploadedFile>) variable.get(this);
+				temp.add(e.getFile());
+				variable.set(this, temp);
+				fileBean.getFileNames().add(e.getFile().getFileName());
+			}
+
+			if (!archivosProcesados.containsKey(uploadComponent.getId())) {
+				beanFiles.add(fileBean);
+				archivosProcesados.put(uploadComponent.getId(),
+						beanFiles.size() - 1);
+			} else {
+				beanFiles.set(archivosProcesados.get(uploadComponent.getId()),
+						fileBean);
+				beanFiles.set(archivosProcesados.get(uploadComponent.getId()),
+						fileBean);
+			}
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public void removeFile(int i_bean, int i_archivo)
+			throws NoSuchFieldException, SecurityException,
+			IllegalArgumentException, IllegalAccessException {
+
+		fileBean = beanFiles.get(i_bean);
+
+		Field variable = this.getClass()
+				.getDeclaredField(fileBean.getVarName());
+		variable.setAccessible(true);
+		List<UploadedFile> temp = new ArrayList<UploadedFile>();
+
+		if (fileBean.getFileNames().size() == 1) {
+			archivosProcesados.remove(fileBean.getVarName());
+			beanFiles.remove(i_bean);
+			variable.set(this, temp);
+		} else {
+			temp = (List<UploadedFile>) variable.get(this);
+			temp.remove(i_archivo);
+			fileBean.getFileNames().remove(i_archivo);
+			beanFiles.set(i_bean, fileBean);
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public String onFlowProcess(FlowEvent e) throws NoSuchFieldException,
+			SecurityException, IllegalArgumentException, IllegalAccessException {
+
+		String temp = (String) facesHandler.findComponent("files")
+				.getAttributes().get("tabsNames");
+		String tabs[] = temp.split(",");
+		temp = (String) facesHandler.findComponent("files").getAttributes()
+				.get("tabs");
+		int nTabs = Integer.parseInt(temp);
+		for (int i = 0; i < nTabs; i++) {
+			if (e.getOldStep().contentEquals(tabs[i])) {
+				if (facesHandler.findComponent("files").getAttributes()
+						.containsKey(tabs[i])) {
+					temp = (String) facesHandler.findComponent("files")
+							.getAttributes().get(tabs[i]);
+					String archivos[] = temp.split(",");
+					Field variable;
+					for (int k = 0; k < archivos.length; k++) {
+						variable = this.getClass()
+								.getDeclaredField(archivos[k]);
+						List<UploadedFile> listTemp = new ArrayList<UploadedFile>();
+						if (variable.get(this) == null) {
+							util.setMessageToView(
+									"Tiene documentos pendientes por subir", 1);
+							return e.getOldStep();
+						} else {
+							listTemp = (List<UploadedFile>) variable.get(this);
+							if (listTemp.size() < 1) {
+								util.setMessageToView(
+										"Tiene documentos pendientes por subir",
+										1);
+								return e.getOldStep();
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return e.getNewStep();
+	}
+	
 
     public %{NameBean} getBean() {
         return bean;
@@ -42,8 +251,22 @@ public class %{NameController} {
 
     public void setBean(%{NameBean} bean) {
         this.bean = bean;
-    }       
+    }  
     
-    %{filesSettersAndGetters}
+    public List<BeanFile> getBeanFiles() {
+		return beanFiles;
+	}
+
+	public void setBeanFiles(List<BeanFile> beanFiles) {
+		this.beanFiles = beanFiles;
+	}
+
+	public UploadedFile getUploadfile() {
+		return uploadfile;
+	}
+
+	public void setUploadfile(UploadedFile uploadfile) {
+		this.uploadfile = uploadfile;
+	}     
 
 }
