@@ -233,6 +233,12 @@ public class GenerateView {
 
 		this.wf.writeFile(this.pathOutputFile + "/" + nameViewFile + "/" + nameViewFile + ".xhtml", this.snippetFile);
 	}
+	
+	public void writeFileAndCreateViewSuccess(String dirNameAndFormToInstitucion) {
+		String dirViewSuccess = this.pathOutputFile;
+		dirViewSuccess += LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
+		this.wf.writeFile(dirViewSuccess + "/Success.xhtml", this.origSnippetFile);
+	}
 
 	public void writeFileAndCreateDirToView(String nameViewFile, String tab) {
 
@@ -246,6 +252,7 @@ public class GenerateView {
 	public void createTabReference(String nameViewFile, String tab, String dirNameAndFormToInstitucion) {
 		String temp = "";
 		temp = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
+		this.snippetFile = this.origSnippetFile;
 		this.tabsReferences += "<ui:include src=\"" + temp + nameViewFile + "/tabs/" + tab + ".xhtml\"/>\n";
 	}
 
