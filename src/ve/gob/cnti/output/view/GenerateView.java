@@ -106,6 +106,7 @@ public class GenerateView {
 		// String name = field.getNameField();
 		String name = field.getVarName();
 		String type = field.getTypeField();
+		String toolTip=field.getDescription();
 
 		String fieldInput = "";
 
@@ -151,7 +152,7 @@ public class GenerateView {
 		} else if ("TEXTAREA".equalsIgnoreCase(type)) {
 
 			fieldInput += "<p:inputTextarea id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" rows=\"5\" cols=\"50\" counter=\"display\" ";
-			fieldInput += "maxlength=\"255\" counterTemplate=\"Restan {0} caracteres.\"" + this.required + " " + this.readOnly + "/>\n";
+			fieldInput += "maxlength=\"255\" counterTemplate=\"Restan {0} caracteres.\" " + this.required + " " + this.readOnly + "/>\n";
 			fieldInput += this.validator;
 			fieldInput += "<h:outputText id=\"display\"/>";
 
@@ -196,11 +197,17 @@ public class GenerateView {
 			if (name.matches("^_FILE_.*$")) {
 				if (!"".equals(this.readOnly)) {
 					fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
+					if(toolTip!=null&&!toolTip.equals("")){
+						fieldInput +="<p:tooltip id=\"toolTip"+ LibUtils.firstLetterUpper(name)+"\" for=\""+name+"\" value=\""+field.getDescription()+"\" />\n";
+					}
 				} else {
 					fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
 				}
 			} else {
 				fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
+				if(toolTip!=null&&!toolTip.equals("")){
+					fieldInput +="<p:tooltip id=\"toolTip"+ LibUtils.firstLetterUpper(name)+"\" for=\""+name+"\" value=\""+field.getDescription()+"\" />\n";
+				}
 			}
 		}
 		return fieldInput;
