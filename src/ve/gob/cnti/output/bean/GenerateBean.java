@@ -107,14 +107,15 @@ public class GenerateBean {
 
 	private String createImports(String imports) {
 		return "import " + imports + ";\n";
+		
 	}
 
 	private String createAttribute(String name, String type, String typeInput, boolean isReadOnly, List<String> options) {
 		if (isReadOnly) {
 			if (type.equals("List") && !name.matches("^_FILE_.*$")) {
-				return "private " + "String[]" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String>" + " option" + name + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
+				return "private " + "String[]" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
 			} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
-				return "private " + "String" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String>" + " option" + name + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
+				return "private " + "String" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
 			} else {
 				return "@FieldIsActuacion\nprivate " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
 			}
@@ -153,10 +154,10 @@ public class GenerateBean {
 		
 		if (type.equals("List") && !name.matches("^_FILE_.*$")) {
 			method="public void set" + LibUtils.firstLetterUpper(name) + "(" + "String[]" + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
-		    method+= "public void setOption" + LibUtils.firstLetterUpper(name) + "(" + "List<String>" + " option" + name + " ) {\n" + "\t this.option" + name + " = option" + name + ";\n" + "}\n";
+		    method+= "public void set" + LibUtils.firstLetterUpper(name) +"Option"+ "(" + "List<String> " + name + "Option" + " ) {\n" + "\t this." + name + "Option" + "= "+ name + "Option"+ ";\n" + "}\n";
 		} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
 			method="public void set" + LibUtils.firstLetterUpper(name) + "(" + "String" + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
-		    method+= "public void setOption" + LibUtils.firstLetterUpper(name) + "(" + "List<String>" + " option" + name + " ) {\n" + "\t this.option" + name + " = option" + name + ";\n" + "}\n";
+		    method+= "public void set" + LibUtils.firstLetterUpper(name)+"Option"+ "(" + "List<String> " + name + "Option" + " ) {\n" + "\t this." + name + "Option" + "= "+ name + "Option"+ ";\n" + "}\n";
 		} else {
 			method = "public void set" + LibUtils.firstLetterUpper(name) + "(" + LibUtils.changeToPrimitiveType(type) + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
 		}	
@@ -169,10 +170,10 @@ public class GenerateBean {
 		String method = null;
 		if (type.equals("List") && !name.matches("^_FILE_.*$")) {
 			method="public " + "String[]" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
-		    method+= "public " + "List<String>" + " getOption" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this.option" + name + ";\n" + "}\n";
+		    method+= "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) +"Option"+ "() {\n" + "\t return this." + name + "Option" + ";\n" + "}\n";
 		} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
 			method="public " + "String" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
-		    method+= "public " + "List<String>" + " getOption" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this.option" + name + ";\n" + "}\n";
+		    method+= "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) +"Option"+ "() {\n" + "\t return this." + name + "Option" + ";\n" + "}\n";
 		} else {
 			method = "public " + LibUtils.changeToPrimitiveType(type) + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
 		}	
