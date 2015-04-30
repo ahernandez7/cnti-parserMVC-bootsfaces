@@ -86,9 +86,9 @@ public class GenerateView {
 		}
 	}
 
-	public void createInputElement(Field field,String nPage) {
+	public void createInputElement(Field field, String nPage) {
 
-		String inputElement = translateField2View(field,nPage);
+		String inputElement = translateField2View(field, nPage);
 
 		this.inputElements += inputElement;
 	}
@@ -98,14 +98,14 @@ public class GenerateView {
 	}
 
 	// Traducción de los elmentos del xml a la vista JSF
-	private String translateField2View(Field field,String nPage) {
+	private String translateField2View(Field field, String nPage) {
 
 		// TODO: Completar el resto de tipos de datos del campo en el formulario
 		String label = field.getLabelField();
 		// String name = field.getNameField();
 		String name = field.getVarName();
 		String type = field.getTypeField();
-		String toolTip=field.getDescription();
+		String toolTip = field.getDescription();
 
 		String fieldInput = "";
 
@@ -119,19 +119,19 @@ public class GenerateView {
 		}
 
 		if ("TEXTBOX".equalsIgnoreCase(type)) {
-			
-			//TODO archivo simple
+
+			// TODO archivo simple
 			if (name.matches("^_FILE_.*$")) {
-				fieldInput +="<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
-				fieldInput +=" update=\"t"+nPage+"\" mode=\"advanced\" auto=\"true\"";
-				fieldInput +=" fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
-				fieldInput +="allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\""+label +"\" ";
-				fieldInput +=" sizeLimit=\"2097152\" multiple=\"false\" "+this.required +"";
-				fieldInput +=" invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
-				fieldInput +=" invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
-				fieldInput +=" requiredMessage=\"Este Documento es obligatorio.\">";
-				fieldInput +=" </p:fileUpload>";
-			}else{
+				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
+				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\"";
+				fieldInput += " fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
+				fieldInput += " sizeLimit=\"2097152\" multiple=\"false\" " + this.required + "";
+				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
+				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
+				fieldInput += " requiredMessage=\"Este Documento es obligatorio.\">";
+				fieldInput += " </p:fileUpload>";
+			} else {
 				fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
 				fieldInput += this.validator;
 				fieldInput += "</p:inputText>\n";
@@ -187,24 +187,24 @@ public class GenerateView {
 		} else if ("DURATION".equalsIgnoreCase(type)) {
 
 		} else if ("LISTBOX_MULTIPLE".equalsIgnoreCase(type)) {
-									
-			if (name.matches("^_FILE_.*$")) {
-				fieldInput +="<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
-				fieldInput +="update=\"t"+nPage+"\" mode=\"advanced\" auto=\"true\"";
-				fieldInput +="fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
-				fieldInput +="allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\""+label +"\" ";
-				fieldInput +="sizeLimit=\"2097152\" multiple=\"true\" "+this.required ;
-				fieldInput +="invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
-				fieldInput +="invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
-				fieldInput +="requiredMessage=\"Este Documento es obligatorio.\">";
-				fieldInput +="<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
-			}else{
 
-			fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
-			fieldInput += this.required + " " + this.readOnly + ">\n";
-			fieldInput += this.validator;
-			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
-			fieldInput += "</p:selectCheckboxMenu>\n";
+			if (name.matches("^_FILE_.*$")) {
+				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
+				fieldInput += "update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\"";
+				fieldInput += "fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput += "allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
+				fieldInput += "sizeLimit=\"2097152\" multiple=\"true\" " + this.required;
+				fieldInput += "invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
+				fieldInput += "invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
+				fieldInput += "requiredMessage=\"Este Documento es obligatorio.\">";
+				fieldInput += "<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
+			} else {
+
+				fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
+				fieldInput += this.required + " " + this.readOnly + ">\n";
+				fieldInput += this.validator;
+				fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
+				fieldInput += "</p:selectCheckboxMenu>\n";
 			}
 
 		} else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)) {
@@ -219,21 +219,14 @@ public class GenerateView {
 
 		// Contruye el mensaje
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
-			if (name.matches("^_FILE_.*$")) {
-				if (!"".equals(this.readOnly)) {
-					fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
-					if(toolTip!=null&&!toolTip.equals("")){
-						fieldInput +="<p:tooltip id=\"toolTip"+ LibUtils.firstLetterUpper(name)+"\" for=\""+name+"\" value=\""+field.getDescription()+"\" />\n";
-					}
-				} else {
-					fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
-				}
+			if (!"".equals(this.readOnly)) {
+				fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
+
 			} else {
 				fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
-				if(toolTip!=null&&!toolTip.equals("")){
-					fieldInput +="<p:tooltip id=\"toolTip"+ LibUtils.firstLetterUpper(name)+"\" for=\""+name+"\" value=\""+field.getDescription()+"\" />\n";
-				}
+				fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
 			}
+
 		}
 		return fieldInput;
 	}
@@ -283,7 +276,7 @@ public class GenerateView {
 
 		this.wf.writeFile(this.pathOutputFile + "/" + nameViewFile + "/" + nameViewFile + ".xhtml", this.snippetFile);
 	}
-	
+
 	public void writeFileAndCreateViewSuccess(String dirNameAndFormToInstitucion) {
 		String dirViewSuccess = this.pathOutputFile;
 		dirViewSuccess += LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
@@ -325,15 +318,33 @@ public class GenerateView {
 	}
 
 	public void insertFileTable(String tab, boolean containsFiles) {
-		String table = "";
+		String table = "",rendered="",delete="";
+		if(!tab.contentEquals("TabResumen")){
+			rendered="rendered=\"#{list.tab == 'tab"+tab+"'}\"";
+			delete = "<p:column>"
+					+ "<p:commandButton actionListener=\"#{FormTestController.removeFile(index,index2)}\""
+					+ "value=\"Suprimir\" update=\":form:t"+tab+"\">"
+					+ "</p:commandButton>"
+					+ "</p:column>";
+		}
 		if (containsFiles) {
-			table = "<p:dataTable id=\"table" + tab + "\" var=\"list\"	" + "value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileNames}\" " + "rowIndexVar=\"index\"> " + "<f:facet name=\"header\">Documentos anexos</f:facet>	"
-					+ "<p:column headerText=\"N°\"> <h:outputText value=\"#{index+1}\" /> </p:column> " + "<p:column headerText=\"Nombre del documento\"> " + "<h:outputText value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean())
-					+ "Controller.fileDocs.get(index).toString()}\" /> " + "</p:column> " + "<p:column headerText=\"Archivo\"> <h:outputText value=\"#{list}\" /> </p:column> " + "</p:dataTable>";
+			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	" + "value=\"#{" + this.nameApp 
+					+ "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" "
+					+ "rowIndexVar=\"index\"> " 
+						+ "<f:facet name=\"header\">Documentos anexos</f:facet>	"
+						+ "<p:column headerText=\"Nombre del documento\" "+rendered+">" 
+						+ "<h:outputText value=\"#{list.nombreOficial}\" />"
+						+ "</p:column>"
+						+ "<p:column headerText=\"Archivos\" "+rendered+"> "
+						+ "<p:dataTable var=\"archivos\" value=\"#{list.fileNames}\" rowIndexVar=\"index2\">" 
+							+ "<p:column><h:outputText value=\"#{archivos}\"></h:outputText></p:column>"
+							+ delete
+						+ "</p:dataTable>"
+						+ "</p:column>"	
+					+ "</p:dataTable>";
 		}
 		this.snippetFile = LibUtils.replacePattern("%\\{dataTable\\}", table, this.snippetFile);
 	}
-	
 
 	public void createOutputElement(Field field) {
 

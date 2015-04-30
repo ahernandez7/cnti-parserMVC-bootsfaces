@@ -97,12 +97,11 @@ public class GenerateFiles {
 				gv_tab.replaceNameTask(key);
 
 				List<Field> fields = new ArrayList<Field>();
-				boolean containsFiles = false;
 
 				if (i < pages.size()) {
 					Page page = pages.get(i);
 					fields = page.getListField();
-					gv_tab.replaceIdAndNameTab(page.getId(), page.getName());
+					gv_tab.replaceIdAndNameTab("tab" + (i + 1), page.getName());
 					gv_tab.setInputElements("");
 					gv_tab.setButton("");
 				} else {
@@ -114,8 +113,6 @@ public class GenerateFiles {
 
 					Field field = fields.get(j);
 					if (i < pages.size()) {
-						if (!containsFiles && field.getVarName().contains("_FILE"))
-							containsFiles = true;
 
 						gv_tab.setValidator("");
 
@@ -125,9 +122,16 @@ public class GenerateFiles {
 							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
 						}
 
-						gv_tab.insertMessageTag("Tab" + (i + 1), containsFiles);
+						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
-						gv_tab.insertFileTable("Tab" + (i + 1), containsFiles);
+						if (field.getVarName().contains("_FILE")){
+							gv_tab.insertMessageTag("Tab" + (i + 1), true);
+							gv_tab.insertFileTable(String.valueOf(i+1), true);
+						}else{
+							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
+							gv_tab.insertFileTable(String.valueOf(i+1), false);
+						}
+						
 
 						fieldsComplete.add(field);
 					} else {
@@ -149,32 +153,10 @@ public class GenerateFiles {
 			gv.replaceTabsReferences();
 			
 			gv.writeFileAndCreateDirToView(nameBean);
-//			gvSucess.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion())
 			
 			gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
 			
 			gc.writeFileConroller(nameBean);
-			
-
-			// TODO
-////			 Colocar esta lógica en la clase Generate controller
-//			 String files="";
-//			 String filesSettersAndGetters="";
-//			 String typeFile="";
-//			 for (int j = 0; j < fields.size(); j++) {
-//				 Field field = fields.get(j);
-//				 if(field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
-//					 typeFile= "UploadedFile";
-//					 files += "private "+typeFile+" "+field.getVarName()+";\n";
-//					 filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
-//				 }else if(!field.isActuation() && field.getVarName().matches("^_FILE_.*$")){
-//					 typeFile= "StreamedContent";
-//					 files += "private "+typeFile+" "+field.getVarName()+";\n";
-//					 filesSettersAndGetters += gb.createSetMethod(field.getVarName(), typeFile);
-//				 }
-//			 }
-			
-			
 			
 		}
 		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
