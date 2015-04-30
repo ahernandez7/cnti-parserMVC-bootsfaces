@@ -114,7 +114,7 @@ public class GenerateFiles {
 
 					Field field = fields.get(j);
 					if (i < pages.size()) {
-						if (!containsFiles && (field.getVarName().contains("_FILE") || field.getVarName().contains("_MFILE")))
+						if (!containsFiles && field.getVarName().contains("_FILE"))
 							containsFiles = true;
 
 						gv_tab.setValidator("");
@@ -126,12 +126,12 @@ public class GenerateFiles {
 						}
 
 						gv_tab.insertMessageTag("Tab" + (i + 1), containsFiles);
-						gv_tab.createInputElement(field);
+						gv_tab.createInputElement(field,String.valueOf(i+1));
 						gv_tab.insertFileTable("Tab" + (i + 1), containsFiles);
 
 						fieldsComplete.add(field);
 					} else {
-						if (!field.getVarName().contains("_FILE") && !field.getVarName().contains("_MFILE"))
+						if (!field.getVarName().contains("_FILE"))
 							gv_tab.createOutputElement(field);
 						
 						gc.insertFilesInController(fields);
@@ -139,13 +139,15 @@ public class GenerateFiles {
 					}	
 
 				}
-
 				gv_tab.writeFileAndCreateDirToView(nameBean, "tab" + (i + 1));
 				gv.createTabReference(nameBean, "tab" + (i + 1), getDirNameAndPathFormToInstitucion());
 			}
 			gb.replaceVaraiablesAndWriteFile(nameBean);
 			
+			gv.setNameBean(nameBean);
+			gv.replaceNameTask(key);
 			gv.replaceTabsReferences();
+			
 			gv.writeFileAndCreateDirToView(nameBean);
 //			gvSucess.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion())
 			

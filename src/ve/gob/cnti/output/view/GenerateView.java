@@ -86,20 +86,19 @@ public class GenerateView {
 		}
 	}
 
-	public void createInputElement(Field field) {
+	public void createInputElement(Field field,String nPage) {
 
-		String inputElement = translateField2View(field);
+		String inputElement = translateField2View(field,nPage);
 
 		this.inputElements += inputElement;
 	}
 
 	private void replaceInputsElements() {
-
 		this.snippetFile = LibUtils.replacePattern("%\\{inputsElements\\}", this.inputElements, this.snippetFile);
 	}
 
 	// Traducción de los elmentos del xml a la vista JSF
-	private String translateField2View(Field field) {
+	private String translateField2View(Field field,String nPage) {
 
 		// TODO: Completar el resto de tipos de datos del campo en el formulario
 		String label = field.getLabelField();
@@ -120,10 +119,23 @@ public class GenerateView {
 		}
 
 		if ("TEXTBOX".equalsIgnoreCase(type)) {
-
-			fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
-			fieldInput += this.validator;
-			fieldInput += "</p:inputText>\n";
+			
+			//TODO archivo simple
+			if (name.matches("^_FILE_.*$")) {
+				fieldInput +="<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
+				fieldInput +=" update=\"t"+nPage+"\" mode=\"advanced\" auto=\"true\"";
+				fieldInput +=" fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput +="allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\""+label +"\" ";
+				fieldInput +=" sizeLimit=\"2097152\" multiple=\"false\" "+this.required +"";
+				fieldInput +=" invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
+				fieldInput +=" invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
+				fieldInput +=" requiredMessage=\"Este Documento es obligatorio.\">";
+				fieldInput +=" </p:fileUpload>";
+			}else{
+				fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
+				fieldInput += this.validator;
+				fieldInput += "</p:inputText>\n";
+			}
 
 		} else if ("DATE".equalsIgnoreCase(type)) {
 
@@ -175,12 +187,25 @@ public class GenerateView {
 		} else if ("DURATION".equalsIgnoreCase(type)) {
 
 		} else if ("LISTBOX_MULTIPLE".equalsIgnoreCase(type)) {
+									
+			if (name.matches("^_FILE_.*$")) {
+				fieldInput +="<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
+				fieldInput +="update=\"t"+nPage+"\" mode=\"advanced\" auto=\"true\"";
+				fieldInput +="fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput +="allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\""+label +"\" ";
+				fieldInput +="sizeLimit=\"2097152\" multiple=\"true\" "+this.required ;
+				fieldInput +="invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
+				fieldInput +="invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
+				fieldInput +="requiredMessage=\"Este Documento es obligatorio.\">";
+				fieldInput +="<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
+			}else{
 
 			fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
 			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
 			fieldInput += "</p:selectCheckboxMenu>\n";
+			}
 
 		} else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)) {
 			fieldInput += "<p:selectOneRadio id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
@@ -308,6 +333,7 @@ public class GenerateView {
 		}
 		this.snippetFile = LibUtils.replacePattern("%\\{dataTable\\}", table, this.snippetFile);
 	}
+	
 
 	public void createOutputElement(Field field) {
 
