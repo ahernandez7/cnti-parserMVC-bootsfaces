@@ -359,6 +359,24 @@ public class GenerateView {
 			this.outputElements += outputElement;
 		}
 	}
+	
+	public void insertInputHidden(int nTabsWithFiles,String tabsNames){
+		//TODO
+		
+		String filesInTabs = "";
+		if(nTabsWithFiles>0){
+			filesInTabs += "<h:inputHidden id=\"files\"> ";
+			filesInTabs += "<f:attribute name=\"tabs\" value=\""+nTabsWithFiles+"\" /> ";
+			filesInTabs += "<f:attribute name=\"tabsNames\" value=\""+tabsNames+"\" /> ";
+			String archivos[] = tabsNames.split(",");
+			for (int i = 0; i < archivos.length; i++) {
+				filesInTabs += "<f:attribute name=\""+archivos[i]+"\" value=\"f"+archivos[i].substring(3)+"\" /> ";
+			}
+			filesInTabs += "</h:inputHidden>";
+		}
+		
+		this.snippetFile = LibUtils.replacePattern("%\\{filesInTabs\\}", filesInTabs, this.snippetFile);
+	}
 
 	private void replaceOutputsElements() {
 

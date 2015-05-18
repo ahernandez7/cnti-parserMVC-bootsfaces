@@ -72,6 +72,10 @@ public class GenerateFiles {
 			gv.setTabsReferences("");
 
 			List<Field> fieldsComplete = new ArrayList<Field>();
+			
+			String tabsNames = "";
+			int nTabsWithFiles = 0;
+			
 			for (int i = 0; i <= pages.size(); i++) {
 				
 				gb.replaceNameBeanAndNameClassBean(nameBean);
@@ -98,6 +102,8 @@ public class GenerateFiles {
 
 				List<Field> fields = new ArrayList<Field>();
 
+				
+				
 				if (i < pages.size()) {
 					Page page = pages.get(i);
 					fields = page.getListField();
@@ -108,9 +114,11 @@ public class GenerateFiles {
 					fields = fieldsComplete;
 					gv_tab.insertFileTable("TabResumen", true);
 				}
+				
+				boolean containFiles = false;
 
 				for (int j = 0; j < fields.size(); j++) {
-
+					
 					Field field = fields.get(j);
 					if (i < pages.size()) {
 
@@ -124,9 +132,17 @@ public class GenerateFiles {
 
 						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
-						if (field.getVarName().contains("_FILE")){
+						if (field.getVarName().contains("_FILE") && !containFiles){
+							
 							gv_tab.insertMessageTag("Tab" + (i + 1), true);
 							gv_tab.insertFileTable(String.valueOf(i+1), true);
+							
+							nTabsWithFiles ++;
+							if(tabsNames.length()==0)
+								tabsNames = "tab" + (i + 1);
+							else
+								tabsNames += ",tab" + (i + 1);
+							containFiles=true;
 						}else{
 							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
 							gv_tab.insertFileTable(String.valueOf(i+1), false);
@@ -140,6 +156,9 @@ public class GenerateFiles {
 						
 						gc.insertFilesInController(fields);
 						gb.createImpAttAndMethos(field);
+						
+						//TODO Crear Consulta de Caso
+						
 					}	
 
 				}
@@ -151,6 +170,7 @@ public class GenerateFiles {
 			gv.setNameBean(nameBean);
 			gv.replaceNameTask(key);
 			gv.replaceTabsReferences();
+			gv.insertInputHidden(nTabsWithFiles, tabsNames);
 			
 			gv.writeFileAndCreateDirToView(nameBean);
 			
@@ -161,6 +181,42 @@ public class GenerateFiles {
 		}
 		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
 
+	}
+	
+	public void generateCaseConsult(List<Field> fieldsComplete){
+		
+		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
+		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
+		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
+		
+		gb.createPackageDirsBean(getPackageNameBean());
+		gc.createPackageDirsController(getPackageNameController());
+		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
+		
+		String nameBean = "CaseConsult";
+
+		gv.setNameBean(nameBean);
+		gv.replaceNameTask(nameBean);
+
+		gv.setInputElements("");
+		gv.setButton("");
+		gv.setTabsReferences("");
+		
+		gb.replaceNameBeanAndNameClassBean(nameBean);
+		gb.replacePackagesNameBean(getPackageNameBean());
+		
+		gb.setImports("");
+		gb.setAttributes("");
+		gb.setSetAndGetMethods("");
+		
+		gc.replaceNameBeanAndNameClassBeanController(nameBean);
+		gc.replacePackagesNameBeanController(getPackageNameBean());
+		gc.replacePackagesNameController(getPackageNameController());
+		
+		for(Field field: fieldsComplete){
+			
+		}
+		
 	}
 
 	public String getPathSnippetBean() {
