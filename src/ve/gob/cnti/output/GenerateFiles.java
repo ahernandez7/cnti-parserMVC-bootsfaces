@@ -29,6 +29,7 @@ public class GenerateFiles {
 	private String packageNameBean = null;
 	private String packageNameController = null;
 	private String dirNameAndPathFormToInstitucion = null;
+	private String institucion;
 
 	private String controllerButtonNameSubmit = null;
 	private String controllerButtonIdSubmit = null;
@@ -188,6 +189,8 @@ public class GenerateFiles {
 			
 			gv.writeFileAndCreateDirToView(nameBean);
 			
+			gc.replaceInstitucion(institucion);
+			
 			gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
 			
 			gc.writeFileConroller(nameBean);
@@ -255,6 +258,8 @@ public class GenerateFiles {
 		gv.replaceNameTask(nameBean);
 		
 		gv.writeFileAndCreateDirToView(nameBean);
+		
+		gc.replaceInstitucion(institucion);
 		
 		gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
 		
@@ -380,6 +385,14 @@ public class GenerateFiles {
 
 	public void setSnippetFileViewCaseConsult(String snippetFileViewCaseConsult) {
 		this.snippetFileViewCaseConsult = snippetFileViewCaseConsult;
+	}
+
+	public String getInstitucion() {
+		return institucion;
+	}
+
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
 	}
 
 }

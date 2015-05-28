@@ -51,11 +51,18 @@ public class %{NameController} {
 
     private %{NameBean} bean = new %{NameBean}();
 
-    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{     
+    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{   
+    
+    	// variable del caso
+    	String idCase = facesHandler.getParam("idCase");
+    	
+    	// Alfreco Path Folder
+    	String alfrescoPath = "%{institucion}/%{processName}/"
+    					+ idCase;
+    	
+    	this.uploadFilesToAlfresco(alfrescoPath);  
         
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
-        
-        
         
         return "%{DirViewSuccess}";
     }

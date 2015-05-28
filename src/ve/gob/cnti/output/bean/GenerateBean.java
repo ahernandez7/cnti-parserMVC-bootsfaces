@@ -61,6 +61,7 @@ public class GenerateBean {
 	}
 
 	public void replacePackagesNameBean(String packagesName) {
+		packagesName = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, packagesName);
 		this.snippetFile = LibUtils.replacePattern("%\\{packages\\}", packagesName, this.snippetFile);
 	}
 
@@ -92,7 +93,7 @@ public class GenerateBean {
 		this.snippetFile = LibUtils.replacePattern("%\\{values\\}", this.values, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{setAndGetMethods\\}", this.setAndGetMethods, snippetFile);
 
-		this.wf.writeFile(this.pathOutputFile + "/" + nameBean + ".java", this.snippetFile);
+		this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameBean) + ".java", this.snippetFile);
 	}
 
 	// Convierte el nombre del paquetre definido en el configuracion.properties en una ruta de directorio valida
@@ -100,6 +101,7 @@ public class GenerateBean {
 	 * Ejemplo: entrada ve.gob.vicepresidencia.jubilacionespecial.model salida /ve/gob/vicepresidencia/jubilacionespecial/model
 	 */
 	public boolean createPackageDirsBean(String packages) {
+		packages = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, packages);
 		String pathPackage = LibUtils.convertPackage2Dirs(packages);
 		this.pathOutputFile += pathPackage;
 		return LibUtils.createDirs(pathOutputFile);

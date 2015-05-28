@@ -43,12 +43,17 @@ public class GenerateController {
 		this.snippetFile = LibUtils.replacePattern("%\\{DirViewSuccess\\}", dir, this.snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, this.snippetFile);
 	}
+	
+	public void replaceInstitucion(String ins){
+		this.snippetFile = LibUtils.replacePattern("%\\{institucion\\}", ins, this.snippetFile);
+	}
 
 	// Convierte el nombre del paquete definido en el configuracion.properties en una ruta de directorio valida
 	/*
 	 * Ejemplo: entrada ve.gob.vicepresidencia.jubilacionespecial.controller salida /ve/gob/vicepresidencia/jubilacionespecial/controller
 	 */
 	public boolean createPackageDirsController(String packages) {
+		packages = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, packages);
 		String pathPackage = LibUtils.convertPackage2Dirs(packages);
 		this.pathOutputFile += pathPackage;
 		return LibUtils.createDirs(pathOutputFile);
@@ -68,7 +73,7 @@ public class GenerateController {
 
 	public void writeFileConroller(String nameController) {
 
-		this.wf.writeFile(this.pathOutputFile + "/" + nameController + "Controller.java", this.snippetFile);
+		this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameController) + "Controller.java", this.snippetFile);
 	}
 
 	private void replaceFilesAttributes(String files) {
