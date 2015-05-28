@@ -131,7 +131,7 @@ public class GenerateView {
 				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
 				fieldInput += " sizeLimit=\"2097152\" multiple=\"false\" " + this.required + " ";
 				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\" ";
-				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\" ";
+				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\"> ";
 				fieldInput += " </p:fileUpload>";
 			} else {
 				fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
