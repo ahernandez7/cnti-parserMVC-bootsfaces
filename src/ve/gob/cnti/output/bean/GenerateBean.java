@@ -113,9 +113,9 @@ public class GenerateBean {
 	private String createAttribute(String name, String type, String typeInput, boolean isReadOnly, List<String> options) {
 		if (isReadOnly) {
 			if (type.equals("List") && !name.matches("^_FILE_.*$")) {
-				return "private " + "String[]" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
+				return "@FieldIsActuacion\nprivate " + "List<String>" + " " + name + ";\n" + "private " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
 			} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
-				return "private " + "String" + " " + name + ";\n" + "@FieldIsActuacion\nprivate " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
+				return "@FieldIsActuacion\nprivate " + "String" + " " + name + ";\n" + "private " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
 			} else {
 				return "@FieldIsActuacion\nprivate " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";
 			}
@@ -153,7 +153,7 @@ public class GenerateBean {
 		String method =null;
 		
 		if (type.equals("List") && !name.matches("^_FILE_.*$")) {
-			method="public void set" + LibUtils.firstLetterUpper(name) + "(" + "String[]" + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
+			method="public void set" + LibUtils.firstLetterUpper(name) + "(" + "List<String>" + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
 		    method+= "public void set" + LibUtils.firstLetterUpper(name) +"Option"+ "(" + "List<String> " + name + "Option" + " ) {\n" + "\t this." + name + "Option" + "= "+ name + "Option"+ ";\n" + "}\n";
 		} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
 			method="public void set" + LibUtils.firstLetterUpper(name) + "(" + "String" + " " + name + " ) {\n" + "\t this." + name + " = " + name + ";\n" + "}\n";
@@ -169,7 +169,7 @@ public class GenerateBean {
 
 		String method = null;
 		if (type.equals("List") && !name.matches("^_FILE_.*$")) {
-			method="public " + "String[]" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
+			method="public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
 		    method+= "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) +"Option"+ "() {\n" + "\t return this." + name + "Option" + ";\n" + "}\n";
 		} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP")) {
 			method="public " + "String" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";

@@ -1,6 +1,7 @@
 package ve.gob.cnti.output;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public class GenerateFiles {
 	private String pathSnippetViewTab = null;
 	private String pathSnippetViewTabSummay = null;
 	private String pathSnippetViewSuccess = null;
+	private String snippetFileViewCaseConsult = null;
 	private String pathOutputFileView = null;
 	private String packageNameBean = null;
 	private String packageNameController = null;
@@ -54,7 +56,6 @@ public class GenerateFiles {
 		gc.createPackageDirsController(getPackageNameController());
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		
-
 		for (String key : this.mapForms.keySet()) {
 
 			// Tareas
@@ -73,9 +74,9 @@ public class GenerateFiles {
 
 			List<Field> fieldsComplete = new ArrayList<Field>();
 			
-			String tabsNames = "";
+			String fileVars = "";
 			int nTabsWithFiles = 0;
-			
+			Map<String,String> archivosObligatorios = new HashMap<String, String>();
 			for (int i = 0; i <= pages.size(); i++) {
 				
 				gb.replaceNameBeanAndNameClassBean(nameBean);
@@ -116,6 +117,7 @@ public class GenerateFiles {
 				}
 				
 				boolean containFiles = false;
+				
 
 				for (int j = 0; j < fields.size(); j++) {
 					
@@ -138,14 +140,21 @@ public class GenerateFiles {
 							gv_tab.insertFileTable(String.valueOf(i+1), true);
 							
 							nTabsWithFiles ++;
-							if(tabsNames.length()==0)
-								tabsNames = "tab" + (i + 1);
-							else
-								tabsNames += ",tab" + (i + 1);
 							containFiles=true;
 						}else{
 							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
 							gv_tab.insertFileTable(String.valueOf(i+1), false);
+						}
+						if(field.getVarName().contains("_FILE")){
+							List<Validator> validadores = field.getListValidators();
+							for(Validator v : validadores){
+								if("mandatory".contentEquals(v.getNameValidator())){
+									if(fileVars.length()==0)
+										fileVars=field.getVarName();
+									else
+										fileVars+=","+field.getVarName();
+								}
+							}
 						}
 						
 
@@ -157,11 +166,16 @@ public class GenerateFiles {
 						gc.insertFilesInController(fields);
 						gb.createImpAttAndMethos(field);
 						
-						//TODO Crear Consulta de Caso
-						
 					}	
+					
 
 				}
+				if(fileVars.length()>0){
+					System.out.println(fileVars);
+					archivosObligatorios.put("tab" + (i + 1), fileVars);
+					fileVars="";
+				}
+				
 				gv_tab.writeFileAndCreateDirToView(nameBean, "tab" + (i + 1));
 				gv.createTabReference(nameBean, "tab" + (i + 1), getDirNameAndPathFormToInstitucion());
 			}
@@ -170,13 +184,22 @@ public class GenerateFiles {
 			gv.setNameBean(nameBean);
 			gv.replaceNameTask(key);
 			gv.replaceTabsReferences();
-			gv.insertInputHidden(nTabsWithFiles, tabsNames);
+			gv.insertInputHidden(nTabsWithFiles, archivosObligatorios);
 			
 			gv.writeFileAndCreateDirToView(nameBean);
 			
 			gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
 			
 			gc.writeFileConroller(nameBean);
+			
+			//TODO Insertar creación de consulta de caso si la tarea es carga de datos
+			if(nameBean.contentEquals("carga")){
+				generateCaseConsult(fieldsComplete);
+			}else if("revision".contentEquals(nameBean)){//TODO Insertar Consulta de Caso
+				//TODO
+			}else if("notificacion".contentEquals(nameBean)){
+				
+			}
 			
 		}
 		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
@@ -187,13 +210,13 @@ public class GenerateFiles {
 		
 		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
 		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
-		GenerateView gv = new GenerateView(getPathSnippetView(), getPathOutputFileView(), this.nameApp);
+		GenerateView gv = new GenerateView(getSnippetFileViewCaseConsult(), getPathOutputFileView(), this.nameApp);
 		
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		
-		String nameBean = "CaseConsult";
+		String nameBean = "consultaDeCaso";
 
 		gv.setNameBean(nameBean);
 		gv.replaceNameTask(nameBean);
@@ -214,8 +237,28 @@ public class GenerateFiles {
 		gc.replacePackagesNameController(getPackageNameController());
 		
 		for(Field field: fieldsComplete){
-			
+			if (!field.getVarName().contains("_FILE"))
+				gv.createOutputElement(field);	
+			else{
+				gv.createDocumentElement(field);
+			}
+			gb.createImpAttAndMethos(field);
 		}
+		//TODO Revisar si estos métodos van aqui
+		gc.insertFilesInController(fieldsComplete);
+		gv.insertFileTable("TabResumen", true);
+		
+		gb.replaceVaraiablesAndWriteFile(nameBean);
+		
+		
+		gv.setNameBean(nameBean);
+		gv.replaceNameTask(nameBean);
+		
+		gv.writeFileAndCreateDirToView(nameBean);
+		
+		gc.replaceDirViewSuccess(getDirNameAndPathFormToInstitucion());
+		
+		gc.writeFileConroller(nameBean);
 		
 	}
 
@@ -329,6 +372,14 @@ public class GenerateFiles {
 
 	public void setPathSnippetViewSuccess(String pathSnippetViewSuccess) {
 		this.pathSnippetViewSuccess = pathSnippetViewSuccess;
+	}
+
+	public String getSnippetFileViewCaseConsult() {
+		return snippetFileViewCaseConsult;
+	}
+
+	public void setSnippetFileViewCaseConsult(String snippetFileViewCaseConsult) {
+		this.snippetFileViewCaseConsult = snippetFileViewCaseConsult;
 	}
 
 }

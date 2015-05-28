@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<h:head></h:head>
+	<h:body>
+	#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
+     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId))}
+		<h:form>
+		
+		<p:tooltip />
+
+			<p:panel header="Expediente Nro: #{TaskController.task.caseId}">
+			</p:panel>
+
+			<p:panel header="Datos Básicos">
+
+				<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
+
+					%{outputsElements}
+
+				</h:panelGrid>
+				
+			</p:panel>
+
+			<p:panel header="Documentos Anexos">
+
+				<p:panelGrid>				
+					
+					%{documentElements}
+						
+				</p:panelGrid>
+
+			</p:panel>
+
+		</h:form>
+
+	</h:body>
+</f:view>

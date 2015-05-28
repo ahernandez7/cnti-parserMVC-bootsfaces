@@ -1,5 +1,7 @@
 package ve.gob.cnti.output.view;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ve.gob.cnti.helper.form.Field;
@@ -23,6 +25,7 @@ public class GenerateView {
 	private String button = "";
 	private String tabsReferences = "";
 	private String outputElements = "";
+	private String documentElements = "";
 
 	private Map<String, String> controllersNameSubmitMap = null;
 	private Map<String, String> controllersIdSubmitMap = null;
@@ -120,16 +123,15 @@ public class GenerateView {
 
 		if ("TEXTBOX".equalsIgnoreCase(type)) {
 
-			// TODO archivo simple
+			// TODO Arreglar error de parseo
 			if (name.matches("^_FILE_.*$")) {
-				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
-				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\"";
-				fieldInput += " fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\" ";
+				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\" ";
+				fieldInput += " fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\" ";
 				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
-				fieldInput += " sizeLimit=\"2097152\" multiple=\"false\" " + this.required + "";
-				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
-				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\"";
-				fieldInput += " requiredMessage=\"Este Documento es obligatorio.\">";
+				fieldInput += " sizeLimit=\"2097152\" multiple=\"false\" " + this.required + " ";
+				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\" ";
+				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\" ";
 				fieldInput += " </p:fileUpload>";
 			} else {
 				fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
@@ -270,7 +272,7 @@ public class GenerateView {
 	public void writeFileAndCreateDirToView(String nameViewFile) {
 
 		LibUtils.createDirs(this.pathOutputFile + "/" + nameViewFile + "/");
-
+		replaceOutputsElements();
 		replaceInputsElements();
 		replacebutton();
 
@@ -296,7 +298,7 @@ public class GenerateView {
 		String temp = "";
 		temp = LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
 		this.snippetFile = this.origSnippetFile;
-		this.tabsReferences += "<ui:include src=\"" + temp + nameViewFile + "/tabs/" + tab + ".xhtml\"/>\n";
+		this.tabsReferences += "<ui:include src=\"/views/" + temp + nameViewFile + "/tabs/" + tab + ".xhtml\"/>\n";
 	}
 
 	public void replaceTabsReferences() {
@@ -318,30 +320,15 @@ public class GenerateView {
 	}
 
 	public void insertFileTable(String tab, boolean containsFiles) {
-		String table = "",rendered="",delete="";
-		if(!tab.contentEquals("TabResumen")){
-			rendered="rendered=\"#{list.tab == 'tab"+tab+"'}\"";
-			delete = "<p:column>"
-					+ "<p:commandButton actionListener=\"#{FormTestController.removeFile(index,index2)}\""
-					+ "value=\"Suprimir\" update=\":form:t"+tab+"\">"
-					+ "</p:commandButton>"
-					+ "</p:column>";
+		String table = "", rendered = "", delete = "";
+		if (!tab.contentEquals("TabResumen")) {
+			rendered = "rendered=\"#{list.tab == 'tab" + tab + "'}\"";
+			delete = "<p:column>" + "<p:commandButton actionListener=\"#{FormTestController.removeFile(index,index2)}\"" + " value=\"Suprimir\" update=\":form:t" + tab + "\">" + "</p:commandButton>" + "</p:column>";
 		}
 		if (containsFiles) {
-			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	" + "value=\"#{" + this.nameApp 
-					+ "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" "
-					+ "rowIndexVar=\"index\"> " 
-						+ "<f:facet name=\"header\">Documentos anexos</f:facet>	"
-						+ "<p:column headerText=\"Nombre del documento\" "+rendered+">" 
-						+ "<h:outputText value=\"#{list.nombreOficial}\" />"
-						+ "</p:column>"
-						+ "<p:column headerText=\"Archivos\" "+rendered+"> "
-						+ "<p:dataTable var=\"archivos\" value=\"#{list.fileNames}\" rowIndexVar=\"index2\">" 
-							+ "<p:column><h:outputText value=\"#{archivos}\"></h:outputText></p:column>"
-							+ delete
-						+ "</p:dataTable>"
-						+ "</p:column>"	
-					+ "</p:dataTable>";
+			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	" + "value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" " + "rowIndexVar=\"index\"> " + "<f:facet name=\"header\">Documentos anexos</f:facet>	"
+					+ "<p:column headerText=\"Nombre del documento\" " + rendered + ">" + "<h:outputText value=\"#{list.nombreOficial}\" />" + "</p:column>" + "<p:column headerText=\"Archivos\" " + rendered + "> " + "<p:dataTable var=\"archivos\" value=\"#{list.fileNames}\" rowIndexVar=\"index2\">"
+					+ "<p:column><h:outputText value=\"#{archivos}\"></h:outputText></p:column>" + delete + "</p:dataTable>" + "</p:column>" + "</p:dataTable>";
 		}
 		this.snippetFile = LibUtils.replacePattern("%\\{dataTable\\}", table, this.snippetFile);
 	}
@@ -351,36 +338,99 @@ public class GenerateView {
 		String label = field.getLabelField();
 		String name = field.getVarName();
 		String type = field.getTypeField();
-
+	
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
 
-			String outputElement = "<p:outputLabel for=\"" + name + "\" value=\"" + label + "\"/>\n";
-			outputElement += "<p:outputLabel id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"/>\n";
+			String outputElement = "<p:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
+			outputElement += "<p:outputLabel id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"/>\n";
 			this.outputElements += outputElement;
 		}
 	}
-	
-	public void insertInputHidden(int nTabsWithFiles,String tabsNames){
-		//TODO
+
+	public void createDocumentElement(Field field) {
+
+		String label = field.getLabelField();
+		String name = field.getVarName();
+		String controller = this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller";
+		String renderedvalueBean = "#{" +controller+".bean." + name + "!=null}";
+		String valueBean = "#{" +controller+".bean." + name + "}";
+		String outputElement = "";
 		
+		outputElement += "<p:row rendered=\""+renderedvalueBean+"\">\n";
+		outputElement += "<p:column rendered=\""+renderedvalueBean+"\"><h:outputText value=\""+label+"\" /></p:column>\n";
+		
+		outputElement += "<p:column rendered=\""+renderedvalueBean+"\">\n";
+		if("java.util.List".contentEquals(field.getReturnType())){// eres siomple
+			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\""+valueBean+"\">\n";
+			outputElement += "<p:column>\n";		
+			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"" + name + ".show();\" rendered=\""+renderedvalueBean+"\"></p:commandButton>\n";
+			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "\" widgetVar=\"" + name + "\" resizable=\"false\" \n";
+			outputElement += "rendered=\""+renderedvalueBean+"\"> \n";
+			outputElement += "<p:media width=\"900px\" height=\"500px\" player=\"pdf\" \n";
+			outputElement += "value=\"#{"+controller+".get_FILE()}\">\n";		
+			outputElement += "<f:param name=\"id\" value=\"#{archivos}\" />\n";
+			outputElement += "<p:outputPanel layout=\"block\"><h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder \n";
+			outputElement += "examinar el documento, debe actualizar su navegador a una versión que pemita visualizar \n";
+			outputElement += "archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.\n";
+			outputElement += "archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.\n";
+			outputElement += "<p:commandButton value=\"Bajar Archivo\" ajax=\"false\" icon=\"ui-icon-arrowthick-1-s\">";
+			outputElement += "<p:fileDownload value=\"#{"+controller+".getDownloadFile()}\" />";
+			outputElement += "<f:param name=\"id\" value=\"#{archivos}\" />\n";
+			outputElement += "</p:commandButton>\n</h:form>\n</p:outputPanel>\n</p:media>\n</p:dialog>\n";
+			outputElement += "</p:column>\n";		
+			outputElement += "</p:dataTable>\n";
+			
+		}else{
+			outputElement += "<p:commandButton value=\"Visor PDF.\" onclick=\"" + name + ".show();\" rendered=\""+renderedvalueBean+"\"></p:commandButton>\n";
+			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "\" widgetVar=\"" + name + "\" resizable=\"false\" \n";
+			outputElement += "rendered=\""+renderedvalueBean+"\"> \n";
+			outputElement += "<p:media width=\"900px\" height=\"500px\" player=\"pdf\" \n";
+			outputElement += "value=\"#{"+controller+".get_FILE()}\">\n";		
+			outputElement += "<f:param name=\"id\" value=\""+valueBean+"\" />\n";
+			outputElement += "<p:outputPanel layout=\"block\"><h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder \n";
+			outputElement += "examinar el documento, debe actualizar su navegador a una versión que pemita visualizar \n";
+			outputElement += "archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.\n";
+			outputElement += "archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.\n";
+			outputElement += "<p:commandButton value=\"Bajar Archivo\" ajax=\"false\" icon=\"ui-icon-arrowthick-1-s\">";
+			outputElement += "<p:fileDownload value=\"#{"+controller+".getDownloadFile()}\" />";
+			outputElement += "<f:param name=\"id\" value=\""+valueBean+"\" />\n";
+			outputElement += "</p:commandButton>\n</h:form>\n</p:outputPanel>\n</p:media>\n</p:dialog>\n";
+		}
+		outputElement += "</p:column>\n";
+				
+		outputElement += "</p:row>\n";
+		this.documentElements += outputElement;
+
+	}
+
+	public void insertInputHidden(int nTabsWithFiles, Map<String,String> archivosObligatorios) {
+
 		String filesInTabs = "";
-		if(nTabsWithFiles>0){
+		if (nTabsWithFiles > 0) {
 			filesInTabs += "<h:inputHidden id=\"files\"> ";
-			filesInTabs += "<f:attribute name=\"tabs\" value=\""+nTabsWithFiles+"\" /> ";
-			filesInTabs += "<f:attribute name=\"tabsNames\" value=\""+tabsNames+"\" /> ";
-			String archivos[] = tabsNames.split(",");
-			for (int i = 0; i < archivos.length; i++) {
-				filesInTabs += "<f:attribute name=\""+archivos[i]+"\" value=\"f"+archivos[i].substring(3)+"\" /> ";
+			filesInTabs += "<f:attribute name=\"tabs\" value=\"" + nTabsWithFiles + "\" /> ";
+			String tabsNames = "";
+			Iterator<String> ite = archivosObligatorios.keySet().iterator();
+			while (ite.hasNext()) {
+				String tab = ite.next();
+				filesInTabs += "<f:attribute name=\"" + tab + "\" value=\"" + archivosObligatorios.get(tab) + "\" /> ";
+				if(tab.length()==0)
+					tabsNames = tab;
+				else
+					tabsNames += tab;
 			}
+			filesInTabs += "<f:attribute name=\"tabsNames\" value=\"" + tabsNames + "\" /> ";
+			
 			filesInTabs += "</h:inputHidden>";
 		}
-		
+
 		this.snippetFile = LibUtils.replacePattern("%\\{filesInTabs\\}", filesInTabs, this.snippetFile);
 	}
 
 	private void replaceOutputsElements() {
-
+		
 		this.snippetFile = LibUtils.replacePattern("%\\{outputsElements\\}", this.outputElements, this.snippetFile);
+		this.snippetFile = LibUtils.replacePattern("%\\{documentElements\\}", this.documentElements, this.snippetFile);
 	}
 
 	public Map<String, String> getControllersNameSubmitMap() {

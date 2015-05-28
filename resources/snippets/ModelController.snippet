@@ -244,6 +244,19 @@ public class %{NameController} {
 		return e.getNewStep();
 	}
 	
+	public StreamedContent get_FILE() {
+		System.out.println(facesHandler.getParam("id"));		
+		return util.getStreamPdfFile(facesHandler.getParam("id"));
+	}
+
+	public StreamedContent getDownloadFile() throws Exception {
+		try {
+			return util.getDownloadFile(facesHandler.getParam("id"));
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
 
     public %{NameBean} getBean() {
         return bean;
