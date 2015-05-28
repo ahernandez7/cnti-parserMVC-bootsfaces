@@ -140,7 +140,7 @@ public class GenerateFiles {
 							gv_tab.insertMessageTag("Tab" + (i + 1), true);
 							gv_tab.insertFileTable(String.valueOf(i+1), true);
 							
-							nTabsWithFiles ++;
+							
 							containFiles=true;
 						}else{
 							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
@@ -173,6 +173,7 @@ public class GenerateFiles {
 				}
 				if(fileVars.length()>0){
 					System.out.println(fileVars);
+					nTabsWithFiles ++;
 					archivosObligatorios.put("tab" + (i + 1), fileVars);
 					fileVars="";
 				}
