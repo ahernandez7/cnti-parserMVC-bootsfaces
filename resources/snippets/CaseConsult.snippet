@@ -8,36 +8,10 @@
 
 	<h:head></h:head>
 	<h:body>
-	#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
-     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId))}
-		<h:form>
-		
-		<p:tooltip />
-
-			<p:panel header="Expediente Nro: #{TaskController.task.caseId}">
-			</p:panel>
-
-			<p:panel header="Datos Básicos">
-
-				<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
-
-					%{outputsElements}
-
-				</h:panelGrid>
-				
-			</p:panel>
-
-			<p:panel header="Documentos Anexos">
-
-				<p:panelGrid>				
-					
-					%{documentElements}
-						
-				</p:panelGrid>
-
-			</p:panel>
-
-		</h:form>
+	
+	
+	
+	%{tabsElements}
 
 	</h:body>
 </f:view>

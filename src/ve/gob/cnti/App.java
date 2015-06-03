@@ -31,6 +31,7 @@ public class App {
 	private String snippetFileViewTabSummary = null;
 	private String snippetFileViewSuccess = null;
 	private String snippetFileViewCaseConsult = null;
+	private String snippetFileViewCaseConsultTab = null;
 	private String pathViewOutputFile = null;
 	private String dirNameInstitucion = null;
 	private String pathDirFormView = null;
@@ -71,6 +72,7 @@ public class App {
 		this.snippetFileViewTabSummary = ROOT_SNIPPET+"TabSummary.snippet";
 		this.snippetFileViewSuccess = ROOT_SNIPPET+"ViewSuccess.snippet";
 		this.snippetFileViewCaseConsult = ROOT_SNIPPET+"CaseConsult.snippet";
+		this.snippetFileViewCaseConsultTab = ROOT_SNIPPET+"tabCaseConsult.snippet";
 		this.pathViewOutputFile = ROOT_VIEW;
 		this.dirNameInstitucion = DIR_INSTITUCION;
 		this.pathDirFormView = PATH_DIR_FORM_VIEW;
@@ -108,6 +110,7 @@ public class App {
 		gf.setPathSnippetViewTabSummay(this.snippetFileViewTabSummary);
 		gf.setPathSnippetViewSuccess(this.snippetFileViewSuccess);
 		gf.setSnippetFileViewCaseConsult(this.snippetFileViewCaseConsult);
+		gf.setSnippetFileViewCaseConsultTab(this.snippetFileViewCaseConsultTab);
 		gf.setPathOutputFileView(this.pathViewOutputFile);
 		gf.setDirNameAndPathFormToInstitucion(this.dirNameInstitucion+this.pathDirFormView);
 		gf.setInstitucion(this.dirNameInstitucion);
