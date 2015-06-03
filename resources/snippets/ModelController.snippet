@@ -51,8 +51,7 @@ public class %{NameController} {
 
     private %{NameBean} bean = new %{NameBean}();
 
-    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException{   
-    
+    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, SecurityException{
     	// variable del caso
     	String idCase = facesHandler.getParam("idCase");
     	
@@ -99,7 +98,6 @@ public class %{NameController} {
 		while (it.hasNext()) {
 			BeanFile beanF = it.next();
 
-			// TODO Obetener la lista de archivos con reflections
 			Field variable = this.getClass().getDeclaredField(
 					beanF.getVarName());
 
@@ -119,10 +117,10 @@ public class %{NameController} {
 					archVar.set(
 							bean,
 							iCmis.uploadDocument(arch, pathFolder,
-									beanF.getNombreOficial()));
+									beanF.getVarName()));
 				} else{
 					stringTemps.add(iCmis.uploadDocument(arch, pathFolder,
-							beanF.getNombreOficial() + "_" + i));					
+							beanF.getVarName() + "_" + i));					
 				}
 				i++;
 			}
@@ -145,9 +143,8 @@ public class %{NameController} {
 		fileBean = fileServices.obtenerBeanFile(archivosProcesados,
 				uploadComponent, beanFiles);
 
-		if (fileServices.archivoValido(fileBean, e.getFile())) {
+		if (fileServices.archivoValido(fileBean, e.getFile(),beanFiles)) {
 
-			// TODO Obetener la lista de archivos con reflections
 			Field variable = this.getClass().getDeclaredField(
 					uploadComponent.getId());
 
@@ -203,12 +200,11 @@ public class %{NameController} {
 			temp = (List<UploadedFile>) variable.get(this);
 			temp.remove(i_archivo);
 			fileBean.getFileNames().remove(i_archivo);
-			beanFiles.set(i_bean, fileBean);
+			beanFiles.set(i_bean, fileBean); 
 		}
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public String onFlowProcess(FlowEvent e) throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 
@@ -226,33 +222,31 @@ public class %{NameController} {
 							.getAttributes().get(tabs[i]);
 					String archivos[] = temp.split(",");
 					Field variable;
+					String mandatory ="";
 					for (int k = 0; k < archivos.length; k++) {
-						variable = this.getClass()
-								.getDeclaredField(archivos[k]);
-						List<UploadedFile> listTemp = new ArrayList<UploadedFile>();
-						if (variable.get(this) == null) {
+						mandatory = (String) facesHandler.findComponent("files").getAttributes().get(archivos[k]);
+						variable = this.getClass().getDeclaredField(archivos[k]);
+						if (variable.get(this) == null && "requerido".contentEquals(mandatory)) {
 							util.setMessageToView(
 									"Tiene documentos pendientes por subir", 1);
 							return e.getOldStep();
-						} else {
-							listTemp = (List<UploadedFile>) variable.get(this);
-							if (listTemp.size() < 1) {
+						}else if(variable.get(this) != null && "requerido".contentEquals(mandatory)){
+							@SuppressWarnings("unchecked")
+							List<UploadedFile> t = (List<UploadedFile>) variable.get(this);
+							if(t.size()==0){
 								util.setMessageToView(
-										"Tiene documentos pendientes por subir",
-										1);
+										"Tiene documentos pendientes por subir", 1);
 								return e.getOldStep();
 							}
-						}
+						} 						
 					}
 				}
 			}
 		}
-
 		return e.getNewStep();
 	}
 	
 	public StreamedContent get_FILE() {
-		System.out.println(facesHandler.getParam("id"));		
 		return util.getStreamPdfFile(facesHandler.getParam("id"));
 	}
 

@@ -77,7 +77,8 @@ public class GenerateFiles {
 			
 			String fileVars = "";
 			int nTabsWithFiles = 0;
-			Map<String,String> archivosObligatorios = new HashMap<String, String>();
+			Map<String,String> archivos = new HashMap<String, String>();
+			Map<String,String> obligatorios = new HashMap<String, String>();
 			for (int i = 0; i <= pages.size(); i++) {
 				
 				gb.replaceNameBeanAndNameClassBean(nameBean);
@@ -136,26 +137,29 @@ public class GenerateFiles {
 						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
 						if (field.getVarName().contains("_FILE") && !containFiles){
-							
+							nTabsWithFiles ++;
 							gv_tab.insertMessageTag("Tab" + (i + 1), true);
 							gv_tab.insertFileTable(String.valueOf(i+1), true);
-							
-							
 							containFiles=true;
 						}else{
 							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
 							gv_tab.insertFileTable(String.valueOf(i+1), false);
 						}
+						
 						if(field.getVarName().contains("_FILE")){
 							List<Validator> validadores = field.getListValidators();
+							if(fileVars.length()==0)
+								fileVars=field.getVarName();
+							else
+								fileVars+=","+field.getVarName();
 							for(Validator v : validadores){
-								if("mandatory".contentEquals(v.getNameValidator())){
-									if(fileVars.length()==0)
-										fileVars=field.getVarName();
-									else
-										fileVars+=","+field.getVarName();
-								}
+								if("mandatory".contentEquals(v.getNameValidator()))
+									obligatorios.put(field.getVarName(), "requerido");
+//								else
+//									obligatorios.put(field.getVarName(), "no_requerido");
 							}
+							if(!obligatorios.containsKey(field.getVarName()))
+								obligatorios.put(field.getVarName(), "no_requerido");
 						}
 						
 
@@ -173,8 +177,7 @@ public class GenerateFiles {
 				}
 				if(fileVars.length()>0){
 					System.out.println(fileVars);
-					nTabsWithFiles ++;
-					archivosObligatorios.put("tab" + (i + 1), fileVars);
+					archivos.put("tab" + (i + 1), fileVars);
 					fileVars="";
 				}
 				
@@ -186,7 +189,7 @@ public class GenerateFiles {
 			gv.setNameBean(nameBean);
 			gv.replaceNameTask(key);
 			gv.replaceTabsReferences();
-			gv.insertInputHidden(nTabsWithFiles, archivosObligatorios);
+			gv.insertInputHidden(nTabsWithFiles, archivos,obligatorios);
 			
 			gv.writeFileAndCreateDirToView(nameBean);
 			
