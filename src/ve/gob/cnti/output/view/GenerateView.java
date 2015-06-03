@@ -192,12 +192,12 @@ public class GenerateView {
 
 			if (name.matches("^_FILE_.*$")) {
 				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\"";
-				fieldInput += "update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\"";
-				fieldInput += "fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
-				fieldInput += "allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
-				fieldInput += "sizeLimit=\"2097152\" multiple=\"true\" " + this.required;
-				fieldInput += "invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
-				fieldInput += "invalidSizeMessage=\"El archivo no puede superar los 2MB\">";
+				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\"";
+				fieldInput += " fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\"";
+				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
+				fieldInput += " sizeLimit=\"2097152\" multiple=\"true\" " + this.required;
+				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\"";
+				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\">";
 				fieldInput += "<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
 			} else {
 
