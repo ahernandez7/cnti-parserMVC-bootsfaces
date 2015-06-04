@@ -175,7 +175,6 @@ public class GenerateFiles {
 
 				}
 				if(fileVars.length()>0){
-					System.out.println(fileVars);
 					archivos.put("tab" + (i + 1), fileVars);
 					fileVars="";
 				}
@@ -228,16 +227,11 @@ public class GenerateFiles {
 		gvTab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), nameBean);
 		gvTab.setNameBean(nameBean);
 		
-		//TODO Revisar
 		gvTab.replaceNameTask(nameBean);
-		
-	
 
 		gv.setNameBean(nameBean);
 		gv.replaceNameTask(nameBean);
 
-//		gv.setInputElements("");
-//		gv.setButton("");
 		gv.setTabsReferences("");
 		
 		gb.replaceNameBeanAndNameClassBean(nameBean);
@@ -259,9 +253,8 @@ public class GenerateFiles {
 			}
 			gb.createImpAttAndMethos(field);
 		}
-		//TODO Revisar si estos métodos van aqui
+		
 		gc.insertFilesInController(fieldsComplete);
-//		gv.insertFileTable("TabResumen", true);
 		gvTab.writeFileAndCreateDirToView(nameBean, "tabConsultaDeCaso");
 		gv.createTabReference(nameBean, "tabConsultaDeCaso", getDirNameAndPathFormToInstitucion());
 		
