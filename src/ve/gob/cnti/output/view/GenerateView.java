@@ -185,6 +185,12 @@ public class GenerateView {
 		} else if ("MESSAGE".equalsIgnoreCase(type)) {
 
 		} else if ("CHECKBOX_GROUP".equalsIgnoreCase(type)) {
+			
+			fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
+			fieldInput += this.required + " " + this.readOnly + ">\n";
+			fieldInput += this.validator;
+			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
+			fieldInput += "</p:selectCheckboxMenu>\n";
 
 		} else if ("DURATION".equalsIgnoreCase(type)) {
 
