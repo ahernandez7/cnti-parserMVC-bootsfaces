@@ -15,8 +15,12 @@
      <p:tooltip />
 		<h:form enctype="multipart/form-data" id="form">
 			<div style="">
-			<p:panel id="panelC">
-			
+			<p:panel rendered="#{TaskController.isStartCase==null}"
+				header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}"
+				>
+				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
+			</p:panel>
+			<p:panel header="#{TaskController.task.displayName}" id="panelC">
 			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
 				flowListener="#{%{nameTask}.onFlowProcess}">	
 				
