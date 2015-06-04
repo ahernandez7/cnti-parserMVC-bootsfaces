@@ -208,41 +208,53 @@ public class %{NameController} {
 	public String onFlowProcess(FlowEvent e) throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
 
-		String temp = (String) facesHandler.findComponent("files")
-				.getAttributes().get("tabsNames");
-		String tabs[] = temp.split(",");
-		temp = (String) facesHandler.findComponent("files").getAttributes()
-				.get("tabs");
-		int nTabs = Integer.parseInt(temp);
-		for (int i = 0; i < nTabs; i++) {
-			if (e.getOldStep().contentEquals(tabs[i])) {
-				if (facesHandler.findComponent("files").getAttributes()
-						.containsKey(tabs[i])) {
-					temp = (String) facesHandler.findComponent("files")
-							.getAttributes().get(tabs[i]);
-					String archivos[] = temp.split(",");
-					Field variable;
-					String mandatory ="";
-					for (int k = 0; k < archivos.length; k++) {
-						mandatory = (String) facesHandler.findComponent("files").getAttributes().get(archivos[k]);
-						variable = this.getClass().getDeclaredField(archivos[k]);
-						if (variable.get(this) == null && "requerido".contentEquals(mandatory)) {
-							util.setMessageToView(
-									"Tiene documentos pendientes por subir", 1);
-							return e.getOldStep();
-						}else if(variable.get(this) != null && "requerido".contentEquals(mandatory)){
-							@SuppressWarnings("unchecked")
-							List<UploadedFile> t = (List<UploadedFile>) variable.get(this);
-							if(t.size()==0){
+		String temp = null;
+		try {
+			temp = (String) facesHandler.findComponent("files").getAttributes()
+					.get("tabsNames");
+			String tabs[] = temp.split(",");
+			temp = (String) facesHandler.findComponent("files").getAttributes()
+					.get("tabs");
+			int nTabs = Integer.parseInt(temp);
+			for (int i = 0; i < nTabs; i++) {
+				if (e.getOldStep().contentEquals(tabs[i])) {
+					if (facesHandler.findComponent("files").getAttributes()
+							.containsKey(tabs[i])) {
+						temp = (String) facesHandler.findComponent("files")
+								.getAttributes().get(tabs[i]);
+						String archivos[] = temp.split(",");
+						Field variable;
+						String mandatory = "";
+						for (int k = 0; k < archivos.length; k++) {
+							mandatory = (String) facesHandler
+									.findComponent("files").getAttributes()
+									.get(archivos[k]);
+							variable = this.getClass().getDeclaredField(
+									archivos[k]);
+							if (variable.get(this) == null
+									&& "requerido".contentEquals(mandatory)) {
 								util.setMessageToView(
-										"Tiene documentos pendientes por subir", 1);
+										"Tiene documentos pendientes por subir",
+										1);
 								return e.getOldStep();
+							} else if (variable.get(this) != null
+									&& "requerido".contentEquals(mandatory)) {
+								@SuppressWarnings("unchecked")
+								List<UploadedFile> t = (List<UploadedFile>) variable
+										.get(this);
+								if (t.size() == 0) {
+									util.setMessageToView(
+											"Tiene documentos pendientes por subir",
+											1);
+									return e.getOldStep();
+								}
 							}
-						} 						
+						}
 					}
 				}
 			}
-		}
+		} catch (Exception e2) {}
+
 		return e.getNewStep();
 	}
 	
