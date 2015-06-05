@@ -268,6 +268,30 @@
                   </expression>
                 </title>
               </widget>
+              <widget id="TextField1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>email</name>
+                    <expression-content>email</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Correo Electrónico</name>
+                    <expression-content>Correo Electrónico</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
               <widget id="direccion1" type="TEXTAREA">
                 <initial-value>
                   <expression>
@@ -373,6 +397,17 @@
                   <name>field_direccion1</name>
                   <expression-content>field_direccion1</expression-content>
                   <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>email</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_email1</name>
+                  <expression-content>field_email1</expression-content>
+                  <expression-type>TYPE_CONSTANT</expression-type>
                   <return-type>java.lang.String</return-type>
                 </expression>
               </action>
@@ -840,9 +875,9 @@
                 <variable>_FILE_constancias</variable>
                 <is-external>false</is-external>
                 <expression>
-                  <name>field__MFILE_docvarios21</name>
-                  <expression-content>field__MFILE_docvarios21</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
+                  <name>field__FILE_docvarios21</name>
+                  <expression-content>field__FILE_docvarios21</expression-content>
+                  <expression-type>TYPE_CONSTANT</expression-type>
                   <return-type>java.util.List</return-type>
                 </expression>
               </action>
@@ -909,8 +944,8 @@
               <widget id="direccion1" type="TEXTBOX">
                 <initial-value>
                   <expression>
-                    <name>destinatario</name>
-                    <expression-content>destinatario</expression-content>
+                    <name>emailSGI</name>
+                    <expression-content>emailSGI</expression-content>
                     <expression-type>TYPE_VARIABLE</expression-type>
                     <return-type>java.lang.String</return-type>
                   </expression>
@@ -978,11 +1013,11 @@
             </widgets>
             <actions>
               <action type="ASSIGNMENT">
-                <variable>destinatario</variable>
+                <variable>emailSGI</variable>
                 <is-external>false</is-external>
                 <expression>
-                  <name>field_destinatario1</name>
-                  <expression-content>field_destinatario1</expression-content>
+                  <name>field_emailSGI1</name>
+                  <expression-content>field_emailSGI1</expression-content>
                   <expression-type>TYPE_CONSTANT</expression-type>
                   <return-type>java.lang.String</return-type>
                 </expression>
@@ -1034,16 +1069,15 @@
               </expression>
             </page-label>
             <allow-html-in-label>false</allow-html-in-label>
-            <page-layout>html/_s3hUgKx7EeSOjs5DdEy1jQ__gE8owOzYEeS5S4J9kN8Now.html</page-layout>
+            <page-layout>html/_s3hUgKx7EeSOjs5DdEy1jQ__T-OaMAq2EeWYxKrlvjEg-A.html</page-layout>
             <widgets>
-              <widget id="CheckboxList1" type="CHECKBOX_GROUP">
+              <widget id="causasDevolucion1" type="CHECKBOX_GROUP">
                 <initial-value>
                   <expression>
-                    <name>&lt;empty-name&gt;</name>
-                    <expression-content>[]</expression-content>
-                    <expression-type>TYPE_READ_ONLY_SCRIPT</expression-type>
+                    <name>causasDevolucion</name>
+                    <expression-content>causasDevolucion</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
                     <return-type>java.util.List</return-type>
-                    <interpreter>GROOVY</interpreter>
                   </expression>
                 </initial-value>
                 <available-values>
@@ -1128,6 +1162,16 @@
                   <expression-content>field_f_cita1</expression-content>
                   <expression-type>TYPE_INPUT</expression-type>
                   <return-type>java.util.Date</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>causasDevolucion</variable>
+                <is-external>false</is-external>
+                <expression>
+                  <name>field_causasDevolucion1</name>
+                  <expression-content>field_causasDevolucion1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.util.List</return-type>
                 </expression>
               </action>
             </actions>

@@ -331,7 +331,7 @@ public class GenerateView {
 			delete = "<p:column>" + "<p:commandButton actionListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.removeFile(index,index2)}\"" + " value=\"Suprimir\" update=\":form:t" + tab + "\">" + "</p:commandButton>" + "</p:column>";
 		}
 		if (containsFiles) {
-			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	" + "value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" " + "rowIndexVar=\"index\"> " + "<f:facet name=\"header\">Documentos anexos</f:facet>	"
+			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	" + "rendered=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles.size()>0}\" " +  "value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" " + "rowIndexVar=\"index\"> " + "<f:facet name=\"header\">Documentos anexos</f:facet>	"
 					+ "<p:column headerText=\"Nombre del documento\" " + rendered + ">" + "<h:outputText value=\"#{list.nombreOficial}\" />" + "</p:column>" + "<p:column headerText=\"Archivos\" " + rendered + "> " + "<p:dataTable var=\"archivos\" value=\"#{list.fileNames}\" rowIndexVar=\"index2\">"
 					+ "<p:column><h:outputText value=\"#{archivos}\"></h:outputText></p:column>" + delete + "</p:dataTable>" + "</p:column>" + "</p:dataTable>";
 		}

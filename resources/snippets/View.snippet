@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+1<?xml version="1.0" encoding="UTF-8"?>
 <f:view
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:c="http://java.sun.com/jsp/jstl/core"
@@ -15,14 +15,12 @@
      <p:tooltip />
 		<h:form enctype="multipart/form-data" id="form">
 			<div style="">
-			<p:panel rendered="#{TaskController.isStartCase==null}"
-				header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}"
-				>
-				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
-			</p:panel>
-			<p:panel header="#{TaskController.task.displayName}" id="panelC">
+			
+			<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelC">
 			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
 				flowListener="#{%{nameTask}.onFlowProcess}">	
+				
+				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
 				
 				%{tabsElements}
 			     				

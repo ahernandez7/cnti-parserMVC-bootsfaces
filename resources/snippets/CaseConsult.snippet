@@ -9,9 +9,11 @@
 	<h:head></h:head>
 	<h:body>
 	
-	
+	<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelC">
 	
 	%{tabsElements}
+	
+	</p:panel>
 
 	</h:body>
 </f:view>
