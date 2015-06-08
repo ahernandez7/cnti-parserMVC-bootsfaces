@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:tab id="tab1" title="revision">
+
+		<h:panelGrid columns="4" styleClass="gestorTramiteGrid"
+			id="panelRevision">
+
+			<p:outputLabel for="revision" value="Revision:" />
+			<p:selectOneRadio id="revision" 
+				value="#{%{nameProcessBean}Controller.bean.revision}">
+				<f:selectItems
+					value="#{%{nameProcessBean}Controller.bean.revisionOption}"
+					itemLabel="#{revision}" itemValue="#{revision}" />
+				<p:ajax update="panelRevision" />
+			</p:selectOneRadio>
+			<p:message for="revision" id="revisionMessage" style="color:red" />
+			<p:tooltip id="toolTipRevision" for="revision" value="revision1" />
+
+
+			<p:outputLabel for="causasDevolucion" value="Causas de devolución"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+			<p:selectCheckboxMenu id="causasDevolucion"
+				value="#{%{nameProcessBean}Controller.bean.causasDevolucion}"
+				filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}">
+				<f:selectItems
+					value="#{%{nameProcessBean}Controller.bean.causasDevolucionOption}" />
+			</p:selectCheckboxMenu>
+			<p:message for="causasDevolucion" id="causasDevolucionMessage"
+				style="color:red"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+			<p:tooltip id="toolTipCausasDevolucion" for="causasDevolucion"
+				value="CheckboxList1"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+
+			<p:outputLabel for="emailSGI" value="Enviar a:"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+			<p:inputText id="emailSGI"
+				value="#{%{nameProcessBean}Controller.bean.emailSGI}"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}">
+			</p:inputText>
+			<p:message for="emailSGI" id="emailSGIMessage" style="color:red"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+			<p:tooltip id="toolTipEmailSGI" for="emailSGI" value="direccion1"
+				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+
+		</h:panelGrid>
+
+	</p:tab>
+
+</ui:composition>

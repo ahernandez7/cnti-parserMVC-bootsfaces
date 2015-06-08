@@ -443,6 +443,11 @@ public class GenerateView {
 		this.snippetFile = LibUtils.replacePattern("%\\{outputsElements\\}", this.outputElements, this.snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{documentElements\\}", this.documentElements, this.snippetFile);
 	}
+	
+	public void replaceNameProcessBean() {		
+		this.snippetFile = this.origSnippetFile;
+		this.snippetFile = LibUtils.replacePattern("%\\{nameProcessBean\\}", (this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean())), this.snippetFile);
+	}
 
 	public Map<String, String> getControllersNameSubmitMap() {
 		return this.controllersNameSubmitMap;

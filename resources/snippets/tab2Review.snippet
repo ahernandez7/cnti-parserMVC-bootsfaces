@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:tab id="tabResumen" title="Resumen">
+
+		<p:blockUI block="confirmacion" widgetVar="blockUI">
+			<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
+			<br />
+			<p:outputLabel>Por favor espere mientras se procesa su petición...</p:outputLabel>
+		</p:blockUI>
+		<p:panel header="Datos básicos">
+
+			<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
+
+				<p:outputLabel for="revision_info" value="Revision:" />
+				<p:outputLabel id="revision_info"
+					value="#{%{nameProcessBean}Controller.bean.revision}" />
+				<p:outputLabel for="causasDevolucion_info"
+					value="Causas de devolución"
+					rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+				<p:outputLabel id="causasDevolucion_info"
+					value="#{%{nameProcessBean}Controller.bean.causasDevolucion}"
+					rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+				<p:outputLabel for="emailSGI_info" value="Enviar a:"
+					rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+				<p:outputLabel id="emailSGI_info"
+					value="#{%{nameProcessBean}Controller.bean.emailSGI}"
+					rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+
+			</h:panelGrid>
+
+		</p:panel>
+
+		<p:dataTable id="tTabResumen" var="list"
+			rendered="#{%{nameProcessBean}Controller.beanFiles.size()>0}"
+			value="#{%{nameProcessBean}Controller.beanFiles}"
+			rowIndexVar="index">
+			<f:facet name="header">Documentos anexos</f:facet>
+			<p:column headerText="Nombre del documento">
+				<h:outputText value="#{list.nombreOficial}" />
+			</p:column>
+			<p:column headerText="Archivos">
+				<p:dataTable var="archivos" value="#{list.fileNames}"
+					rowIndexVar="index2">
+					<p:column>
+						<h:outputText value="#{archivos}"></h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:column>
+		</p:dataTable>
+
+		<div align="right">
+			<p:commandButton value="Enviar Datos" type="button"
+				onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+	confirmDialog.content.parent().css('left', '25%');" />
+		</div>
+
+		<p:confirmDialog message="¿Estás seguro de enviar los datos?"
+			header="Inciando envio de datos" severity="alert"
+			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;"
+			appendToBody="true">
+
+			<p:commandButton value="Si"
+				action="#{%{nameProcessBean}Controller.executeTask}"
+				oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
+				onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
+				icon="ui-icon-check">
+
+				<f:param name="idTask" value="#{TaskController.task.id}" />
+				<f:param name="idCase" value="#{TaskController.task.caseId}" />
+
+			</p:commandButton>
+
+			<p:commandButton value="No" widgetVar="cancelButton"
+				onclick="PF('confirmDialog').hide();" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+		</p:confirmDialog>
+
+	</p:tab>
+
+</ui:composition>

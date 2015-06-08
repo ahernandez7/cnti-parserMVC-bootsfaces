@@ -66,7 +66,6 @@ public class GenerateFiles {
 			List<Page> pages = formE.getListPages();
 
 			String nameBean = formE.getNameForm();
-
 			gv.setNameBean(nameBean);
 			gv.replaceNameTask(key);
 
@@ -106,8 +105,6 @@ public class GenerateFiles {
 
 				List<Field> fields = new ArrayList<Field>();
 
-				
-				
 				if (i < pages.size()) {
 					Page page = pages.get(i);
 					fields = page.getListField();
@@ -134,7 +131,6 @@ public class GenerateFiles {
 							Validator validator = validators.get(k);
 							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
 						}
-
 						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
 						if (field.getVarName().contains("_FILE") && !containFiles){
@@ -160,7 +156,6 @@ public class GenerateFiles {
 							if(!obligatorios.containsKey(field.getVarName()))
 								obligatorios.put(field.getVarName(), "no_requerido");
 						}
-						
 
 						fieldsComplete.add(field);
 					} else {
@@ -171,7 +166,6 @@ public class GenerateFiles {
 						gb.createImpAttAndMethos(field);
 						
 					}	
-					
 
 				}
 				if(fileVars.length()>0){
@@ -197,12 +191,11 @@ public class GenerateFiles {
 			
 			gc.writeFileConroller(nameBean);
 			
-			//TODO Insertar creación de consulta de caso si la tarea es carga de datos
 			if(nameBean.contentEquals("carga")){
-				generateCaseConsult(fieldsComplete);
-			}else if("revision".contentEquals(nameBean)){//TODO Insertar Consulta de Caso
-				//TODO
-			}else if("notificacion".contentEquals(nameBean)){
+				this.generateCaseConsult(fieldsComplete);
+			}else if("revision".contentEquals(nameBean)){
+				this.replaceReview();
+			}else if("notificacion".contentEquals(nameBean)){//TODO Revisar si esta tarea precisa de un snippet
 				
 			}
 			
@@ -211,7 +204,27 @@ public class GenerateFiles {
 
 	}
 	
-	public void generateCaseConsult(List<Field> fieldsComplete){
+	private void replaceReview(){
+		//PRIMER SNIPPET
+		GenerateView gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
+		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
+		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
+		
+		
+		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
+		gv_tab.replaceNameProcessBean();
+		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
+		
+		gv_tab = new GenerateView("resources/snippets/tab2Review.snippet", getPathOutputFileView(), this.nameApp);
+		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
+		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
+		
+		gv_tab.replaceIdAndNameTab("tab2", "Resumen");
+		gv_tab.replaceNameProcessBean();
+		gv_tab.writeFileAndCreateDirToView("revision", "tab2");
+	}
+	
+	private void generateCaseConsult(List<Field> fieldsComplete){
 		
 		GenerateBean gb = new GenerateBean(getPathSnippetBean(), getPathOutputFileBean(), this.nameApp);
 		GenerateController gc = new GenerateController(getPathSnippetController(), getPathOutputFileController(), this.nameApp);
@@ -274,6 +287,7 @@ public class GenerateFiles {
 		gc.writeFileConroller(nameBean);
 		
 	}
+	
 
 	public String getPathSnippetBean() {
 		return this.pathSnippetBean;
