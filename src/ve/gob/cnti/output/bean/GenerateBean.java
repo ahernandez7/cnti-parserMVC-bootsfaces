@@ -124,9 +124,7 @@ public class GenerateBean {
 		} else {
 			if (type.equals(LibUtils.changeToPrimitiveType("List<String>")) && !name.matches("^_FILE_.*$")) {
 				return "private " + "String[]" + " " + name + ";\n";
-			} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP") || typeInput.equals("CHECKBOX_GROUP")) {
-				return "private " + "String" + " " + name + ";\n" + "private " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";
-			}
+			} 
 
 			else {
 				return "private " + LibUtils.changeToPrimitiveType(type) + " " + name + ";\n";

@@ -69,13 +69,13 @@ public class GenerateView {
 		} else if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\"" + nameField + "\"/>\n";
 		} else if ("EmailValidator".equalsIgnoreCase(nameValidator)) {
-			this.validator += "\t<f:validator validatorId=\"ve.gob.cnti.gestion.utils.validators.EmailValidator\" for=\"" + nameField + "\"/>\n";
+			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("CharFieldValidator".equalsIgnoreCase(nameValidator)) {
 
 		} else if ("NumericIntegerFieldValidator".equalsIgnoreCase(nameValidator)) {
 
 		} else if ("MailValidator".equalsIgnoreCase(nameValidator)) {
-			this.validator += "\t<f:validator validatorId=\"ve.gob.cnti.gestion.utils.validators.EmailValidator\" for=\"" + nameField + "\"/>\n";
+			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("DateFieldValidator".equalsIgnoreCase(nameValidator)) {
 
 		} else if ("NumericDoubleFieldValidator".equalsIgnoreCase(nameValidator)) {
@@ -113,7 +113,7 @@ public class GenerateView {
 		String fieldInput = "";
 
 		// Construye el label
-		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
+		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (name.matches("^_FILE_.*$")) {
 				fieldInput = "<p:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			} else {
@@ -121,9 +121,9 @@ public class GenerateView {
 			}
 		}
 
-		if ("TEXTBOX".equalsIgnoreCase(type)) {
-
+		if ("TEXTBOX".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			// TODO Arreglar error de parseo
+
 			if (name.matches("^_FILE_.*$")) {
 				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\" ";
 				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\" ";
@@ -225,7 +225,7 @@ public class GenerateView {
 		}
 
 		// Contruye el mensaje
-		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
+		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (!"".equals(this.readOnly)) {
 				fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
 
