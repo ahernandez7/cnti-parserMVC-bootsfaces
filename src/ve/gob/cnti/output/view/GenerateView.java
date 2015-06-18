@@ -230,6 +230,8 @@ public class GenerateView {
 				fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
 
 			} else {
+				if(!"TEXTAREA".equalsIgnoreCase(type))
+					fieldInput += "<h:outputText />";
 				fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
 				fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
 			}
