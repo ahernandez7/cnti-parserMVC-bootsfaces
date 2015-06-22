@@ -11,7 +11,7 @@
      <h:body>
      
      #{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
-     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId))}
+     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn))}
      <p:tooltip />
 		<h:form enctype="multipart/form-data" id="form">
 			<div style="">

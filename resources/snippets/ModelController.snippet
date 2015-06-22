@@ -20,12 +20,14 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 
 import ve.gob.cnti.gestion.bonita.IController;
+import ve.gob.cnti.gestion.bonita.bean.DatosBasicosNatural;
 import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
 import ve.gob.cnti.gestion.utils.FacesHandler;
 import ve.gob.cnti.gestion.utils.Utils;
+import ve.gob.cnti.gestion.utils.annotations.BeanIsInitCase;
 import ve.gob.cnti.gestion.alfresco.ICmisController;
 import ve.gob.cnti.gestion.alfresco.impl.AlfrescoLoadFiles;
-
+import ve.gob.cnti.gestion.controller.TaskController;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFile;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
 
@@ -66,7 +68,7 @@ public class %{NameController} {
         return "%{DirViewSuccess}";
     }
     
-    public %{NameBean} getBeanToBPM(String idCase) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException{				
+    public %{NameBean} getBeanToBPM(String idCase,DatosBasicosNatural dbn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, NoSuchFieldException, SecurityException{
 		
 		if(idCase != null){
 		
@@ -83,6 +85,11 @@ public class %{NameController} {
 			if (cd == null) {
 				return new %{NameBean}();
 			}
+			
+			if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class)){
+				cd = (%{NameBean}) new TaskController().setValuesFromIO(cd, dbn);
+			}
+			
 			return cd;
 			
 		}else

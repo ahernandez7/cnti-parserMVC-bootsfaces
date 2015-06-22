@@ -1,7 +1,5 @@
 package ve.gob.cnti.output.bean;
 
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import ve.gob.cnti.helper.form.Field;
@@ -57,6 +55,12 @@ public class GenerateBean {
 			this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}", this.nameApp + "_" + nameBean, this.snippetFile);
 			nameBean = LibUtils.firstLetterUpper(nameBean);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean, this.snippetFile);
+		}
+		
+		if(nameBean.contentEquals("carga")){
+			this.snippetFile = LibUtils.replacePattern("%\\{anotacion\\}", "@BeanIsInitCase",this.snippetFile);
+		}else{
+			this.snippetFile = LibUtils.replacePattern("%\\{anotacion\\}", "@BeanIsInitCase",this.snippetFile);
 		}
 	}
 
