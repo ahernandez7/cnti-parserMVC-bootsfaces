@@ -30,7 +30,7 @@ import ve.gob.cnti.gestion.alfresco.impl.AlfrescoLoadFiles;
 import ve.gob.cnti.gestion.controller.TaskController;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFile;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
-
+import ve.gob.cnti.gestion.jms.JMSImp;
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
@@ -64,6 +64,8 @@ public class %{NameController} {
     	this.uploadFilesToAlfresco(alfrescoPath);  
         
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
+        
+        new JMSImp().sendMessage(idCase);
         
         return "%{DirViewSuccess}";
     }
