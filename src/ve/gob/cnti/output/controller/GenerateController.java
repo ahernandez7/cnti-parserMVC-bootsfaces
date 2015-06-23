@@ -87,7 +87,6 @@ public class GenerateController {
 		for (int j = 0; j < fields.size(); j++) {
 			Field field = fields.get(j);
 			if (field.isActuation() && (field.getVarName().matches("^_FILE_.*$") || field.getVarName().matches("^_MFILE_.*$"))) {
-				files +="@SuppressWarnings(\"unused\")\n";
 				files += "private List<UploadedFile> " +field.getVarName() + ";\n";
 			}
 		}
