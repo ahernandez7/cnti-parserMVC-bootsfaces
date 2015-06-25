@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<style type="text/css">
+td{
+padding-bottom: 5px;
+padding-left: 5px;
+}
+.small {font-size: xx-small;}
+.line{border-bottom: 1px solid black}
+ 
+#page-header {
+   display: inline;
+}
+#page-footer{
+   text-align: right;
+}
+ 
+@page {
+  size: letter; /*letter landscape*/
+  background: white;
+  padding-top: 50px;
+  
+  @top-center {
+    content: element(current);
+  }
+  
+  @bottom-right {
+    content: element(footer);
+  }
+}
+ 
+.page-start { -fs-page-sequence: start; }
+table {-fs-table-paginate: paginate;page-break-inside: avoid;}
+/* forces a page break */
+.break {page-break-after:always}
+ 
+span.page:before { content: counter(page); }
+span.pagecount:before { content: counter(pages); }
+
+
+#header_logo{
+	width:720px;
+	height:65px;
+	background-size: cover;
+}
+
+#content{
+}
+</style>
+</head>
+<body>
+	<div style="-fs-page-sequence: start;">
+      <div style="position: running(current);">
+      	<div id="page-header" class="small">  
+      		<div id="header_logo"></div>  	
+		</div>
+      </div>      
+      <div style="position: running(footer);">
+      	<div id="page-footer" class="small">
+	    	Página <span class="page" /> de <span class="pagecount" /> 
+	    </div> 
+      </div>      
+	  <div id="content">
+	  	<h1>Planilla de Solicitud</h1>
+	  	 	<br/><b>Tipo de Solicitud: </b> %{ProcessDisplayName}
+	  		<br/><b>Expediente N°: </b>  %{idCase}
+	  	
+	  	<h3><u>Datos de la solicitud</u></h3>
+	  	<table>
+	  	
+	  		%{outputsTableElements}
+	  	
+	  	</table>
+	  	 
+	  </div>
+	</div>	
+</body>
+</html>
