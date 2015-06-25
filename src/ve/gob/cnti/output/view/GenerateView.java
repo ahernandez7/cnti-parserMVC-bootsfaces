@@ -1,7 +1,6 @@
 package ve.gob.cnti.output.view;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import ve.gob.cnti.helper.form.Field;
@@ -26,6 +25,7 @@ public class GenerateView {
 	private String tabsReferences = "";
 	private String outputElements = "";
 	private String documentElements = "";
+	private String outputsTableElements = "";
 
 	private Map<String, String> controllersNameSubmitMap = null;
 	private Map<String, String> controllersIdSubmitMap = null;
@@ -291,6 +291,14 @@ public class GenerateView {
 		dirViewSuccess += LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
 		this.wf.writeFile(dirViewSuccess + "/success.xhtml", this.origSnippetFile);
 	}
+	
+	public void writeFileAndCreateTemplatePDF(String dirNameAndFormToInstitucion) {
+		String dirViewSuccess = this.pathOutputFile;
+		this.snippetFile = this.origSnippetFile;
+		dirViewSuccess += LibUtils.replacePattern("%\\{processName\\}", this.nameApp, dirNameAndFormToInstitucion);
+		this.snippetFile = LibUtils.replacePattern("%\\{outputsTableElements\\}", this.outputsTableElements, this.snippetFile);
+		this.wf.writeFile(dirViewSuccess + "/carga/templatePDF.xhtml", this.snippetFile);
+	}
 
 	public void writeFileAndCreateDirToView(String nameViewFile, String tab) {
 
@@ -351,6 +359,20 @@ public class GenerateView {
 			String outputElement = "<p:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
 			outputElement += "<p:outputLabel id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"/>\n";
 			this.outputElements += outputElement;
+		}
+	}
+	
+	public void createOutputsTableElements(Field field) {
+
+		String label = field.getLabelField();
+		String name = field.getVarName();
+		String type = field.getTypeField();
+
+		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
+
+			String outputElement = "<tr>\n<td><label style=\"font-weight:bold;\">"+label+"</label></td> \n";
+			outputElement += "<td><label>%{"+name+"}</label></td>\n</tr>\n";
+			this.outputsTableElements += outputElement;
 		}
 	}
 
@@ -493,6 +515,14 @@ public class GenerateView {
 
 	public void setTabsReferences(String tabsReferences) {
 		this.tabsReferences = tabsReferences;
+	}
+
+	public String getOutputsTableElements() {
+		return outputsTableElements;
+	}
+
+	public void setOutputsTableElements(String outputsTableElements) {
+		this.outputsTableElements = outputsTableElements;
 	}
 
 }

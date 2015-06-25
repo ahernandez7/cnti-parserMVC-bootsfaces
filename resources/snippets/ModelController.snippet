@@ -1,8 +1,9 @@
 package %{packages};
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.json.JSONException;
 import org.primefaces.model.UploadedFile;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.component.fileupload.FileUpload;
@@ -21,16 +23,22 @@ import org.primefaces.event.FlowEvent;
 
 import ve.gob.cnti.gestion.bonita.IController;
 import ve.gob.cnti.gestion.bonita.bean.DatosBasicosNatural;
+import ve.gob.cnti.gestion.bonita.bean.Task;
+import ve.gob.cnti.gestion.bonitaImpl.CaseImpl;
 import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
+import ve.gob.cnti.gestion.bonitaImpl.TaskImpl;
 import ve.gob.cnti.gestion.utils.FacesHandler;
 import ve.gob.cnti.gestion.utils.Utils;
 import ve.gob.cnti.gestion.utils.annotations.BeanIsInitCase;
+import ve.gob.cnti.gestion.utils.annotations.FieldIsActuacion;
 import ve.gob.cnti.gestion.alfresco.ICmisController;
 import ve.gob.cnti.gestion.alfresco.impl.AlfrescoLoadFiles;
+import ve.gob.cnti.gestion.controller.ProcessController;
 import ve.gob.cnti.gestion.controller.TaskController;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFile;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
 import ve.gob.cnti.gestion.jms.JMSImp;
+import ve.gob.vicepresidencia.ProcesoGenerico.model.Carga;
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
@@ -53,7 +61,11 @@ public class %{NameController} {
 
     private %{NameBean} bean = new %{NameBean}();
 
-    public String executeTask() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException, SecurityException{
+    public String executeTask() throws IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException,
+			NoSuchFieldException, SecurityException,
+			UnsupportedEncodingException, IllegalStateException, JSONException,
+			IOException, InterruptedException {
     	// variable del caso
     	String idCase = facesHandler.getParam("idCase");
     	
@@ -65,10 +77,38 @@ public class %{NameController} {
         
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
         
+        if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class)){
+			this.createPDF(alfrescoPath, idCase);
+		}
+        
         new JMSImp().sendMessage(idCase);
         
         return "%{DirViewSuccess}";
     }
+    
+    public void createPDF(String alfrescoPath,String idCase)
+			throws UnsupportedEncodingException, IllegalStateException,
+			JSONException, IOException, InterruptedException, IllegalArgumentException, IllegalAccessException {
+
+		Task task = new TaskImpl().getTaskbyCaseId(idCase);
+		
+		String htmlContent = util.readPdfTemplate("/views/%{institucion}/%{processName}/forms/carga/");
+		
+		Field[] atributos = this.bean.getClass().getDeclaredFields();
+		for(Field atributo : atributos){
+			if (atributo.isAnnotationPresent(FieldIsActuacion.class)) {
+				atributo.setAccessible(true);
+				htmlContent = htmlContent.replaceAll("%\\{"+atributo.getName()+"\\}", (String) (atributo.get(this.bean)+""));
+			}
+		}
+		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}", new ProcessController().getProcessDisplayName(task.getProcessId()));
+		htmlContent = htmlContent.replaceAll("%\\{idCase\\}", idCase);
+		
+		String idHash = util.createPDF(alfrescoPath, "Planilla de Solicitud", htmlContent);
+
+		new CaseImpl().updateCaseVariable("_Datos_Basicos", idCase, idHash);
+
+	}
     
     public %{NameBean} getBeanToBPM(String idCase,DatosBasicosNatural dbn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, NoSuchFieldException, SecurityException{
 		

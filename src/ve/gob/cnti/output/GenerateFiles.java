@@ -193,6 +193,7 @@ public class GenerateFiles {
 			
 			if(nameBean.contentEquals("carga")){
 				this.generateCaseConsult(fieldsComplete);
+				this.generatePdfReview(fieldsComplete);
 			}else if("revision".contentEquals(nameBean)){
 				this.replaceReview();
 			}else if("notificacion".contentEquals(nameBean)){//TODO Revisar si esta tarea precisa de un snippet
@@ -286,6 +287,17 @@ public class GenerateFiles {
 		
 		gc.writeFileConroller(nameBean);
 		
+	}
+	
+	private void generatePdfReview(List<Field> fieldsComplete){
+		//PRIMER SNIPPET
+		GenerateView gv = new GenerateView("resources/snippets/templatePDF.snippet", getPathOutputFileView(), this.nameApp);
+		
+		for(Field field: fieldsComplete){
+			if (!field.getVarName().contains("_FILE"))
+				gv.createOutputsTableElements(field);
+		}
+		gv.writeFileAndCreateTemplatePDF(getDirNameAndPathFormToInstitucion());
 	}
 	
 
