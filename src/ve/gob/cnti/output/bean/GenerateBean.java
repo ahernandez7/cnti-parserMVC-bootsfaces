@@ -56,11 +56,10 @@ public class GenerateBean {
 			nameBean = LibUtils.firstLetterUpper(nameBean);
 			this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean, this.snippetFile);
 		}
-		
-		if(nameBean.contentEquals("carga")){
+		if(nameBean.contentEquals("Carga")){
 			this.snippetFile = LibUtils.replacePattern("%\\{anotacion\\}", "@BeanIsInitCase",this.snippetFile);
 		}else{
-			this.snippetFile = LibUtils.replacePattern("%\\{anotacion\\}", "@BeanIsInitCase",this.snippetFile);
+			this.snippetFile = LibUtils.replacePattern("%\\{anotacion\\}", "",this.snippetFile);
 		}
 	}
 
