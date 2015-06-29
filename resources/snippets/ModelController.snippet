@@ -106,7 +106,7 @@ public class %{NameController} {
 		
 		String idHash = util.createPDF(alfrescoPath, "Planilla de Solicitud", htmlContent);
 
-		new CaseImpl().updateCaseVariable("_Datos_Basicos", idCase, idHash);
+		new CaseImpl().updateCaseVariable("_FILE_datosBasicos", idCase, idHash);
 
 	}
     

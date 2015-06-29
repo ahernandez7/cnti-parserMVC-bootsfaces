@@ -5,16 +5,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<p:tab id="tab1" title="revision">
+	<p:tab id="tab1" title="Revisión">
 
 		<h:panelGrid columns="4" styleClass="gestorTramiteGrid"
 			id="panelRevision">
 
 			<p:outputLabel for="revision" value="Revision:" />
 			<p:selectOneRadio id="revision" 
-				value="#{%{nameProcessBean}Controller.bean.revision}">
+				value="#{ProcesoGenerico_revisionController.bean.revision}">
 				<f:selectItems
-					value="#{%{nameProcessBean}Controller.bean.revisionOption}"
+					value="#{ProcesoGenerico_revisionController.bean.revisionOption}"
 					itemLabel="#{revision}" itemValue="#{revision}" />
 				<p:ajax update="panelRevision" />
 			</p:selectOneRadio>
@@ -23,31 +23,37 @@
 
 
 			<p:outputLabel for="causasDevolucion" value="Causas de devolución"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}" />
 			<p:selectCheckboxMenu id="causasDevolucion"
-				value="#{%{nameProcessBean}Controller.bean.causasDevolucion}"
+				value="#{ProcesoGenerico_revisionController.bean.causasDevolucion}"
 				filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}">
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
+				required="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
+				requiredMessage="Requerido">				
 				<f:selectItems
-					value="#{%{nameProcessBean}Controller.bean.causasDevolucionOption}" />
+					value="#{ProcesoGenerico_revisionController.bean.causasDevolucionOption}" />
 			</p:selectCheckboxMenu>
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}" />
 			<p:tooltip id="toolTipCausasDevolucion" for="causasDevolucion"
 				value="CheckboxList1"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Rechazado'}" />
-
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
+				 />
+				
 			<p:outputLabel for="emailSGI" value="Enviar a:"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
 			<p:inputText id="emailSGI"
-				value="#{%{nameProcessBean}Controller.bean.emailSGI}"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}">
+				value="#{ProcesoGenerico_revisionController.bean.emailSGI}"
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}"
+				required="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}"
+				requiredMessage="Requerido">
+				<f:validator validatorId="EmailValidator"></f:validator>
 			</p:inputText>
 			<p:message for="emailSGI" id="emailSGIMessage" style="color:red"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
 			<p:tooltip id="toolTipEmailSGI" for="emailSGI" value="direccion1"
-				rendered="#{%{nameProcessBean}Controller.bean.revision == 'Aprobado'}" />
+				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
 
 		</h:panelGrid>
 

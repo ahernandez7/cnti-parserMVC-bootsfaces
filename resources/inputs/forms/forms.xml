@@ -34,7 +34,7 @@
             <allow-html-in-label>false</allow-html-in-label>
             <page-layout>html/_n7dDIKx7EeSOjs5DdEy1jQ__KCbBEKx_EeSOjs5DdEy1jQ.html</page-layout>
             <widgets>
-              <widget id="nacionalidad1" type="RADIOBUTTON_GROUP">
+              <widget id="nacionalidad1" type="TEXTBOX">
                 <initial-value>
                   <expression>
                     <name>nacionalidad</name>
@@ -43,18 +43,9 @@
                     <return-type>java.lang.String</return-type>
                   </expression>
                 </initial-value>
-                <available-values>
-                  <expression>
-                    <name>nacionalidad values</name>
-                    <expression-content>["V","E"]</expression-content>
-                    <expression-type>TYPE_READ_ONLY_SCRIPT</expression-type>
-                    <return-type>java.util.List</return-type>
-                    <interpreter>GROOVY</interpreter>
-                  </expression>
-                </available-values>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
                     <name>Nacionalidad</name>
@@ -65,14 +56,7 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
-                <title>
-                  <expression>
-                    <name>Esta es la descripcion de el campo nacinalidad</name>
-                    <expression-content>Esta es la descripcion de el campo nacinalidad</expression-content>
-                    <expression-type>TYPE_CONSTANT</expression-type>
-                    <return-type>java.lang.String</return-type>
-                  </expression>
-                </title>
+                <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="cedula1" type="TEXTBOX">
                 <initial-value>
@@ -99,7 +83,7 @@
                     </label>
                   </validator>
                 </validators>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
                     <name>Cédula</name>
@@ -131,7 +115,7 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
                     <name>Nombre</name>
@@ -163,7 +147,7 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
                     <name>Apellido</name>
@@ -208,7 +192,7 @@
                     </label>
                   </validator>
                 </validators>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
                     <name>Fecha de Nacimiento</name>
@@ -228,7 +212,7 @@
                   </expression>
                 </title>
               </widget>
-              <widget id="edo_civil1" type="RADIOBUTTON_GROUP">
+              <widget id="edo_civil1" type="TEXTBOX">
                 <initial-value>
                   <expression>
                     <name>edo_civil</name>
@@ -237,36 +221,20 @@
                     <return-type>java.lang.String</return-type>
                   </expression>
                 </initial-value>
-                <available-values>
-                  <expression>
-                    <name>edo_civil values</name>
-                    <expression-content>["casado","soltero","divorciado","viudo"]</expression-content>
-                    <expression-type>TYPE_READ_ONLY_SCRIPT</expression-type>
-                    <return-type>java.util.List</return-type>
-                    <interpreter>GROOVY</interpreter>
-                  </expression>
-                </available-values>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>false</readonly>
+                <readonly>true</readonly>
                 <label>
                   <expression>
-                    <name>Edo. Civil</name>
-                    <expression-content>Edo. Civil</expression-content>
+                    <name>Estado Civil</name>
+                    <expression-content>Estado Civil</expression-content>
                     <expression-type>TYPE_CONSTANT</expression-type>
                     <return-type>java.lang.String</return-type>
                   </expression>
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
-                <title>
-                  <expression>
-                    <name>Esta es la descripcion de el campo edo civil</name>
-                    <expression-content>Esta es la descripcion de el campo edo civil</expression-content>
-                    <expression-type>TYPE_CONSTANT</expression-type>
-                    <return-type>java.lang.String</return-type>
-                  </expression>
-                </title>
+                <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="TextField1" type="TEXTBOX">
                 <initial-value>
@@ -279,11 +247,121 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>false</mandatory>
+                <validators>
+                  <validator id="TextField1Validator1">
+                    <classname>org.bonitasoft.forms.server.validator.MailValidator</classname>
+                    <position>BOTTOM</position>
+                    <label>
+                      <expression>
+                        <name>field_TextField1</name>
+                        <expression-content>field_TextField1</expression-content>
+                        <expression-type>TYPE_INPUT</expression-type>
+                        <return-type>java.lang.String</return-type>
+                      </expression>
+                    </label>
+                  </validator>
+                </validators>
                 <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Correo Electrónico</name>
                     <expression-content>Correo Electrónico</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
+              <widget id="pais1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>pais</name>
+                    <expression-content>pais</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Pais</name>
+                    <expression-content>Pais</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
+              <widget id="estado1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>estado</name>
+                    <expression-content>estado</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Estado</name>
+                    <expression-content>Estado</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
+              <widget id="municipio1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>municipio</name>
+                    <expression-content>municipio</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Municipio</name>
+                    <expression-content>Municipio</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
+              <widget id="parroquia1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>parroquia</name>
+                    <expression-content>parroquia</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Parroquia</name>
+                    <expression-content>Parroquia</expression-content>
                     <expression-type>TYPE_CONSTANT</expression-type>
                     <return-type>java.lang.String</return-type>
                   </expression>
@@ -315,6 +393,54 @@
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
               </widget>
+              <widget id="tlf_local1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>tlf_local</name>
+                    <expression-content>tlf_local</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Teléfono Local</name>
+                    <expression-content>Teléfono Local</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
+              <widget id="tlf_movil1" type="TEXTBOX">
+                <initial-value>
+                  <expression>
+                    <name>tlf_movil</name>
+                    <expression-content>tlf_movil</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </initial-value>
+                <allow-html-in-field>false</allow-html-in-field>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Teléfono Móvil</name>
+                    <expression-content>Teléfono Móvil</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+                <field-output-type>java.lang.String</field-output-type>
+              </widget>
               <widget id="Next1" type="BUTTON_NEXT">
                 <label-button>false</label-button>
                 <label>
@@ -330,66 +456,6 @@
               </widget>
             </widgets>
             <actions>
-              <action type="ASSIGNMENT">
-                <variable>apellido</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_apellido1</name>
-                  <expression-content>field_apellido1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.lang.String</return-type>
-                </expression>
-              </action>
-              <action type="ASSIGNMENT">
-                <variable>cedula</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_cedula1</name>
-                  <expression-content>field_cedula1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.lang.Integer</return-type>
-                </expression>
-              </action>
-              <action type="ASSIGNMENT">
-                <variable>edo_civil</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_edo_civil1</name>
-                  <expression-content>field_edo_civil1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.lang.String</return-type>
-                </expression>
-              </action>
-              <action type="ASSIGNMENT">
-                <variable>f_nacimiento</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_f_nacimiento1</name>
-                  <expression-content>field_f_nacimiento1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.util.Date</return-type>
-                </expression>
-              </action>
-              <action type="ASSIGNMENT">
-                <variable>nacionalidad</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_nacionalidad1</name>
-                  <expression-content>field_nacionalidad1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.lang.String</return-type>
-                </expression>
-              </action>
-              <action type="ASSIGNMENT">
-                <variable>nombre</variable>
-                <is-external>false</is-external>
-                <expression>
-                  <name>field_nombre1</name>
-                  <expression-content>field_nombre1</expression-content>
-                  <expression-type>TYPE_INPUT</expression-type>
-                  <return-type>java.lang.String</return-type>
-                </expression>
-              </action>
               <action type="ASSIGNMENT">
                 <variable>direccion</variable>
                 <is-external>false</is-external>
@@ -408,6 +474,72 @@
                   <name>field_email1</name>
                   <expression-content>field_email1</expression-content>
                   <expression-type>TYPE_CONSTANT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>pais</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_pais1</name>
+                  <expression-content>field_pais1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>estado</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_estado1</name>
+                  <expression-content>field_estado1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>municipio</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_municipio1</name>
+                  <expression-content>field_municipio1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>parroquia</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_parroquia1</name>
+                  <expression-content>field_parroquia1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>tlf_local</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_tlf_local1</name>
+                  <expression-content>field_tlf_local1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>tlf_movil</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_tlf_movil1</name>
+                  <expression-content>field_tlf_movil1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
                   <return-type>java.lang.String</return-type>
                 </expression>
               </action>
@@ -952,6 +1084,20 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>false</mandatory>
+                <validators>
+                  <validator id="direccion1Validator1">
+                    <classname>org.bonitasoft.forms.server.validator.MailValidator</classname>
+                    <position>BOTTOM</position>
+                    <label>
+                      <expression>
+                        <name>field_direccion1</name>
+                        <expression-content>field_direccion1</expression-content>
+                        <expression-type>TYPE_INPUT</expression-type>
+                        <return-type>java.lang.String</return-type>
+                      </expression>
+                    </label>
+                  </validator>
+                </validators>
                 <readonly>false</readonly>
                 <label>
                   <expression>
@@ -1139,6 +1285,36 @@
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
               </widget>
+              <widget id="_FILE_decision1" type="LISTBOX_MULTIPLE">
+                <initial-value>
+                  <expression>
+                    <name>_FILE_decision</name>
+                    <expression-content>_FILE_decision</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.util.List</return-type>
+                  </expression>
+                </initial-value>
+                <available-values>
+                  <expression>
+                    <name>_FILE_decision</name>
+                    <expression-content>_FILE_decision</expression-content>
+                    <expression-type>TYPE_VARIABLE</expression-type>
+                    <return-type>java.util.List</return-type>
+                  </expression>
+                </available-values>
+                <mandatory>false</mandatory>
+                <readonly>false</readonly>
+                <label>
+                  <expression>
+                    <name>Documentos Decisión</name>
+                    <expression-content>Documentos Decisión</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+              </widget>
               <widget id="Submit1" type="BUTTON_SUBMIT">
                 <label-button>false</label-button>
                 <label>
@@ -1174,6 +1350,17 @@
                   <return-type>java.util.List</return-type>
                 </expression>
               </action>
+              <action type="ASSIGNMENT">
+                <variable>_FILE_decision</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field__FILE_decision1</name>
+                  <expression-content>field__FILE_decision1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.util.List</return-type>
+                </expression>
+              </action>
             </actions>
           </page>
         </pages>
@@ -1181,6 +1368,47 @@
           <expression>
             <name>Notificacion</name>
             <expression-content>Notificacion</expression-content>
+            <expression-type>TYPE_CONSTANT</expression-type>
+            <return-type>java.lang.String</return-type>
+          </expression>
+        </first-page>
+      </form>
+      <form id="ProcesoGenerico--1.0--SGI$entry">
+        <form-type>entry</form-type>
+        <permissions>activity#ProcesoGenerico--1.0--SGI</permissions>
+        <pages>
+          <page id="SGI">
+            <page-label>
+              <expression>
+                <name>SGI</name>
+                <expression-content>SGI</expression-content>
+                <expression-type>TYPE_CONSTANT</expression-type>
+                <return-type>java.lang.String</return-type>
+              </expression>
+            </page-label>
+            <allow-html-in-label>false</allow-html-in-label>
+            <page-layout>html/_KfDi4RTvEeWpnrvOaeq4Tg__bHDP4BTvEeWpnrvOaeq4Tg.html</page-layout>
+            <widgets>
+              <widget id="Submit1" type="BUTTON_SUBMIT">
+                <label-button>false</label-button>
+                <label>
+                  <expression>
+                    <name>Enviar</name>
+                    <expression-content>Enviar</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </label>
+                <allow-html-in-label>false</allow-html-in-label>
+                <label-position>TOP</label-position>
+              </widget>
+            </widgets>
+          </page>
+        </pages>
+        <first-page>
+          <expression>
+            <name>SGI</name>
+            <expression-content>SGI</expression-content>
             <expression-type>TYPE_CONSTANT</expression-type>
             <return-type>java.lang.String</return-type>
           </expression>
