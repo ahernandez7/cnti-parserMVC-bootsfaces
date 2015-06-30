@@ -45,7 +45,7 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>true</readonly>
+                <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Nacionalidad</name>
@@ -91,7 +91,7 @@
                     </label>
                   </validator>
                 </validators>
-                <readonly>true</readonly>
+                <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Cédula</name>
@@ -123,7 +123,7 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>true</readonly>
+                <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Nombre</name>
@@ -200,7 +200,7 @@
                     </label>
                   </validator>
                 </validators>
-                <readonly>true</readonly>
+                <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Fecha de Nacimiento</name>
@@ -231,7 +231,7 @@
                 </initial-value>
                 <allow-html-in-field>false</allow-html-in-field>
                 <mandatory>true</mandatory>
-                <readonly>true</readonly>
+                <readonly>false</readonly>
                 <label>
                   <expression>
                     <name>Estado Civil</name>
@@ -537,6 +537,36 @@
             </widgets>
             <actions>
               <action type="ASSIGNMENT">
+                <variable>cedula</variable>
+                <is-external>false</is-external>
+                <expression>
+                  <name>field_cedula1</name>
+                  <expression-content>field_cedula1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.Integer</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>f_nacimiento</variable>
+                <is-external>false</is-external>
+                <expression>
+                  <name>field_f_nacimiento1</name>
+                  <expression-content>field_f_nacimiento1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.util.Date</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>nombre</variable>
+                <is-external>false</is-external>
+                <expression>
+                  <name>field_nombre1</name>
+                  <expression-content>field_nombre1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
                 <variable>direccion</variable>
                 <is-external>false</is-external>
                 <expression>
@@ -619,6 +649,28 @@
                 <expression>
                   <name>field_tlf_movil1</name>
                   <expression-content>field_tlf_movil1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>nacionalidad</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_nacionalidad1</name>
+                  <expression-content>field_nacionalidad1</expression-content>
+                  <expression-type>TYPE_INPUT</expression-type>
+                  <return-type>java.lang.String</return-type>
+                </expression>
+              </action>
+              <action type="ASSIGNMENT">
+                <variable>edo_civil</variable>
+                <is-external>false</is-external>
+                <operator>=</operator>
+                <expression>
+                  <name>field_edo_civil1</name>
+                  <expression-content>field_edo_civil1</expression-content>
                   <expression-type>TYPE_INPUT</expression-type>
                   <return-type>java.lang.String</return-type>
                 </expression>
