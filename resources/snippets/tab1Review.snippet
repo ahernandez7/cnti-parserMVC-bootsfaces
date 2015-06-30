@@ -12,9 +12,9 @@
 
 			<p:outputLabel for="revision" value="Revision:" />
 			<p:selectOneRadio id="revision" 
-				value="#{ProcesoGenerico_revisionController.bean.revision}">
+				value="#%{nameTask}.bean.revision}">
 				<f:selectItems
-					value="#{ProcesoGenerico_revisionController.bean.revisionOption}"
+					value="#%{nameTask}.bean.revisionOption}"
 					itemLabel="#{revision}" itemValue="#{revision}" />
 				<p:ajax update="panelRevision" />
 			</p:selectOneRadio>
@@ -23,37 +23,37 @@
 
 
 			<p:outputLabel for="causasDevolucion" value="Causas de devolución"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}" />
+				rendered="#%{nameTask}.bean.revision == 'Rechazado'}" />
 			<p:selectCheckboxMenu id="causasDevolucion"
-				value="#{ProcesoGenerico_revisionController.bean.causasDevolucion}"
+				value="#%{nameTask}.bean.causasDevolucion}"
 				filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
-				required="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
+				rendered="#%{nameTask}.bean.revision == 'Rechazado'}"
+				required="#%{nameTask}.bean.revision == 'Rechazado'}"
 				requiredMessage="Requerido">				
 				<f:selectItems
-					value="#{ProcesoGenerico_revisionController.bean.causasDevolucionOption}" />
+					value="#%{nameTask}.bean.causasDevolucionOption}" />
 			</p:selectCheckboxMenu>
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}" />
+				rendered="#%{nameTask}.bean.revision == 'Rechazado'}" />
 			<p:tooltip id="toolTipCausasDevolucion" for="causasDevolucion"
 				value="CheckboxList1"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Rechazado'}"
+				rendered="#%{nameTask}.bean.revision == 'Rechazado'}"
 				 />
 				
 			<p:outputLabel for="emailSGI" value="Enviar a:"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
+				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
 			<p:inputText id="emailSGI"
-				value="#{ProcesoGenerico_revisionController.bean.emailSGI}"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}"
-				required="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}"
+				value="#%{nameTask}.bean.emailSGI}"
+				rendered="#%{nameTask}.bean.revision == 'Aprobado'}"
+				required="#%{nameTask}.bean.revision == 'Aprobado'}"
 				requiredMessage="Requerido">
 				<f:validator validatorId="EmailValidator"></f:validator>
 			</p:inputText>
 			<p:message for="emailSGI" id="emailSGIMessage" style="color:red"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
+				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
 			<p:tooltip id="toolTipEmailSGI" for="emailSGI" value="direccion1"
-				rendered="#{ProcesoGenerico_revisionController.bean.revision == 'Aprobado'}" />
+				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
 
 		</h:panelGrid>
 

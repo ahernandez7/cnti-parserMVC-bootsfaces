@@ -80,16 +80,31 @@ public class GenerateController {
 		this.snippetFile = LibUtils.replacePattern("%\\{files\\}", files, this.snippetFile);
 	}
 
-	
+	private void insertSetAndGetFile(String value) {
+		this.snippetFile = LibUtils.replacePattern("%\\{set_get_file_decision\\}", value, this.snippetFile);
+	}
 
 	public void insertFilesInController(List<Field> fields) {
 		String files = "";		
+		boolean containFileDecision =false;
 		for (int j = 0; j < fields.size(); j++) {
 			Field field = fields.get(j);
 			if (field.isActuation() && (field.getVarName().matches("^_FILE_.*$") || field.getVarName().matches("^_MFILE_.*$"))) {
 				files += "private List<UploadedFile> " +field.getVarName() + ";\n";
+				if(field.getVarName().contentEquals("_FILE_decision")){
+					containFileDecision =true;
+				}
 			}
 		}
+		
+		if(containFileDecision){
+			String value = "public List<UploadedFile> get_FILE_decision() {\n";
+			value += "return _FILE_decision;\n}\npublic void set_FILE_decision(List<UploadedFile> _FILE_decision) {\n";
+			value += "this._FILE_decision = _FILE_decision;\n}\n";
+			this.insertSetAndGetFile(value);
+		}else
+			this.insertSetAndGetFile("");
+		
 		this.replaceFilesAttributes(files);
 	}
 

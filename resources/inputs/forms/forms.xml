@@ -56,6 +56,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe la nacionalidad de la persona</name>
+                    <expression-content>Describe la nacionalidad de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="cedula1" type="TEXTBOX">
@@ -234,6 +242,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe el estado civil de la persona</name>
+                    <expression-content>Describe el estado civil de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="TextField1" type="TEXTBOX">
@@ -272,6 +288,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe el correo electronico de la persona</name>
+                    <expression-content>Describe el correo electronico de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="pais1" type="TEXTBOX">
@@ -296,6 +320,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe el pais de la persona</name>
+                    <expression-content>Describe el pais de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="estado1" type="TEXTBOX">
@@ -320,6 +352,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe estado de la persona</name>
+                    <expression-content>Describe estado de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="municipio1" type="TEXTBOX">
@@ -344,6 +384,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe municipio de la persona</name>
+                    <expression-content>Describe municipio de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="parroquia1" type="TEXTBOX">
@@ -368,6 +416,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe la parroquia de la persona</name>
+                    <expression-content>Describe la parroquia de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="direccion1" type="TEXTAREA">
@@ -392,6 +448,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Describe la direccion de la persona</name>
+                    <expression-content>Describe la direccion de la persona</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
               </widget>
               <widget id="tlf_local1" type="TEXTBOX">
                 <initial-value>
@@ -415,6 +479,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Telefono local</name>
+                    <expression-content>Telefono local</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="tlf_movil1" type="TEXTBOX">
@@ -439,6 +511,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Teléfono móvil</name>
+                    <expression-content>Teléfono móvil</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="Next1" type="BUTTON_NEXT">
@@ -799,6 +879,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Balances</name>
+                    <expression-content>Balances</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
               </widget>
               <widget id="_FILE_planilla22" type="TEXTBOX">
                 <initial-value>
@@ -822,6 +910,14 @@
                 </label>
                 <allow-html-in-label>false</allow-html-in-label>
                 <label-position>TOP</label-position>
+                <title>
+                  <expression>
+                    <name>Planilla</name>
+                    <expression-content>Planilla</expression-content>
+                    <expression-type>TYPE_CONSTANT</expression-type>
+                    <return-type>java.lang.String</return-type>
+                  </expression>
+                </title>
                 <field-output-type>java.lang.String</field-output-type>
               </widget>
               <widget id="Previous4" type="BUTTON_PREVIOUS">

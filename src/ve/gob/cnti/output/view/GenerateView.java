@@ -61,12 +61,11 @@ public class GenerateView {
 
 		// TODO:Completar los validadores restantes
 
-		if ("mandatory".equalsIgnoreCase(nameValidator)) {
+		if ("mandatory".equalsIgnoreCase(nameValidator)) 
 			this.required = "required=\"true\" requiredMessage=\"Requerido\"";
-		}
-		if ("readonly".equalsIgnoreCase(nameValidator)) {
+		if ("readonly".equalsIgnoreCase(nameValidator)) 
 			this.readOnly = "readonly=\"true\"";
-		} else if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
+		if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\"" + nameField + "\"/>\n";
 		} else if ("EmailValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";
@@ -226,17 +225,14 @@ public class GenerateView {
 
 		// Contruye el mensaje
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
-			if (!"".equals(this.readOnly)) {
-				fieldInput += "<p:messages for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\" showDetail=\"true\"/>\n";
-
-			} else {
-				if(!"TEXTAREA".equalsIgnoreCase(type))
-					fieldInput += "<h:outputText />";
-				fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
-				fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
-			}
-
+			if(!"TEXTAREA".equalsIgnoreCase(type))
+				fieldInput += "<h:outputText />";
+			fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
+			fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
 		}
+		fieldInput +="\n";
+		this.readOnly="";
+//		this.required="";
 		return fieldInput;
 	}
 

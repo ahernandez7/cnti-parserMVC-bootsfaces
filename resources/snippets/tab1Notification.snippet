@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:tab id="tab1" title="Notificación">
+
+		<p:blockUI block="confirmacion" widgetVar="blockUI">
+			<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
+			<br />
+			<p:outputLabel>Por favor espere mientras se procesa su petición...</p:outputLabel>
+		</p:blockUI>
+
+		<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
+
+			<p:outputLabel value="Causas de devolución"
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>
+			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>			
+
+			<p:outputLabel value="Fecha de cita" 
+				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
+			<p:outputLabel value="#{%{nameTask}.bean.f_cita}" 
+				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
+				
+			<p:dataTable var="archivos" rowIndexVar="index"
+				value="#{%{nameTask}._FILE_decision}"
+				rendered="#{%{nameTask}._FILE_decision}!=null"
+				>
+				<p:column>
+					<p:commandButton value="Documento n° #{index+1}"
+						onclick="_FILE_constancias.show();"	></p:commandButton>
+					
+					<p:dialog header="Visor PDF" id="_FILE_constancias"
+						widgetVar="_FILE_constancias" resizable="false">
+						<p:media width="900px" height="500px" player="pdf"
+							value="#{%{nameTask}.get_FILE()}">
+							<f:param name="id" value="#{archivos}" />
+							<p:outputPanel layout="block">
+								<h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder 
+examinar el documento, debe actualizar su navegador a una versión que pemita visualizar 
+archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.
+archivos de extensión pdf directamente en el navegador o descargue el documento y utilice el visor de su sistema operativo.
+									<p:commandButton value="Bajar Archivo" ajax="false"
+										icon="ui-icon-arrowthick-1-s">
+										<p:fileDownload
+											value="#{%{nameTask}.getDownloadFile()}" />
+										<f:param name="id" value="#{archivos}" />
+									</p:commandButton>
+								</h:form>
+							</p:outputPanel>
+						</p:media>
+					</p:dialog>
+				</p:column>
+			</p:dataTable>
+
+		</h:panelGrid>
+		
+		<div align="right">
+			<p:commandButton value="Enviar resultado de trámite" type="button"
+				onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+	confirmDialog.content.parent().css('left', '25%');" />
+		</div>
+
+		<p:confirmDialog message="¿Estás seguro de enviar los resultados del trámite?"
+			header="Inciando envio de datos" severity="alert"
+			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;"
+			appendToBody="true">
+
+			<p:commandButton value="Si"
+				action="#{%{nameTask}.executeTask}"
+				oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
+				onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
+				icon="ui-icon-check">
+
+				<f:param name="idTask" value="#{TaskController.task.id}" />
+				<f:param name="idCase" value="#{TaskController.task.caseId}" />
+				<f:param name="processId" value="#{TaskController.task.processId}" />
+
+			</p:commandButton>
+
+			<p:commandButton value="No" widgetVar="cancelButton"
+				onclick="PF('confirmDialog').hide();" type="button"
+				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+		</p:confirmDialog>
+
+	</p:tab>
+
+</ui:composition>

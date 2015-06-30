@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+     <h:head></h:head>
+     <h:body>
+     
+     #{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
+     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn))}
+     <p:tooltip />
+		<h:form enctype="multipart/form-data" id="form">
+			<div style="">
+			
+			<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelC">
+			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
+				flowListener="#{%{nameTask}.onFlowProcess}">	
+				
+				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
+				
+				%{tabsElements}
+			     				
+			</p:wizard>
+			</p:panel>
+     		</div>
+     		
+		</h:form>
+    </h:body>
+</f:view>

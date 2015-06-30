@@ -69,7 +69,7 @@ public class GenerateFiles {
 			gv.setNameBean(nameBean);
 			gv.replaceNameTask(key);
 
-			gv.setInputElements("");
+			gv.setInputElements("");			
 			gv.setButton("");
 			gv.setTabsReferences("");
 
@@ -197,7 +197,7 @@ public class GenerateFiles {
 			}else if("revision".contentEquals(nameBean)){
 				this.replaceReview();
 			}else if("notificacion".contentEquals(nameBean)){//TODO Revisar si esta tarea precisa de un snippet
-				
+				this.replaceNotification();
 			}
 			
 		}
@@ -205,8 +205,30 @@ public class GenerateFiles {
 
 	}
 	
-	private void replaceReview(){
+	private void replaceNotification(){
 		//PRIMER SNIPPET
+		GenerateView gv_tab = new GenerateView("resources/snippets/viewNotification.snippet", getPathOutputFileView(), this.nameApp);
+		gv_tab.setNameBean("notificacion");gv_tab.replaceNameTask("notificacion");
+		gv_tab.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
+		
+		gv_tab.createTabReference("notificacion", "tab1",getDirNameAndPathFormToInstitucion());
+		gv_tab.replaceNameProcessBean();
+		gv_tab.replaceNameTask("notificacion");
+		gv_tab.replaceTabsReferences();
+		gv_tab.writeFileAndCreateDirToView("notificacion");
+		
+		gv_tab = new GenerateView("resources/snippets/tab1Notification.snippet", getPathOutputFileView(), this.nameApp);
+		gv_tab.setNameBean("notificacion");gv_tab.replaceNameTask("notificacion");
+		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "notificacion");
+		
+		
+		gv_tab.replaceNameProcessBean();
+		gv_tab.replaceNameTask("notificacion");
+		gv_tab.replaceIdAndNameTab("tab1", "Notificación");
+		gv_tab.writeFileAndCreateDirToView("notificacion", "tab1");
+	}
+	
+	private void replaceReview(){
 		GenerateView gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
 		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
 		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
@@ -214,6 +236,7 @@ public class GenerateFiles {
 		
 		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
 		gv_tab.replaceNameProcessBean();
+		gv_tab.replaceNameTask("revision");
 		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
 		
 		gv_tab = new GenerateView("resources/snippets/tab2Review.snippet", getPathOutputFileView(), this.nameApp);
