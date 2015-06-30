@@ -12,9 +12,9 @@
 
 			<p:outputLabel for="revision" value="Revision:" />
 			<p:selectOneRadio id="revision" 
-				value="#%{nameTask}.bean.revision}">
+				value="#{%{nameTask}.bean.revision}">
 				<f:selectItems
-					value="#%{nameTask}.bean.revisionOption}" 
+					value="#{%{nameTask}.bean.revisionOption}" 
 					itemLabel="#{revision}" itemValue="#{revision}" />
 				<p:ajax update="panelRevision" />
 			</p:selectOneRadio>
@@ -23,37 +23,37 @@
 
 
 			<p:outputLabel for="causasDevolucion" value="Causas de devolución"
-				rendered="#%{nameTask}.bean.revision == 'Rechazado'}" />
+				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />
 			<p:selectCheckboxMenu id="causasDevolucion"
-				value="#%{nameTask}.bean.causasDevolucion}"
+				value="#{%{nameTask}.bean.causasDevolucion}"
 				filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
-				rendered="#%{nameTask}.bean.revision == 'Rechazado'}"
-				required="#%{nameTask}.bean.revision == 'Rechazado'}"
+				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
+				required="#{%{nameTask}.bean.revision == 'Rechazado'}"
 				requiredMessage="Requerido">				
 				<f:selectItems
-					value="#%{nameTask}.bean.causasDevolucionOption}" />
+					value="#{%{nameTask}.bean.causasDevolucionOption}" />
 			</p:selectCheckboxMenu>
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
-				rendered="#%{nameTask}.bean.revision == 'Rechazado'}" />
+				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />
 			<p:tooltip id="toolTipCausasDevolucion" for="causasDevolucion"
 				value="CheckboxList1"
-				rendered="#%{nameTask}.bean.revision == 'Rechazado'}"
+				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
 				 />
 				
 			<p:outputLabel for="emailSGI" value="Enviar a:"
-				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
+				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
 			<p:inputText id="emailSGI"
-				value="#%{nameTask}.bean.emailSGI}"
-				rendered="#%{nameTask}.bean.revision == 'Aprobado'}"
-				required="#%{nameTask}.bean.revision == 'Aprobado'}"
+				value="#{%{nameTask}.bean.emailSGI}"
+				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}"
+				required="#{%{nameTask}.bean.revision == 'Aprobado'}"
 				requiredMessage="Requerido">
 				<f:validator validatorId="EmailValidator"></f:validator>
 			</p:inputText>
 			<p:message for="emailSGI" id="emailSGIMessage" style="color:red"
-				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
+				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
 			<p:tooltip id="toolTipEmailSGI" for="emailSGI" value="direccion1"
-				rendered="#%{nameTask}.bean.revision == 'Aprobado'}" />
+				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
 
 		</h:panelGrid>
 
