@@ -26,8 +26,8 @@
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
 				
 			<p:dataTable var="archivos" rowIndexVar="index"
-				value="#{%{nameTask}._FILE_decision}"
-				rendered="#{%{nameTask}._FILE_decision}!=null"
+				value="#{%{nameTask}.bean._FILE_decision}"
+				rendered="#{%{nameTask}.bean._FILE_decision!=null}"
 				>
 				<p:column>
 					<p:commandButton value="Documento n° #{index+1}"
