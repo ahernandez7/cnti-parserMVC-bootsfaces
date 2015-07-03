@@ -385,11 +385,11 @@ public class GenerateView {
 		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\"><h:outputText value=\"" + label + "\" /></p:column>\n";
 
 		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\">\n";
-		if ("java.util.List".contentEquals(field.getReturnType())) {// eres siomple
+		if ("java.util.List".contentEquals(field.getReturnType())) {
 			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\"" + valueBean + "\">\n";
 			outputElement += "<p:column>\n";
-			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"" + name + ".show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
-			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "\" widgetVar=\"" + name + "\" resizable=\"false\" \n";
+			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"" + name + "_#{index+1}.show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
+			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "_#{index+1}\" widgetVar=\"" + name + "_#{index+1}\" resizable=\"false\" \n";
 			outputElement += "rendered=\"" + renderedvalueBean + "\"> \n";
 			outputElement += "<p:media width=\"900px\" height=\"500px\" player=\"pdf\" \n";
 			outputElement += "value=\"#{" + controller + ".get_FILE()}\">\n";
