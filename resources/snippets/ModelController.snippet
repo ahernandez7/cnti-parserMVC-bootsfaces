@@ -103,7 +103,7 @@ public class %{NameController} {
 		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}", new ProcessController().getProcessDisplayName(task.getProcessId()));
 		htmlContent = htmlContent.replaceAll("%\\{idCase\\}", idCase);
 		
-		String idHash = util.createPDF(alfrescoPath, "Planilla de Solicitud", htmlContent);
+		String idHash = util.createPDF(alfrescoPath, "Resumen de la Solicitud", htmlContent);
 
 		new CaseImpl().updateCaseVariable("_FILE_datosBasicos", idCase, idHash);
 
