@@ -229,23 +229,45 @@ public class GenerateFiles {
 	}
 	
 	private void replaceReview(){
-		GenerateView gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
+		
+		GenerateView gv_tab = new GenerateView("resources/snippets/viewNotification.snippet", getPathOutputFileView(), this.nameApp);
+//		gv_tab.setTabsReferences("");
 		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
-		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
+		gv_tab.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		
-		
-		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
+		gv_tab.createTabReference("revision", "tab1",getDirNameAndPathFormToInstitucion());
 		gv_tab.replaceNameProcessBean();
 		gv_tab.replaceNameTask("revision");
-		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
+		gv_tab.replaceTabsReferences();
+		gv_tab.writeFileAndCreateDirToView("revision");
 		
-		gv_tab = new GenerateView("resources/snippets/tab2Review.snippet", getPathOutputFileView(), this.nameApp);
+		gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
 		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
 		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
 		
-		gv_tab.replaceIdAndNameTab("tab2", "Resumen");
+		
 		gv_tab.replaceNameProcessBean();
-		gv_tab.writeFileAndCreateDirToView("revision", "tab2");
+		gv_tab.replaceNameTask("revision");
+		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
+		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
+		
+//		GenerateView gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
+//		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
+//		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
+//		
+//		
+//		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
+//		gv_tab.replaceNameProcessBean();
+//		gv_tab.replaceNameTask("revision");
+//		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
+//		
+//		gv_tab = new GenerateView("resources/snippets/tab2Review.snippet", getPathOutputFileView(), this.nameApp);
+//		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
+//		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
+//		
+//		gv_tab.replaceIdAndNameTab("tab2", "Resumen");
+//		gv_tab.replaceNameProcessBean();
+//		gv_tab.writeFileAndCreateDirToView("revision", "tab2");
 	}
 	
 	private void generateCaseConsult(List<Field> fieldsComplete){
