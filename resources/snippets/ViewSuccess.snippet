@@ -9,10 +9,19 @@
 	<h:head></h:head>
 	<h:body>
 		<h:form>
-				<h:panelGrid columns="3" styleClass="gestorTramiteGrid">
-					<p:outputLabel
-						value="El Envío de su formulario se ha procesado exitosamente." />
-				</h:panelGrid>
+				<p:panel header="El Envío de su formulario se ha procesado exitosamente." 
+					rendered="#{TaskController.task.name == 'carga'}">				
+				<p:outputLabel rendered="#{TaskController.dbn.sexo == 'F'}" value="Estimada: "/>
+				<p:outputLabel rendered="#{TaskController.dbn.sexo == 'M'}" value="Estimado: "/>
+				#{TaskController.dbn.primerNombre} #{TaskController.dbn.segundoNombre} 
+				#{TaskController.dbn.primerApellido} #{TaskController.dbn.segundoApellido},
+				Se ha creado un nuevo caso n° #{TaskController.task.caseId} por concepto de 
+				#{TaskController.task.displayName}, en los próximos días será notificado sobre los avances del caso. 
+				</p:panel>
+				
+				<p:panel header="El Envío de su formulario se ha procesado exitosamente." rendered="#{TaskController.task.name != 'carga'}">
+				La actividad de #{TaskController.task.displayName}, se ha realizado exitosamente.
+				</p:panel>
 		</h:form>
 	</h:body>
 </f:view>
