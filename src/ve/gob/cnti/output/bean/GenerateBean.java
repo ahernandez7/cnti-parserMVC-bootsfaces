@@ -78,11 +78,12 @@ public class GenerateBean {
 
 			String nameField = field.getVarName();
 			String typeField = field.getTypeField();
-			List<String> nameOptions = field.getOptionValue();
 			String returnTypes = field.getReturnType().substring(field.getReturnType().lastIndexOf(".") + 1);
-
+			List<String> nameOptions = field.getOptionValue();
+			if(nameOptions != null)
+				this.values += createMethodSelectValue(nameOptions) + "\n";
+			
 			this.attributes += createAttribute(nameField, returnTypes, typeField, field.isActuation(), nameOptions);
-			this.values += createMethodSelectValue(nameOptions) + "\n";
 			this.setAndGetMethods += createSetMethod(nameField, returnTypes, typeField) + "\n";
 			this.setAndGetMethods += createGetMethod(nameField, returnTypes, typeField) + "\n";
 		}
@@ -116,6 +117,7 @@ public class GenerateBean {
 	}
 
 	private String createAttribute(String name, String type, String typeInput, boolean isReadOnly, List<String> options) {
+		
 		if (isReadOnly) {
 			if (type.equals("List") && !name.matches("^_FILE_.*$")) {
 				return "@FieldIsActuacion\nprivate " + "List<String>" + " " + name + ";\n" + "private " + "List<String> " + name + "Option" + " = Arrays.asList(" + this.createMethodSelectValue(options) + ");\n";

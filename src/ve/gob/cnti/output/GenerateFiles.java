@@ -231,7 +231,6 @@ public class GenerateFiles {
 	private void replaceReview(){
 		
 		GenerateView gv_tab = new GenerateView("resources/snippets/viewNotification.snippet", getPathOutputFileView(), this.nameApp);
-//		gv_tab.setTabsReferences("");
 		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
 		gv_tab.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		
@@ -251,24 +250,7 @@ public class GenerateFiles {
 		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
 		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
 		
-//		GenerateView gv_tab = new GenerateView("resources/snippets/tab1Review.snippet", getPathOutputFileView(), this.nameApp);
-//		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
-//		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
-//		
-//		
-//		gv_tab.replaceIdAndNameTab("tab1", "Revisión");
-//		gv_tab.replaceNameProcessBean();
-//		gv_tab.replaceNameTask("revision");
-//		gv_tab.writeFileAndCreateDirToView("revision", "tab1");
-//		
-//		gv_tab = new GenerateView("resources/snippets/tab2Review.snippet", getPathOutputFileView(), this.nameApp);
-//		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
-//		gv_tab.createDirViewTabAndFormToInst(getDirNameAndPathFormToInstitucion(), "revision");
-//		
-//		gv_tab.replaceIdAndNameTab("tab2", "Resumen");
-//		gv_tab.replaceNameProcessBean();
-//		gv_tab.writeFileAndCreateDirToView("revision", "tab2");
-	}
+	}	
 	
 	private void generateCaseConsult(List<Field> fieldsComplete){
 		
@@ -307,11 +289,22 @@ public class GenerateFiles {
 		for(Field field: fieldsComplete){
 			if (!field.getVarName().contains("_FILE"))
 				gvTab.createOutputElement(field);	
-			else{
+			else
 				gvTab.createDocumentElement(field);
-			}
 			gb.createImpAttAndMethos(field);
+			//System.out.println(field.toString());
 		}
+		//TODO verficar que esto sea corecto
+		Field field = new Field();
+		field.setIsActuation(true);
+		field.setLabelField("Comprobantes de Actuaciones");
+		field.setVarName("_FILE_actuaciones");
+		field.setReturnType("java.util.List");
+		field.setDescription("Comprobantes de Actuaciones");
+		field.setTypeField("TEXTBOX");
+		gvTab.createDocumentElement(field);
+		
+		gb.createImpAttAndMethos(field);
 		
 		gc.insertFilesInController(fieldsComplete);
 		gvTab.writeFileAndCreateDirToView(nameBean, "tabConsultaDeCaso");

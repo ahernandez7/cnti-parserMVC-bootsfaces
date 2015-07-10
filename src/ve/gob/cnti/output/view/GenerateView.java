@@ -353,7 +353,10 @@ public class GenerateView {
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
 
 			String outputElement = "<p:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
-			outputElement += "<p:outputLabel id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"/>\n";
+			outputElement += "<p:outputLabel id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\">\n";
+			if(field.getReturnType().contentEquals("java.util.Date"))
+				outputElement += "<f:convertDateTime pattern=\"dd/mm/yyyy\"/>\n";
+			outputElement += "</p:outputLabel>\n";
 			this.outputElements += outputElement;
 		}
 	}
