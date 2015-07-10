@@ -23,7 +23,9 @@
 			<p:outputLabel value="Fecha de cita" 
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.f_cita}" 
-				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
+				rendered="#{%{nameTask}.bean.f_cita!=null}">
+				<f:convertDateTime pattern="dd/mm/yyyy" />
+			</p:outputLabel>
 				
 			<p:dataTable var="archivos" rowIndexVar="index"
 				value="#{%{nameTask}.bean._FILE_decision}"
