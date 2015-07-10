@@ -28,6 +28,7 @@ import ve.gob.cnti.gestion.bonitaImpl.CaseImpl;
 import ve.gob.cnti.gestion.bonitaImpl.ControllerImpl;
 import ve.gob.cnti.gestion.bonitaImpl.TaskImpl;
 import ve.gob.cnti.gestion.utils.FacesHandler;
+import ve.gob.cnti.gestion.utils.Util_Dates;
 import ve.gob.cnti.gestion.utils.Utils;
 import ve.gob.cnti.gestion.utils.annotations.BeanIsInitCase;
 import ve.gob.cnti.gestion.utils.annotations.FieldIsActuacion;
@@ -50,6 +51,7 @@ public class %{NameController} {
     private IController iController = new ControllerImpl();
     private Utils util = new Utils();
     private UploadedFile uploadfile;
+    private Task task;
 	
 	private BeanFile fileBean;
 	private BeanFileServices fileServices = new BeanFileServices();
@@ -72,13 +74,16 @@ public class %{NameController} {
     	String alfrescoPath = "%{institucion}/%{processName}/"
     					+ idCase;
     	
+    	this.task = new TaskImpl().getTaskbyCaseId(idCase);
+    	
     	this.uploadFilesToAlfresco(alfrescoPath);  
         
-        iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(bean));
-        
-        if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class)){
+        if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
 			this.createPDF(alfrescoPath, idCase);
-		}
+		else
+			this.createPDFAction(alfrescoPath, idCase);
+        
+        iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(this.bean));
         
         new JMSImp().sendMessage(idCase);
         
@@ -89,9 +94,7 @@ public class %{NameController} {
 			throws UnsupportedEncodingException, IllegalStateException,
 			JSONException, IOException, InterruptedException, IllegalArgumentException, IllegalAccessException {
 
-		Task task = new TaskImpl().getTaskbyCaseId(idCase);
-		
-		String htmlContent = util.readPdfTemplate("/views/%{institucion}/%{processName}/forms/carga/");
+		String htmlContent = util.readPdfTemplate("/views/vicepresidencia/serviciodeensayo/forms/carga/");
 		
 		Field[] atributos = this.bean.getClass().getDeclaredFields();
 		for(Field atributo : atributos){
@@ -107,6 +110,70 @@ public class %{NameController} {
 
 		new CaseImpl().updateCaseVariable("_FILE_datosBasicos", idCase, idHash);
 
+	}
+	
+	@SuppressWarnings("unchecked")
+    public void createPDFAction(String alfrescoPath,String idCase)
+			throws UnsupportedEncodingException, IllegalStateException,
+			JSONException, IOException, InterruptedException, IllegalArgumentException, IllegalAccessException, 
+			NoSuchFieldException, SecurityException {
+
+    	if(!task.getName().contentEquals("carga")){
+    	
+		String htmlContent = util.readPdfTemplate("/views/layout/pdfTemplate/");
+				
+		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}", new ProcessController().getProcessDisplayName(task.getProcessId()));
+		htmlContent = htmlContent.replaceAll("%\\{idCase\\}", idCase);
+		htmlContent = htmlContent.replaceAll("%\\{nameTask\\}", task.getDisplayName());
+		htmlContent = htmlContent.replaceAll("%\\{funcionario\\}", facesHandler.getUserSession().get("email"));
+		htmlContent = htmlContent.replaceAll("%\\{fecha\\}", new Util_Dates().getDate() + " " +new Util_Dates().getHour());
+		
+		if(task.getName().contentEquals("revision")){
+			
+			String revision = "",emailSGI = "";			
+			List<String> causasDevolucion = new ArrayList<String>();
+			
+			Field[] atributos = this.bean.getClass().getDeclaredFields();
+			for(Field atributo : atributos){
+				
+				if (atributo.isAnnotationPresent(FieldIsActuacion.class)) {
+					
+					atributo.setAccessible(true);
+					
+					if(atributo.getName().contentEquals("revision"))
+						revision = (String) atributo.get(this.bean);
+					
+					if(atributo.getName().contentEquals("causasDevolucion"))
+						causasDevolucion =  (List<String>) atributo.get(this.bean);
+					
+					if(atributo.getName().contentEquals("emailSGI"))
+						emailSGI = (String) atributo.get(this.bean);
+						
+				}
+			}
+			
+			String s = " ";
+			if(causasDevolucion != null )
+				if(!causasDevolucion.isEmpty())
+					s += causasDevolucion;
+			
+			htmlContent = htmlContent.replaceAll("%\\{resultado\\}",revision + s);
+			
+			if(revision.contentEquals("Aprobado"))
+				htmlContent = htmlContent.replaceAll("%\\{enviadoA\\}", emailSGI);
+			else
+				htmlContent = htmlContent.replaceAll("%\\{enviadoA\\}", "N/A");	
+			
+		}else{
+			htmlContent = htmlContent.replaceAll("%\\{resultado\\}","N/A");
+			htmlContent = htmlContent.replaceAll("%\\{enviadoA\\}", "N/A");
+		}
+		
+		String idHash = util.createPDF(alfrescoPath, "Comprobante de Actuacion de "+task.getDisplayName(), htmlContent);
+		
+		new CaseImpl().updateCaseVariable("_FILE_actuaciones", idCase, idHash);
+
+    	}
 	}
     
     public %{NameBean} getBeanToBPM(String idCase,DatosBasicosNatural dbn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, NoSuchFieldException, SecurityException{
