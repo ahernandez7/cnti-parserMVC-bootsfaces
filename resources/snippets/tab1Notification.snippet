@@ -12,27 +12,30 @@
 			<br />
 			<p:outputLabel>Por favor espere mientras se procesa su petición...</p:outputLabel>
 		</p:blockUI>
-
+		<br/><br/>
 		<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
 
-			<p:outputLabel value="Causas de devolución"
+			<p:outputLabel value="Su trámite fue devuelto debido a: "
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>			
 
-			<p:outputLabel value="Fecha de cita" 
+			<p:outputLabel value="Su trámite le otorga una cita en la fecha: " 
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.f_cita}" 
 				rendered="#{%{nameTask}.bean.f_cita!=null}">
 				<f:convertDateTime pattern="dd/mm/yyyy" />
 			</p:outputLabel>
+			
+			<p:outputLabel value="Su trámite le otorga el siguiente documento" 
+				rendered="#{%{nameTask}.bean._FILE_decision!=null}"/>
 				
 			<p:dataTable var="archivos" rowIndexVar="index"
 				value="#{%{nameTask}.bean._FILE_decision}"
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"
 				>
 				<p:column>
-					<p:commandButton value="Documento n° #{index+1}"
+					<p:commandButton value="Documento"
 						onclick="_FILE_constancias.show();"	></p:commandButton>
 					
 					<p:dialog header="Visor PDF" id="_FILE_constancias"
