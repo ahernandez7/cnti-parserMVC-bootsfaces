@@ -1,6 +1,9 @@
 package ve.gob.cnti.wndows.swing;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -8,36 +11,61 @@ import java.io.File;
 public class Main extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final String[] titulos = {"Nombre","Archivos"};
 
-	private JLabel jlbl_label;
-	private JButton jbtn_boton,jbtn_abrirArchivo;
-	private JTextField jtxt_texto;
-
+	private DefaultTableModel dtm = new DefaultTableModel();
+	private JTable jtbl_table = new JTable(dtm);
+	private JScrollPane scroll;
+	
+	private JTextField jtext_pathPorlet,jtext_nombreInst;
+	private JLabel jlbl_nombreInst;
+	private JButton jbtn_abrirArchivos,jbtn_pathPorlet;
+	
 	Main() {
 
 		super("Main Window!!");
 
 		this.definirVentana();
-
 		this.setLocationRelativeTo(null);
-		this.setSize(800, 500);// 400 width and 500 height
+		this.setSize(800, 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);// making the frame visible
+		this.setVisible(true);
 
 	}
 
 	public void definirVentana() {
-		this.setLayout(new FlowLayout());
-//		jtxt_texto = new JTextField(20);
-//		jbtn_boton = new JButton("Enviar");
-		jbtn_abrirArchivo = new JButton("Abrir Archivo");
-		jlbl_label = new JLabel();
-//		this.add(jtxt_texto);
-//		this.add(jbtn_boton);
-		this.add(jbtn_abrirArchivo);
-		this.add(jlbl_label);
-//		jbtn_boton.addActionListener(this);
-		jbtn_abrirArchivo.addActionListener(this);
+		this.setLayout(new GridBagLayout());
+		
+		//Botones
+		jbtn_abrirArchivos = new JButton("Obtener Archivos");
+		jlbl_nombreInst = new JLabel("Iniciales de la institucion");
+		jbtn_pathPorlet = new JButton("Ruta de la maquina de tramites");
+		
+		//Tabla		
+		dtm.setColumnIdentifiers(titulos);
+		jtbl_table.setEnabled(false);
+		scroll = new JScrollPane(jtbl_table);
+		scroll.setBounds(0, 0,700, 200);
+		
+		//Campos de texto
+		jtext_nombreInst = new JTextField(41);jtext_nombreInst.setEditable(true);
+		jtext_pathPorlet = new JTextField(41);jtext_pathPorlet.setEditable(false);
+		
+		//primera fila
+		this.add(jtext_nombreInst,this.limitarComponente(0, 0, 1, 1));
+		this.add(jlbl_nombreInst,this.limitarComponente(1, 0, 1, 1));
+		
+		//Segunda Fila
+		this.add(jtext_pathPorlet,this.limitarComponente(0, 1, 1, 1));
+		this.add(jbtn_pathPorlet,this.limitarComponente(1, 1, 1, 1));
+		
+		//Tercera Fila
+		this.add(scroll,this.limitarComponente(0, 2, 1, 1));
+		this.add(jbtn_abrirArchivos,this.limitarComponente(1, 2, 1, 1));
+		
+		
+		jbtn_abrirArchivos.addActionListener(this);
 	}
 
 	public static void main(String[] args) {
@@ -45,22 +73,42 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jbtn_boton) {
-			jlbl_label.setText(jtxt_texto.getText());
-		}
-		if (e.getSource() == jbtn_abrirArchivo) {
-			jlbl_label.setText(this.obtenerRutaArchivo());
+		if (e.getSource() == jbtn_abrirArchivos) {
+			this.obtenerArchivos();
 		}
 	}
 
-	private String obtenerRutaArchivo() {
+	private void obtenerArchivos() {
 		
-		JFileChooser file = new JFileChooser();
-		file.showOpenDialog(this);
-		File archivo = file.getSelectedFile();
-		String path = archivo.getAbsolutePath();
-		archivo.delete();
+		JFileChooser chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Bar Proccess", "bar");
+		chooser.setFileFilter(filter);
+		chooser.setMultiSelectionEnabled(true);
+		chooser.showOpenDialog(this);
+		File[] archivos = chooser.getSelectedFiles();
+		boolean contieneArchivosInvalidos = false;
+		for(File archivo:archivos){
+			if(archivo.getName().toLowerCase().endsWith("bar")){
+//				Object[] aux = {(dtm.getRowCount()+1),archivo.getName(),archivo.getAbsolutePath()};
+				Object[] aux = {archivo.getName(),archivo.getAbsolutePath()};
+				dtm.addRow(aux);
+			}else
+				contieneArchivosInvalidos = true;
+		}
 		
-		return path;
+		if(contieneArchivosInvalidos)
+			JOptionPane.showMessageDialog(this,"Los archivos a parsear deben ser de extencion bar", "Error",
+				    JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private GridBagConstraints limitarComponente(int x,int y, int w,int h){
+		
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = x;
+		constraints.gridy = y;
+		constraints.gridwidth = w;
+		constraints.gridheight = h;
+		
+		return constraints;
 	}
 }

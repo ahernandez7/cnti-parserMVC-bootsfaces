@@ -7,7 +7,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 		<p:tab id="tabconsulta" title="Consulta" rendered="#{TaskController.isStartCase==null}">
 		#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
-   		#{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn))}
+   		#{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
 		<h:form>
 		
 		<p:tooltip />

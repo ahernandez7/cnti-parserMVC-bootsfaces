@@ -1,6 +1,7 @@
 package %{packages};
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
@@ -94,7 +95,7 @@ public class %{NameController} {
 			throws UnsupportedEncodingException, IllegalStateException,
 			JSONException, IOException, InterruptedException, IllegalArgumentException, IllegalAccessException {
 
-		String htmlContent = util.readPdfTemplate("/views/vicepresidencia/serviciodeensayo/forms/carga/");
+		String htmlContent = util.readPdfTemplate("/views/%{institucion}/%{processName}/forms/carga/");
 		
 		Field[] atributos = this.bean.getClass().getDeclaredFields();
 		for(Field atributo : atributos){
@@ -171,37 +172,40 @@ public class %{NameController} {
 		
 		String idHash = util.createPDF(alfrescoPath, "Comprobante de Actuacion de "+task.getDisplayName(), htmlContent);
 		
-		new CaseImpl().updateCaseVariable("_FILE_actuaciones", idCase, idHash);
+		List<String> actuaciones = new CaseImpl().getVariable("_FILE_actuaciones", Long.parseLong(idCase));
+		
+		actuaciones.add(idHash);
+
+		new CaseImpl().updateCaseVariable("_FILE_actuaciones", idCase,(Serializable) actuaciones);
 
     	}
 	}
     
-    public %{NameBean} getBeanToBPM(String idCase,DatosBasicosNatural dbn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, NoSuchFieldException, SecurityException{
+    public %{NameBean} getBeanToBPM(String idCase,DatosBasicosNatural dbn,String isHistory) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, NoSuchFieldException, SecurityException{
 		
+			
 		if(idCase != null){
 		
 			%{NameBean} cd = null;
-			try {
-				cd = (%{NameBean}) util.convertListMapToObject(
-						iController.getVariablesValues(idCase), bean);
-			} catch (IllegalAccessException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (InvocationTargetException e) {
-			} catch (ParseException e) {
-			}
-	
-			if (cd == null) {
-				return new %{NameBean}();
-			}
 			
-			if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class)){
+			if(isHistory.length()>0){			
+				List<Map<String, String>> list = new CaseImpl().getVariablesHistoryByCaseId(idCase);			
+				if(list.size()>0)
+					cd = (%{NameBean}) util.convertListMapToObject(list,bean);
+			}else
+				cd = (%{NameBean}) util.convertListMapToObject(iController.getVariablesValues(idCase), bean);
+				
+			if (cd == null) 
+				return new %{NameBean}();
+			
+			if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
 				cd = (%{NameBean}) new TaskController().setValuesFromIO(cd, dbn);
-			}
 			
 			return cd;
 			
 		}else
 			return new %{NameBean}();	
+			
 	}
 	
 	@SuppressWarnings("unchecked")
