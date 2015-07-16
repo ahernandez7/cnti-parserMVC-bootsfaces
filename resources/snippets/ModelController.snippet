@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -91,27 +92,42 @@ public class %{NameController} {
         return "%{DirViewSuccess}";
     }
     
-    public void createPDF(String alfrescoPath,String idCase)
+    public void createPDF(String alfrescoPath, String idCase)
 			throws UnsupportedEncodingException, IllegalStateException,
-			JSONException, IOException, InterruptedException, IllegalArgumentException, IllegalAccessException {
+			JSONException, IOException, InterruptedException,
+			IllegalArgumentException, IllegalAccessException {
 
-		String htmlContent = util.readPdfTemplate("/views/%{institucion}/%{processName}/forms/carga/");
-		
+		String htmlContent = util
+				.readPdfTemplate("/views/vicepresidencia/serviciodeensayo/forms/carga/");
+
 		Field[] atributos = this.bean.getClass().getDeclaredFields();
-		for(Field atributo : atributos){
-			if (atributo.isAnnotationPresent(FieldIsActuacion.class)) {
+		for (Field atributo : atributos) {
+			if (atributo.isAnnotationPresent(FieldIsActuacion.class) && atributo.get(bean)!=null) {
 				atributo.setAccessible(true);
-				htmlContent = htmlContent.replaceAll("%\\{"+atributo.getName()+"\\}", (String) (atributo.get(this.bean)+""));
+				if (atributo.get(this.bean) instanceof Date)
+					htmlContent = htmlContent.replaceAll(
+							"%\\{" + atributo.getName() + "\\}", util
+									.getFormattedDate("dd/mm/yyyy",
+											(String) atributo.get(this.bean)
+													.toString()));
+				else if(!atributo.getName().startsWith("_FILE_"))
+					htmlContent = htmlContent.replaceAll(
+							"%\\{" + atributo.getName() + "\\}",
+							atributo.get(this.bean).toString());
 			}
 		}
-		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}", new ProcessController().getProcessDisplayName(task.getProcessId()));
+		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}",
+				new ProcessController().getProcessDisplayName(task
+						.getProcessId()));
 		htmlContent = htmlContent.replaceAll("%\\{idCase\\}", idCase);
-		
-		String idHash = util.createPDF(alfrescoPath, "Resumen de la Solicitud", htmlContent);
+
+		String idHash = util.createPDF(alfrescoPath, "Resumen de la Solicitud",
+				htmlContent);
 
 		new CaseImpl().updateCaseVariable("_FILE_datosBasicos", idCase, idHash);
 
 	}
+
 	
 	@SuppressWarnings("unchecked")
     public void createPDFAction(String alfrescoPath,String idCase)
@@ -220,8 +236,8 @@ public class %{NameController} {
 			Field variable = this.getClass().getDeclaredField(
 					beanF.getVarName());
 
-			Field archVar = bean.getClass().getDeclaredField(
-					beanF.getVarName());
+			Field archVar = bean.getClass()
+					.getDeclaredField(beanF.getVarName());
 
 			archVar.setAccessible(true);
 			variable.setAccessible(true);
@@ -235,19 +251,21 @@ public class %{NameController} {
 				if (!beanF.isMultiple()) {
 					archVar.set(
 							bean,
-							iCmis.uploadDocument(arch, pathFolder,
-									beanF.getVarName()));
-				} else{
+							iCmis.uploadDocument(arch, pathFolder, beanF
+									.getVarName().replaceAll("_FILE_", "")
+									.toUpperCase()+".pdf"));
+				} else {
 					stringTemps.add(iCmis.uploadDocument(arch, pathFolder,
-							beanF.getVarName() + "_" + i));					
+							beanF.getVarName().replaceAll("_FILE_", "")
+							.toUpperCase() + "_" + i+".pdf"));
 				}
 				i++;
 			}
 			if (beanF.isMultiple())
-				archVar.set(bean,stringTemps);
-			
+				archVar.set(bean, stringTemps);
+
 		}
-		
+
 		return true;
 	}
 	
