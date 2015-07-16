@@ -27,7 +27,7 @@
 	
 	<div align="right">
 	<p:commandButton value="Enviar Datos" type="button"
-	onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+	onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
 	confirmDialog.content.parent().css('left', '25%');" />
 	</div>
 
@@ -36,7 +36,7 @@
 		widgetVar="confirmDialog" id="confirmacion"
 		tyle="position:fixed;" appendToBody="true">
 
-		<p:commandButton value="Si"
+		<p:commandButton value="Si" update="panelC"
 		action="#{%{nameTask}.executeTask}"
 			oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
 			onclick="PF('blockUI').show()"
