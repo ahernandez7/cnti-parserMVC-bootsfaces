@@ -60,7 +60,6 @@ public class GenerateView {
 	public void createValidator(String nameValidator, String nameField) {
 
 		// TODO:Completar los validadores restantes
-
 		if ("mandatory".equalsIgnoreCase(nameValidator)) 
 			this.required = "required=\"true\" requiredMessage=\"Requerido\"";
 		if ("readonly".equalsIgnoreCase(nameValidator)) 
@@ -68,23 +67,24 @@ public class GenerateView {
 		if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\"" + nameField + "\"/>\n";
 		} else if ("EmailValidator".equalsIgnoreCase(nameValidator)) {
+			//TODO Agregar el rango maximo y minimo al validador de longitud
 			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("CharFieldValidator".equalsIgnoreCase(nameValidator)) {
-
-		} else if ("NumericIntegerFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"CharValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("MailValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("DateFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"DateValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("NumericDoubleFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"DoubleValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("NumericFloatFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"FloatValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("NumericIntegerFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"IntegerValidator\" for=\"" + nameField + "\"/>\n";
 		} else if ("NumericLongFieldValidator".equalsIgnoreCase(nameValidator)) {
-
+			this.validator += "\t<f:validator validatorId=\"LongValidator\" for=\"" + nameField + "\"/>\n";
+		}else if ("PhoneNumberValidator".equalsIgnoreCase(nameValidator)) {
+			this.validator += "\t<f:validator validatorId=\"PhoneValidator\" for=\"" + nameField + "\"/>\n";
 		}
 	}
 
@@ -107,6 +107,7 @@ public class GenerateView {
 		// String name = field.getNameField();
 		String name = field.getVarName();
 		String type = field.getTypeField();
+		@SuppressWarnings("unused")
 		String toolTip = field.getDescription();
 
 		String fieldInput = "";
@@ -121,7 +122,6 @@ public class GenerateView {
 		}
 
 		if ("TEXTBOX".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
-			// TODO Arreglar error de parseo
 
 			if (name.matches("^_FILE_.*$")) {
 				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\" ";

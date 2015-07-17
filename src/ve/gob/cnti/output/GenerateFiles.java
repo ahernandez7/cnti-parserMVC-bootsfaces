@@ -130,6 +130,7 @@ public class GenerateFiles {
 						for (int k = 0; k < validators.size(); k++) {
 							Validator validator = validators.get(k);
 							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
+							System.out.println(validator.getNameValidator()+" -- "+ field.getNameField());
 						}
 						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
