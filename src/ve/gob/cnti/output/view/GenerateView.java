@@ -151,9 +151,7 @@ public class GenerateView {
 			if (name.matches("^_FILE_.*$")) {
 				if ("".equals(this.readOnly)) {
 					fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" mode=\"simple\"/>\n";
-					System.out.println("subiendo");
 				} else {
-					System.out.println("bajando");
 					fieldInput += "<p:commandButton id=\"" + name + "\" value=\"Bajar Archivo\" ajax=\"false\" icon=\"ui-icon-arrowthick-1-s\">\n";
 					fieldInput += "\t<p:fileDownload value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.getFile()}\" />\n";
 					fieldInput += "\t<f:param name=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" />\n";
