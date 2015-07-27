@@ -98,7 +98,7 @@ public class %{NameController} {
 			IllegalArgumentException, IllegalAccessException {
 
 		String htmlContent = util
-				.readPdfTemplate("/views/vicepresidencia/serviciodeensayo/forms/carga/");
+				.readPdfTemplate("/views/%{institucion}/serviciodeensayo/forms/carga/");
 
 		Field[] atributos = this.bean.getClass().getDeclaredFields();
 		for (Field atributo : atributos) {
