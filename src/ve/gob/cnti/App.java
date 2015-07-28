@@ -182,7 +182,7 @@ public class App {
 		gf.setSnippetFileViewCaseConsult(this.snippetFileViewCaseConsult);
 		gf.setSnippetFileViewCaseConsultTab(this.snippetFileViewCaseConsultTab);
 		gf.setPathOutputFileView(this.pathViewOutputFile);
-		gf.setDirNameAndPathFormToInstitucion(this.dirNameInstitucion+this.pathDirFormView);
+		gf.setDirNameAndPathFormToInstitucion(institucion+this.pathDirFormView);
 		gf.setInstitucion(institucion);
 		
 		gf.setControllerButtonNameSubmit(this.controllerButtonNameSubmit);
