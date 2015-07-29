@@ -22,6 +22,8 @@ import ve.gob.cnti.windows.swing.Config;
 import ve.gob.cnti.windows.swing.ConfigForm;
 
 public class Utils {
+	
+	private static final String HOMECONFIG = System.getProperty("user.home")+"/.config.obj";
 
 	/**
 	 * Ubica el componente dentro de la vista
@@ -68,23 +70,33 @@ public class Utils {
 
 		JOptionPane.showMessageDialog(comp, msj, title, type);
 	}
-
-	public String executeCommand(String command) {
-		StringBuffer output = new StringBuffer();
-		Process p;
-		try {
-			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				output.append(line + "\n");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println(output.toString());
-		return output.toString();
+	
+	public void executeCommand(String command) {
+		
+		String s = null;
+		 
+        try {
+            Process p = Runtime.getRuntime().exec(command);
+             
+            BufferedReader stdInput = new BufferedReader(new
+                 InputStreamReader(p.getInputStream()));
+ 
+            BufferedReader stdError = new BufferedReader(new
+                 InputStreamReader(p.getErrorStream()));
+ 
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+            }
+             
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+             
+        }
+        catch (IOException e) {
+            System.out.println("exception happened - here's what I know: ");
+            e.printStackTrace();
+        }
 	}
 
 	public String MD5(String md5) {
@@ -114,7 +126,7 @@ public class Utils {
     }
 	
 	public void writeConfig(Config cfg) throws IOException{
-		File file = new File("/tmp/cntiParserApp/config.obj");
+		File file = new File(HOMECONFIG);
 		FileOutputStream fos = new FileOutputStream(file);
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(cfg);
@@ -127,22 +139,14 @@ public class Utils {
 		ObjectInputStream ois = null;
 		Config cfg = null;
 		try {
-			File file = new File("/tmp/cntiParserApp");
-			if(!file.isDirectory()){
-				file.mkdirs();
-				file = new File("/tmp/cntiParserApp/config.obj");				
-				@SuppressWarnings("unused")
-				ConfigForm cfgForm = new ConfigForm();
-				return cfg;
-			}else{
-				file = new File("/tmp/cntiParserApp/config.obj");				
+			File file = new File(HOMECONFIG);
+			if(file.isFile()){
 				FileInputStream fis = new FileInputStream(file);
 				ois = new ObjectInputStream(fis);
 				cfg = (Config) ois.readObject();	
-			}				
-			
+			}else
+				new ConfigForm();
 		} catch (Exception e) {
-			// TODO: handle exception
 			@SuppressWarnings("unused")
 			ConfigForm cfgForm = new ConfigForm();
 		}

@@ -3,15 +3,17 @@ package ve.gob.cnti.windows.swing;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -20,6 +22,7 @@ import javax.swing.JLabel;
 import org.jdom2.JDOMException;
 
 import ve.gob.cnti.App;
+import ve.gob.cnti.utils.CustomOutputStream;
 import ve.gob.cnti.utils.Utils;
 
 public class ParserProcessing extends JFrame implements ActionListener {
@@ -31,6 +34,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	JScrollPane outScroll = new JScrollPane(textArea);
 	JButton btnCerrar = new JButton("Cerrar");
 	JButton btnIniciar = new JButton("Iniciar Proceso");
+	JLabel lblProcesar;
 
 	private Utils util = new Utils();
 	// Variables para el parseo
@@ -39,14 +43,34 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private String pathTemp;
 
+	@SuppressWarnings("unused")
+	private PrintStream standardOut;
+
 	public ParserProcessing(String inicialesInst, String rutaPorleth, File[] archivos) {
+
+		super("Ventana de Procesamiento");
 
 		this.inicialesInst = inicialesInst;
 		this.rutaPorleth = rutaPorleth;
 		this.archivos = archivos;
 
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setBounds(100, 100, 650, 500);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Config cfg;
+				try {
+					cfg = new Utils().readConfig();
+					ParserForm pf = new ParserForm(cfg.getInicialesinstitucion(), cfg.getRutaBandeja());
+					pf.setVisible(true);
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		setBounds(100, 100, 850, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,38 +79,69 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		textArea.setEditable(false);
 		textArea.setBackground(Color.BLACK);
 		textArea.setForeground(Color.GREEN);
-		outScroll.setBounds(12, 35, 620, 394);
+		outScroll.setBounds(12, 35, 820, 394);
 		contentPane.add(outScroll);
-		
-		btnCerrar.setBounds(519, 436, 117, 25);
+		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+
+		// keeps reference of standard output stream
+		standardOut = System.out;
+
+		// re-assigns standard output stream and error output stream
+		System.setOut(printStream);
+		System.setErr(printStream);
+
+		btnCerrar.setBounds(719, 436, 117, 25);
 		contentPane.add(btnCerrar);
 		btnCerrar.addActionListener(this);
-		
-		btnIniciar.setBounds(371, 436, 138, 25);
+
+		btnIniciar.setBounds(569, 436, 138, 25);
 		contentPane.add(btnIniciar);
 		btnIniciar.addActionListener(this);
 
-		JLabel lblProcesar = new JLabel("Procesando la petición...");
-		lblProcesar.setBounds(126, 12, 192, 25);
+		lblProcesar = new JLabel();
+		lblProcesar.setBounds(296, -2, 192, 25);
 		contentPane.add(lblProcesar);
-		
+
+		setResizable(false);
 		setLocationRelativeTo(null);
+
+		this.updateTextArea("\nRuta del Proyecto de Bandeja = " + this.rutaPorleth);
+		this.updateTextArea("\nIniciales del ente = " + this.inicialesInst);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCerrar) {
-			this.dispose();
+			Config cfg;
+			try {
+				cfg = new Utils().readConfig();
+				ParserForm pf = new ParserForm(cfg.getInicialesinstitucion(), cfg.getRutaBandeja());
+				pf.setVisible(true);
+				this.dispose();
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		if (e.getSource() == btnIniciar) {
-			this.procesar();
+			this.startProcess(this);
 		}
-		
+
+	}
+
+	private void startProcess(final ParserProcessing pp) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				pp.procesar();
+			}
+		});
+		thread.start();
 	}
 
 	public void procesar() {
-		this.updateTextArea("Procesando...\n");
-		this.updateTextArea("\nRuta del Proyecto de Bandeja = " + this.rutaPorleth);
-		this.updateTextArea("\nIniciales de la Institución = " + this.inicialesInst);
+
+		lblProcesar.setText("Procesando la petición...");
 
 		// creando carpeta temporal
 		this.updateTextArea("\nCreacion de carpetas temporales");
@@ -98,7 +153,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		}
 		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		btnIniciar.setVisible(false);
-		System.out.println(pathTemp);
 		util.executeCommand("rm -R " + pathTemp);
 	}
 
@@ -110,13 +164,13 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/views");
 
 		// copiando bar a carpeta temporal
-		this.updateTextArea("\n\tCopiando " + archivo + " a carpeta temporal " + pathTemp + "bars/file" + n);
+		this.updateTextArea("\nCopiando " + archivo + " a carpeta temporal " + pathTemp + "bars/file" + n);
 		this.copyFile(archivo, pathTemp + "bars/file" + n);
 
 		// Descomprimiendo bar
-		this.updateTextArea("\n\tDescomprimiendo  " + pathTemp + "bars/file" + n + " a carpeta temporal " + pathTemp + "bars/bar" + n);
+		this.updateTextArea("\nDescomprimiendo  " + pathTemp + "bars/file" + n + " a carpeta temporal " + pathTemp + "bars/bar" + n);
 		util.executeCommand("mkdir " + pathTemp + "bars/bar" + n);
-		this.updateTextArea(util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n));
+		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
 
 		// Parseando Aplicación
 		try {
@@ -129,9 +183,9 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		// moviendo las vistas
 		this.updateTextArea("\nCopiando las vistas");
-		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/"+inicialesInst+"/ " + rutaPorleth + "/docroot/views/");
+		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/" + inicialesInst + "/ " + rutaPorleth + "/docroot/views/");
 
-		//moviendo los modelos y controladores
+		// moviendo los modelos y controladores
 		this.updateTextArea("\nCopiando los modelos y controladores");
 		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
 
@@ -139,6 +193,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private void createPathTemp() {
 		this.pathTemp = "/tmp/cntiParserApp/";
+		util.executeCommand("mkdir " + pathTemp);
 		this.pathTemp += util.MD5(new Date().toString()) + "/";
 		util.executeCommand("mkdir " + pathTemp);
 		util.executeCommand("mkdir " + pathTemp + "bars");
@@ -153,11 +208,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	}
 
 	private void updateTextArea(final String text) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				textArea.append(text);
-			}
-		});
+		System.out.println(text);
 	}
 
 }
