@@ -1,13 +1,9 @@
 package ve.gob.cnti.helper.util;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
-import ve.gob.cnti.App;
 import ve.gob.cnti.helper.input.ReadFile;
 
 public class LibUtils {
