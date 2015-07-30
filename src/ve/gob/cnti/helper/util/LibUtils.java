@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import ve.gob.cnti.App;
 import ve.gob.cnti.helper.input.ReadFile;
 
 public class LibUtils {
@@ -58,15 +59,10 @@ public class LibUtils {
 
 	public static Properties loadFileProperties(String file) {
 
-		InputStream input = null;
 		Properties props = new Properties();
 
 		try {
-			input = new FileInputStream(file);
-			props.load(input);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			props.load(LibUtils.class.getResourceAsStream("/"+file));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

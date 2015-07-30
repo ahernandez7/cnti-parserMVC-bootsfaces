@@ -107,6 +107,11 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		this.updateTextArea("\nRuta del Proyecto de Bandeja = " + this.rutaPorleth);
 		this.updateTextArea("\nIniciales del ente = " + this.inicialesInst);
+		
+		this.updateTextArea("\nCreacion de carpetas temporales");
+		this.createPathTemp();
+		
+		System.out.println("Path temp "+pathTemp);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -142,10 +147,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	public void procesar() {
 
 		lblProcesar.setText("Procesando la petición...");
-
-		// creando carpeta temporal
-		this.updateTextArea("\nCreacion de carpetas temporales");
-		this.createPathTemp();
 
 		this.updateTextArea("\nArchivos: ");
 		for (int i = 0; i < archivos.length; i++) {
