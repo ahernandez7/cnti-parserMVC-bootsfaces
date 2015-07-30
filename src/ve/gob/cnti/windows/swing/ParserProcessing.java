@@ -12,8 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -111,7 +114,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		this.updateTextArea("\nCreacion de carpetas temporales");
 		this.createPathTemp();
 		
-		System.out.println("Path temp "+pathTemp);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -152,6 +154,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		for (int i = 0; i < archivos.length; i++) {
 			this.unzipFileBarAndParserApp(archivos[i].getAbsolutePath(), i + 1);
 		}
+		this.createIntitucionProperties();
 		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		btnIniciar.setVisible(false);
 		util.executeCommand("rm -R " + pathTemp);
@@ -190,6 +193,21 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		this.updateTextArea("\nCopiando los modelos y controladores");
 		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
 
+	}
+	
+	private void createIntitucionProperties(){
+		String path = pathTemp + "MVC_APPS/beansANDcontrollers/ve/gob/cnti/gestion/resources/institucion.properties";
+		File file = new File(path);
+		file.getParentFile().mkdirs();
+		PrintWriter writer =null;
+		try {
+			writer = new PrintWriter(path, "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		writer.println("dirViews=/views/"+this.inicialesInst+"/");
+		writer.close();
+		util.executeCommand("mv " + path +" "+ rutaPorleth + "/docroot/WEB-INF/src/ve/gob/cnti/gestion/resources/institucion.properties");
 	}
 
 	private void createPathTemp() {
