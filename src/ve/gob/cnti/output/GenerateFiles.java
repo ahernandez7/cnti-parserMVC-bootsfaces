@@ -135,13 +135,9 @@ public class GenerateFiles {
 						gv_tab.createInputElement(field,String.valueOf(i+1));
 						if (field.getVarName().contains("_FILE") && !containFiles){
 							nTabsWithFiles ++;
-							gv_tab.insertMessageTag("Tab" + (i + 1), true);
-							gv_tab.insertFileTable(String.valueOf(i+1), true);
 							containFiles=true;
-						}else{
-							gv_tab.insertMessageTag("Tab" + (i + 1), false);	
-							gv_tab.insertFileTable(String.valueOf(i+1), false);
 						}
+						
 						
 						if(field.getVarName().contains("_FILE")){
 							List<Validator> validadores = field.getListValidators();
@@ -155,6 +151,9 @@ public class GenerateFiles {
 							}
 							if(!obligatorios.containsKey(field.getVarName()))
 								obligatorios.put(field.getVarName(), "no_requerido");
+							
+							gv_tab.insertMessageTag("Tab" + (i + 1), true);
+							gv_tab.insertFileTable(String.valueOf(i+1), true);
 						}
 
 						fieldsComplete.add(field);
