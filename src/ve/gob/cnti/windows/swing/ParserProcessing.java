@@ -154,7 +154,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		for (int i = 0; i < archivos.length; i++) {
 			this.unzipFileBarAndParserApp(archivos[i].getAbsolutePath(), i + 1);
 		}
-		this.createIntitucionProperties();
 		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		btnIniciar.setVisible(false);
 		util.executeCommand("rm -R " + pathTemp);
@@ -195,21 +194,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	}
 	
-	private void createIntitucionProperties(){
-		String path = pathTemp + "MVC_APPS/beansANDcontrollers/ve/gob/cnti/gestion/resources/institucion.properties";
-		File file = new File(path);
-		file.getParentFile().mkdirs();
-		PrintWriter writer =null;
-		try {
-			writer = new PrintWriter(path, "UTF-8");
-		} catch (FileNotFoundException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		writer.println("dirViews=/views/"+this.inicialesInst+"/");
-		writer.close();
-		util.executeCommand("mv " + path +" "+ rutaPorleth + "/docroot/WEB-INF/src/ve/gob/cnti/gestion/resources/institucion.properties");
-	}
-
 	private void createPathTemp() {
 		this.pathTemp = "/tmp/cntiParserApp/";
 		util.executeCommand("mkdir " + pathTemp);
