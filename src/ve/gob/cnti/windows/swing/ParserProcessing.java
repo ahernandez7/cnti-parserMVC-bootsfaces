@@ -151,7 +151,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		}
 		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		btnIniciar.setVisible(false);
-//		util.executeCommand("rm -R " + pathTemp);
+		util.executeCommand("rm -R " + pathTemp);
 	}
 
 	private void unzipFileBarAndParserApp(String archivo, int n) {
