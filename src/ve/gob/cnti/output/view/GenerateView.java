@@ -329,16 +329,16 @@ public class GenerateView {
 	}
 
 	public void insertFileTable(String tab, boolean containsFiles) {
-		String table = "", rendered = "", delete = "";
-		if (!tab.contentEquals("TabResumen")) {
-			rendered = "rendered=\"#{list.tab == 'tab" + tab + "'}\"";
-			delete = "<p:column>" + "<p:commandButton actionListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.removeFile(index,index2)}\"" + " value=\"Suprimir\" update=\":form:t" + tab + "\">" + "</p:commandButton>" + "</p:column>";
-		}
+		String table = "", rendered = "", delete = "";		
 		if (containsFiles) {
 			table = "<p:dataTable id=\"t" + tab + "\" var=\"list\"	emptyMessage=\"#{i18n['emptyTable']}\" "  +  "value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.beanFiles}\" " + "rowIndexVar=\"index\"> " + "<f:facet name=\"header\">Documentos anexos</f:facet>	"
 					+ "<p:column headerText=\"Nombre del documento\" " + rendered + ">" + "<h:outputText value=\"#{list.nombreOficial}\" />" + "</p:column>" + "<p:column headerText=\"Archivos\" " + rendered + "> " + "<p:dataTable var=\"archivos\" value=\"#{list.fileNames}\" rowIndexVar=\"index2\">"
 					+ "<p:column><h:outputText value=\"#{archivos}\"></h:outputText></p:column>" + delete + "</p:dataTable>" + "</p:column>" + "</p:dataTable>";
+		}else if (!tab.contentEquals("TabResumen")) {
+			rendered = "rendered=\"#{list.tab == 'tab" + tab + "'}\"";
+			delete = "<p:column>" + "<p:commandButton actionListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.removeFile(index,index2)}\"" + " value=\"Suprimir\" update=\":form:t" + tab + "\">" + "</p:commandButton>" + "</p:column>";
 		}
+		
 		this.snippetFile = LibUtils.replacePattern("%\\{dataTable\\}", table, this.snippetFile);
 	}
 

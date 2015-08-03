@@ -151,11 +151,8 @@ public class GenerateFiles {
 							}
 							if(!obligatorios.containsKey(field.getVarName()))
 								obligatorios.put(field.getVarName(), "no_requerido");
-							
-							gv_tab.insertMessageTag("Tab" + (i + 1), true);
-							gv_tab.insertFileTable(String.valueOf(i+1), true);
 						}
-
+						
 						fieldsComplete.add(field);
 					} else {
 						if (!field.getVarName().contains("_FILE"))
@@ -167,6 +164,10 @@ public class GenerateFiles {
 					}	
 
 				}
+				
+				gv_tab.insertMessageTag("Tab" + (i + 1), containFiles);
+				gv_tab.insertFileTable(String.valueOf(i+1), containFiles);
+				
 				if(fileVars.length()>0){
 					archivos.put("tab" + (i + 1), fileVars);
 					fileVars="";
