@@ -38,7 +38,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private Utils util = new Utils();
 	// Variables para el parseo
-	private String inicialesInst = "", rutaPorleth = "";
+	private String rutaPorleth = "";
 	private File[] archivos;
 
 	private String pathTemp;
@@ -46,11 +46,10 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	@SuppressWarnings("unused")
 	private PrintStream standardOut;
 
-	public ParserProcessing(String inicialesInst, String rutaPorleth, File[] archivos) {
+	public ParserProcessing(String rutaPorleth, File[] archivos) {
 
 		super("Ventana de Procesamiento");
 
-		this.inicialesInst = inicialesInst;
 		this.rutaPorleth = rutaPorleth;
 		this.archivos = archivos;
 
@@ -60,7 +59,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 				Config cfg;
 				try {
 					cfg = new Utils().readConfig();
-					ParserForm pf = new ParserForm(cfg.getInicialesinstitucion(), cfg.getRutaBandeja());
+					ParserForm pf = new ParserForm(cfg.getRutaBandeja());
 					pf.setVisible(true);
 				} catch (ClassNotFoundException e1) {
 					e1.printStackTrace();
@@ -106,7 +105,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 
 		this.updateTextArea("\nRuta del Proyecto de Bandeja = " + this.rutaPorleth);
-		this.updateTextArea("\nIniciales del ente = " + this.inicialesInst);
 		
 		this.updateTextArea("\nCreacion de carpetas temporales");
 		this.createPathTemp();
@@ -118,7 +116,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			Config cfg;
 			try {
 				cfg = new Utils().readConfig();
-				ParserForm pf = new ParserForm(cfg.getInicialesinstitucion(), cfg.getRutaBandeja());
+				ParserForm pf = new ParserForm(cfg.getRutaBandeja());
 				pf.setVisible(true);
 				this.dispose();
 			} catch (ClassNotFoundException e1) {
@@ -153,7 +151,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		}
 		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		btnIniciar.setVisible(false);
-		util.executeCommand("rm -R " + pathTemp);
+//		util.executeCommand("rm -R " + pathTemp);
 	}
 
 	private void unzipFileBarAndParserApp(String archivo, int n) {
@@ -174,7 +172,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		// Parseando Aplicación
 		try {
-			paser.generateFiles((pathTemp + "bars/bar" + n + "/resources/forms/forms.xml"), inicialesInst);
+			paser.generateFiles((pathTemp + "bars/bar" + n + "/resources/forms/forms.xml"));
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -183,7 +181,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		// moviendo las vistas
 		this.updateTextArea("\nCopiando las vistas");
-		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/" + inicialesInst + "/ " + rutaPorleth + "/docroot/views/");
+		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
 
 		// moviendo los modelos y controladores
 		this.updateTextArea("\nCopiando los modelos y controladores");

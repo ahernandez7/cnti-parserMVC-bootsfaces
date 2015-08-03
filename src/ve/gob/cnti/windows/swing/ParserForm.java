@@ -26,12 +26,11 @@ public class ParserForm extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	// Variables para el parseo
-	private String inicialesInst = "", rutaPorleth = "";
+	private String rutaPorleth = "";
 	private File[] archivos;
 
 	private JPanel contentPane;
-	private JTextField textIniciales, textRutaPorlet;
-	private JLabel lblInicialesDeLa;
+	private JTextField textRutaPorlet;
 
 	private final String[] titulos = { "Nombre", "Archivos" };
 
@@ -43,18 +42,15 @@ public class ParserForm extends JFrame implements ActionListener {
 
 	private Utils util = new Utils();
 
-	public ParserForm(String inicialesInst, String rutaPorlet) {
+	public ParserForm(String rutaPorlet) {
 		super("Generador MVC de trámites");
-		this.inicialesInst = inicialesInst;
 		this.rutaPorleth = rutaPorlet;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 590, 380);
+		setBounds(100, 100, 590, 350);
 		this.definirVentana();
 		textRutaPorlet.setText(this.rutaPorleth);
-		textIniciales.setText(this.inicialesInst);
-
 		JLabel lblRutaDelPortlet = new JLabel("Ruta del Portlet");
-		lblRutaDelPortlet.setBounds(391, 58, 184, 15);
+		lblRutaDelPortlet.setBounds(391, 26, 184, 15);
 		contentPane.add(lblRutaDelPortlet);
 	}
 
@@ -64,43 +60,33 @@ public class ParserForm extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		textIniciales = new JTextField();
-		textIniciales.setBounds(12, 12, 361, 19);
-		textIniciales.setEditable(false);
-		contentPane.add(textIniciales);
-		textIniciales.setColumns(10);
-
 		btnResetConfig = new JButton("Cambiar Configuración");
-		btnResetConfig.setBounds(12, 315, 214, 25);
+		btnResetConfig.setBounds(12, 277, 214, 25);
 		contentPane.add(btnResetConfig);
 
 		btnParsear = new JButton("Generar MVC");
-		btnParsear.setBounds(391, 315, 184, 25);
+		btnParsear.setBounds(391, 277, 184, 25);
 		contentPane.add(btnParsear);
 
 		textRutaPorlet = new JTextField();
 		textRutaPorlet.setEditable(false);
 		textRutaPorlet.setColumns(10);
-		textRutaPorlet.setBounds(12, 56, 361, 19);
+		textRutaPorlet.setBounds(12, 24, 361, 19);
 		contentPane.add(textRutaPorlet);
-
-		lblInicialesDeLa = new JLabel("Iniciales de la Institución");
-		lblInicialesDeLa.setBounds(391, 14, 184, 15);
-		contentPane.add(lblInicialesDeLa);
 
 		dtm.setColumnIdentifiers(titulos);
 		scroll = new JScrollPane(table);
-		scroll.setBounds(12, 95, 361, 188);
+		scroll.setBounds(12, 63, 361, 188);
 		contentPane.add(scroll);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(12, 300, 614, 15);
+		separator.setBounds(12, 263, 563, 15);
 		contentPane.add(separator);
 
 		btnObtenerArchivos = new JButton("Obtener archivos");
-		btnObtenerArchivos.setBounds(391, 178, 184, 25);
+		btnObtenerArchivos.setBounds(391, 136, 184, 25);
 		contentPane.add(btnObtenerArchivos);
-		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] { textIniciales, btnResetConfig, btnObtenerArchivos }));
+		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] {btnResetConfig, btnObtenerArchivos }));
 
 		btnObtenerArchivos.addActionListener(this);
 		btnParsear.addActionListener(this);
@@ -117,7 +103,7 @@ public class ParserForm extends JFrame implements ActionListener {
 
 		if (e.getSource() == btnResetConfig) {
 			this.setVisible(false);
-			new ConfigForm(this.inicialesInst,this.rutaPorleth);
+			new ConfigForm(this.rutaPorleth);
 		}
 
 		if (e.getSource() == btnParsear) {
@@ -130,7 +116,7 @@ public class ParserForm extends JFrame implements ActionListener {
 
 	private void generarMVC() {
 
-		ParserProcessing pp = new ParserProcessing(inicialesInst, rutaPorleth, archivos);
+		ParserProcessing pp = new ParserProcessing(rutaPorleth, archivos);
 		pp.setVisible(true);
 
 	}

@@ -10,7 +10,7 @@ public class Main {
 		
 		Config cfg = new Utils().readConfig();
 		if(cfg!=null){
-			ParserForm pf = new ParserForm(cfg.getInicialesinstitucion(),cfg.getRutaBandeja());
+			ParserForm pf = new ParserForm(cfg.getRutaBandeja());
 			pf.setVisible(true);
 		}	
 		

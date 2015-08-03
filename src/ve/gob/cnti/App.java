@@ -137,7 +137,7 @@ public class App {
 
 		gf.setPathSnippetBean(this.snippetFileBean);
 		gf.setPathOutputFileBean(this.pathBeanOutputFile);
-		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", this.dirNameInstitucion));
+		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", "tramites"));
 
 		gf.setPathSnippetController(this.snippetFileController);
 		gf.setPathOutputFileController(this.pathControllerOutputFile);
@@ -159,17 +159,17 @@ public class App {
 		gf.generate();
 	}
 
-	public void generateFiles(String xml, String institucion) throws JDOMException, IOException {
+	public void generateFiles(String xml) throws JDOMException, IOException {
 
 		GenerateFiles gf = new GenerateFiles(new PaserXmltoForm(xml).parse());
 
 		gf.setPathSnippetBean(this.snippetFileBean);
 		gf.setPathOutputFileBean(this.pathBeanOutputFile);
-		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", institucion));
+		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}","tramites"));
 
 		gf.setPathSnippetController(this.snippetFileController);
 		gf.setPathOutputFileController(this.pathControllerOutputFile);
-		gf.setPackageNameController(this.namePackageController.replaceAll("%\\{institucion\\}", institucion));
+		gf.setPackageNameController(this.namePackageController.replaceAll("%\\{institucion\\}", "tramites"));
 
 		gf.setPathSnippetView(this.snippetFileView);
 		gf.setPathSnippetViewTab(this.snippetFileViewTab);
@@ -178,8 +178,8 @@ public class App {
 		gf.setSnippetFileViewCaseConsult(this.snippetFileViewCaseConsult);
 		gf.setSnippetFileViewCaseConsultTab(this.snippetFileViewCaseConsultTab);
 		gf.setPathOutputFileView(this.pathViewOutputFile);
-		gf.setDirNameAndPathFormToInstitucion(institucion + this.pathDirFormView);
-		gf.setInstitucion(institucion);
+		gf.setDirNameAndPathFormToInstitucion("tramites" + this.pathDirFormView);
+		gf.setInstitucion("tramites");
 
 		gf.setControllerButtonNameSubmit(this.controllerButtonNameSubmit);
 		gf.setControllerButtonIdSubmit(this.controllerButtonIdSubmit);
