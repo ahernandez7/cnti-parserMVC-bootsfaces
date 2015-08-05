@@ -98,12 +98,15 @@ public class %{NameController} {
 			IllegalArgumentException, IllegalAccessException {
 
 		String htmlContent = util
-				.readPdfTemplate("/views/%{institucion}/serviciodeensayo/forms/carga/");
+				.readPdfTemplate("/views/%{institucion}/%{processName}/forms/carga/");
 
 		Field[] atributos = this.bean.getClass().getDeclaredFields();
 		for (Field atributo : atributos) {
+			
+			atributo.setAccessible(true);
+		
 			if (atributo.isAnnotationPresent(FieldIsActuacion.class) && atributo.get(bean)!=null) {
-				atributo.setAccessible(true);
+				
 				if (atributo.get(this.bean) instanceof Date)
 					htmlContent = htmlContent.replaceAll(
 							"%\\{" + atributo.getName() + "\\}", util
@@ -152,10 +155,10 @@ public class %{NameController} {
 			
 			Field[] atributos = this.bean.getClass().getDeclaredFields();
 			for(Field atributo : atributos){
+			
+				atributo.setAccessible(true);
 				
 				if (atributo.isAnnotationPresent(FieldIsActuacion.class)) {
-					
-					atributo.setAccessible(true);
 					
 					if(atributo.getName().contentEquals("revision"))
 						revision = (String) atributo.get(this.bean);
