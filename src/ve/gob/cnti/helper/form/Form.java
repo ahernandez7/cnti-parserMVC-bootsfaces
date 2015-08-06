@@ -53,4 +53,10 @@ public class Form {
 		return this.listPages.get(index);
 	}
 
+
+	@Override
+	public String toString() {
+		return "Form [nameForm=" + nameForm + ", actionForm=" + actionForm + ", listPages=" + listPages + "]";
+	}
+
 }

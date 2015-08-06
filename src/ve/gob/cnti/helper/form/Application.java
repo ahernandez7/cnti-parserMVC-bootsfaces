@@ -31,4 +31,9 @@ public class Application {
 		this.mapForms = mapForms;
 	}
 
+	@Override
+	public String toString() {
+		return "Application [appName=" + appName + ", mapForms=" + mapForms + "]";
+	}
+	
 }

@@ -15,4 +15,10 @@ public class Validator {
 	public void setNameValidator(String nameValidator) {
 		this.nameValidator = nameValidator;
 	}
+
+	@Override
+	public String toString() {
+		return "Validator [nameValidator=" + nameValidator + "]";
+	}
+	
 }

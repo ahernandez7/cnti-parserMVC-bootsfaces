@@ -110,9 +110,5 @@ public class Field {
 		return "Field [labelField=" + labelField + ", nameField=" + nameField + ", typeField=" + typeField + ", varName=" + varName + ", returnType=" + returnType + ", isActuation=" + isActuation + ", listValidators=" + listValidators + ", optionValue=" + optionValue + ", description="
 				+ description + "]";
 	}
-	
-	
-	
-	
 
 }

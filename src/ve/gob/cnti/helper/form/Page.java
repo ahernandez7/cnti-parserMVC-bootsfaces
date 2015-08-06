@@ -56,4 +56,9 @@ public class Page {
 		this.nextPage = nextPage;
 	}
 
+	@Override
+	public String toString() {
+		return "Page [id=" + id + ", listFields=" + listFields + ", name=" + name + ", nextPage=" + nextPage + "]";
+	}
+
 }
