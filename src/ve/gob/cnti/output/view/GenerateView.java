@@ -120,6 +120,7 @@ public class GenerateView {
 				fieldInput = "<p:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			}
 		}
+			
 
 		if ("TEXTBOX".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 

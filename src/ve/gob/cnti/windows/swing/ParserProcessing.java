@@ -145,7 +145,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		lblProcesar.setText("Procesando la petición...");
 
-		this.updateTextArea("\nArchivos: ");
 		for (int i = 0; i < archivos.length; i++) {
 			this.unzipFileBarAndParserApp(archivos[i].getAbsolutePath(), i + 1);
 		}
@@ -171,6 +170,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
 
 		// Parseando Aplicación
+		this.updateTextArea("\n\nParseando archivo bar\n");
 		try {
 			paser.generateFiles((pathTemp + "bars/bar" + n + "/resources/forms/forms.xml"));
 		} catch (JDOMException e) {
