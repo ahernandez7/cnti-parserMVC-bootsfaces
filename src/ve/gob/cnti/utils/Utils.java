@@ -143,7 +143,11 @@ public class Utils {
 			if(file.isFile()){
 				FileInputStream fis = new FileInputStream(file);
 				ois = new ObjectInputStream(fis);
-				cfg = (Config) ois.readObject();	
+				cfg = (Config) ois.readObject();
+				if(!formIsValid(cfg.getRutaBandeja())){
+					cfg = null;
+					new ConfigForm();
+				}					
 			}else
 				new ConfigForm();
 		} catch (Exception e) {
@@ -152,5 +156,22 @@ public class Utils {
 		}
 		
 		return cfg;
+	}
+	
+	private boolean formIsValid(String rutaPorleth) {
+		if (rutaPorleth.isEmpty()) {
+			return false;
+		} else if (!this.pathExist(rutaPorleth)) {
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean pathExist(String rootPath) {
+		String path = rootPath + "/docroot/WEB-INF/src/ve/gob/cnti/gestion/resources";
+		if (new File(path).isDirectory()) {
+			return true;
+		}
+		return false;
 	}
 }

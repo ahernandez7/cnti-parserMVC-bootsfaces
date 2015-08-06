@@ -179,6 +179,12 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			e.printStackTrace();
 		}
 
+		this.updateTextArea("\nCopiando las vistas");
+		System.out.println("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
+		
+		this.updateTextArea("\nCopiando los modelos y controladores");
+		System.out.println("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
+		
 		// moviendo las vistas
 		this.updateTextArea("\nCopiando las vistas");
 		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
