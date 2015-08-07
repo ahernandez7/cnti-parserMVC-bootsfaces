@@ -156,6 +156,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	private void unzipFileBarAndParserApp(String archivo, int n) {
 
 		App paser = new App(pathTemp + "MVC_APPS/");
+		
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS");
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/beansANDcontrollers");
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/views");
@@ -170,28 +171,24 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
 
 		// Parseando Aplicación
-		this.updateTextArea("\n\nParseando archivo bar\n");
-		try {
-			paser.generateFiles((pathTemp + "bars/bar" + n + "/resources/forms/forms.xml"));
-		} catch (JDOMException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(!paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml")){
+			
+			this.updateTextArea("\n\nParseando archivo bar\n");
+			try {
+				paser.generateFiles((pathTemp + "bars/bar" + n + "/resources/forms/forms.xml"));
+			} catch (JDOMException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// moviendo las vistas
+			this.updateTextArea("\nCopiando las vistas");
+			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
+	
+			// moviendo los modelos y controladores
+			this.updateTextArea("\nCopiando los modelos y controladores");
+			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
 		}
-
-		this.updateTextArea("\nCopiando las vistas");
-		System.out.println("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
-		
-		this.updateTextArea("\nCopiando los modelos y controladores");
-		System.out.println("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
-		
-		// moviendo las vistas
-		this.updateTextArea("\nCopiando las vistas");
-		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/views/tramites/ " + rutaPorleth + "/docroot/views/");
-
-		// moviendo los modelos y controladores
-		this.updateTextArea("\nCopiando los modelos y controladores");
-		util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
 
 	}
 	

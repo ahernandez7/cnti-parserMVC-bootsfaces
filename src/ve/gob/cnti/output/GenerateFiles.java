@@ -57,7 +57,6 @@ public class GenerateFiles {
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
 		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
-		System.out.println("\n********************************************************************************");
 		for (String key : this.mapForms.keySet()) {
 
 			// Tareas
@@ -72,9 +71,6 @@ public class GenerateFiles {
 			gv.setInputElements("");			
 			gv.setButton("");
 			gv.setTabsReferences("");
-			System.out.println("********************************************************************************");
-			System.out.println("\nNombre de tarea: "+formE.getNameForm()+"\n");
-			System.out.println("   Numero de tabs en el formulario: "+pages.size());
 
 			List<Field> fieldsComplete = new ArrayList<Field>();
 			
@@ -98,7 +94,6 @@ public class GenerateFiles {
 				GenerateView gv_tab;
 				if (i < pages.size()){
 					gv_tab = new GenerateView(getPathSnippetViewTab(), getPathOutputFileView(), this.nameApp);
-					System.out.println("   tab : "+(i+1));
 				}else
 					gv_tab = new GenerateView(getPathSnippetViewTabSummay(), getPathOutputFileView(), this.nameApp);
 
@@ -129,7 +124,6 @@ public class GenerateFiles {
 
 						gv_tab.setValidator("");
 						
-						System.out.println(field.toString());
 
 						List<Validator> validators = field.getListValidators();
 						for (int k = 0; k < validators.size(); k++) {
@@ -204,7 +198,6 @@ public class GenerateFiles {
 			}else if("notificacion".contentEquals(nameBean)){
 				this.replaceNotification();
 			}
-			System.out.println("\n********************************************************************************");
 		}
 		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
 

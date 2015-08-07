@@ -1,12 +1,18 @@
 package ve.gob.cnti;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Properties;
 
 import org.jdom2.JDOMException;
 
 import ve.gob.cnti.core.PaserXmltoForm;
+import ve.gob.cnti.helper.form.Application;
+import ve.gob.cnti.helper.form.Field;
+import ve.gob.cnti.helper.form.Form;
+import ve.gob.cnti.helper.form.Page;
 import ve.gob.cnti.helper.util.LibUtils;
+import ve.gob.cnti.helper.util.ValidateForm;
 import ve.gob.cnti.output.GenerateFiles;
 
 public class App {
@@ -92,9 +98,9 @@ public class App {
 	}
 
 	public App(String pathROOT) {
-		
+
 		Properties props = LibUtils.loadFileProperties(FILE_PROPS);
-		
+
 		String ROOT_VIEW = pathROOT + "views/";
 		pathROOT += "beansANDcontrollers/";
 		String ROOT_CONTROLLER = pathROOT;
@@ -165,7 +171,7 @@ public class App {
 
 		gf.setPathSnippetBean(this.snippetFileBean);
 		gf.setPathOutputFileBean(this.pathBeanOutputFile);
-		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}","tramites"));
+		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", "tramites"));
 
 		gf.setPathSnippetController(this.snippetFileController);
 		gf.setPathOutputFileController(this.pathControllerOutputFile);
@@ -186,16 +192,80 @@ public class App {
 
 		gf.generate();
 	}
+	
+	public boolean isFormValid(String xml) {
+		Application tp;
+		try {
+			tp = new PaserXmltoForm(xml).parse();
+			if(new ValidateForm(tp).isAppFormValid())
+				return false;
+		} catch (JDOMException | IOException e) {
+			System.out.println("La validación del formulario fallo.");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
 	public static void main(String[] args) {
 
-		App tp = new App();
-		tp.generateFiles();
+		// App tp = new App();
+		// tp.generateFiles();
+		//
+		// // Test t = new Test();
+		// // t.showListOutput(tp.pxf.parse());
+		//
+		// System.out.println("Listo...");
 
-		// Test t = new Test();
-		// t.showListOutput(tp.pxf.parse());
+		try {
+			Application tp = new PaserXmltoForm("resources/inputs/forms/forms.xml").parse();
+			Map<String, Form> mapForms = tp.getMapForms();
 
-		System.out.println("Listo...");
+			
+			if(new ValidateForm(tp).isAppFormValid()){
+				printHeader();
+				System.out.println("Nombre de Proceso =============>> " + tp.getAppName());
+				System.out.println("Numero de tareas humanas ======>> " + mapForms.size());
+				System.out.println("Tareas: ");
+				for (String key : mapForms.keySet()) {
+					System.out.println("=====>> " + mapForms.get(key).getNameForm());
+				}
+				printHeader();
+				for (String key : mapForms.keySet()) {
+					Form task = mapForms.get(key);
+					System.out.println("  Nombre de la tarea ===============>> " + task.getNameForm());
+					System.out.println("  Numero de tabs en la tarea =======>> " + task.getListPages().size());
+					for (Page tab : task.getListPages()) {
+						System.out.println("\n    Identificador del tab ==========>> " + tab.getId());
+						System.out.println("    Nombre del tab =================>> " + tab.getName());
+						System.out.println("    Campos:");
+						for (Field field : tab.getListField()) {
+							if (!field.getTypeField().contentEquals("BUTTON_SUBMIT") && 
+									!field.getTypeField().contentEquals("BUTTON_PREVIOUS") && 
+									!field.getTypeField().contentEquals("BUTTON_NEXT")) {
+								System.out.println("\n\t VarName ==================>> " + field.getVarName());
+								System.out.println("\t ReturnType ===============>> " + field.getReturnType());
+								System.out.println("\t TypeField ================>> " + field.getTypeField());
+								System.out.println("\t Label ====================>> " + field.getLabelField());
+								System.out.println("\t Descripción ==============>> " + field.getDescription());
+							}
+						}
+					}
+					printHeader();
+				}	
+			}
+			
+
+		} catch (JDOMException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void printHeader() {
+		System.out.println("\n********************************************************************************************************");
+		System.out.println("--------------------------------------------------------------------------------------------------------");
+		System.out.println("********************************************************************************************************\n");
 	}
 
 }
