@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -80,15 +81,18 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		textArea.setForeground(Color.GREEN);
 		outScroll.setBounds(12, 35, 820, 394);
 		contentPane.add(outScroll);
-		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+		PrintStream printStream;
+		
+		try {
+			printStream = new PrintStream(new CustomOutputStream(textArea),true, "UTF-8");
+			System.setOut(printStream);
+			System.setErr(printStream);
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 
-		// keeps reference of standard output stream
 		standardOut = System.out;
-
-		// re-assigns standard output stream and error output stream
-		System.setOut(printStream);
-		System.setErr(printStream);
-
+		
 		btnCerrar.setBounds(719, 436, 117, 25);
 		contentPane.add(btnCerrar);
 		btnCerrar.addActionListener(this);
