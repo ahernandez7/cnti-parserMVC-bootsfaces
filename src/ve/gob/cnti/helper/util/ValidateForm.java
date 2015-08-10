@@ -41,12 +41,12 @@ public class ValidateForm {
 			System.out.println("*****************************************************************************************");
 			System.out.println("*****************************************************************************************");
 			System.out.println("*****************************************************************************************");
-			System.out.println("El proceso "+this.app.getAppName()+" tiene errores");
+			System.out.println("\nEl proceso "+this.app.getAppName()+" tiene errores\n");
 			System.out.println("*****************************************************************************************");
 			System.out.println("*****************************************************************************************");
 			System.out.println("*****************************************************************************************");
 			System.out.println("*****************************************************************************************");
-			System.out.println("\nNumero de Errores: "+errorsDetails.size());
+			System.out.println("\nNúmero de Errores: "+errorsDetails.size());
 			System.out.println("Detalle de errores: \n");
 			for (String error : errorsDetails) {
 				System.err.println(error);
@@ -99,7 +99,6 @@ public class ValidateForm {
 						errorsDetails.add("Tarea: El nombre del tarea \"" + task.getNameForm() + "\" es incorrecto.");
 						isValid = false;
 					}
-					System.out.println(task.getNameForm().toLowerCase());
 					if ("carga".contentEquals(task.getNameForm().toLowerCase()))
 						i++;
 					else if ("revision".contentEquals(task.getNameForm().toLowerCase()))
@@ -112,7 +111,7 @@ public class ValidateForm {
 			}
 			// Valida que existan las 4 actividades.(carga, revision,sgi,notificacion)
 			if (i < 4) {
-				errorsDetails.add("Proceso: no estan presentes todas las tareas de taquilla(carga, revision,sgi,notificacion)");
+				errorsDetails.add("Proceso: no están presentes todas las tareas de taquilla(carga, revision,sgi,notificacion)");
 				isValid = false;
 			}
 		} catch (Exception e) {
@@ -156,12 +155,12 @@ public class ValidateForm {
 									varNames.add(field.getVarName());
 
 								if (field.getDescription().length() == 0) {
-									errorsDetails.add("Descripcion de campo no esta presente en " 
+									errorsDetails.add("Descripción de campo no esta presente en " 
 											+ field.getNameField() + " de tipo " + field.getTypeField() + " en tab: " + tab.getName());
 									isValid = false;
 								}
 								if (field.getLabelField().length() == 0) {
-									errorsDetails.add("Label de campo no esta presente en " 
+									errorsDetails.add("Label de campo no está presente en " 
 											+ field.getNameField() + " de tipo " + field.getTypeField() + " en tab: " + tab.getName());
 									isValid = false;
 								}

@@ -110,7 +110,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		this.updateTextArea("\nRuta del Proyecto de Bandeja = " + this.rutaPorleth);
 		
-		this.updateTextArea("\nCreacion de carpetas temporales");
+		this.updateTextArea("\nCreación de carpetas temporales");
 		this.createPathTemp();
 		
 	}
@@ -151,8 +151,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 		for (int i = 0; i < archivos.length; i++) {
 			this.unzipFileBarAndParserApp(archivos[i].getAbsolutePath(), i + 1);
-		}
-		util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
+		}		
 		btnIniciar.setVisible(false);
 		util.executeCommand("rm -R " + pathTemp);
 	}
@@ -174,8 +173,8 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("mkdir " + pathTemp + "bars/bar" + n);
 		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
 
-		// Parseando Aplicación
-		if(!paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml")){
+		// Parseando Aplicación		
+		if(paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml")){
 			
 			this.updateTextArea("\n\nParseando archivo bar\n");
 			try {
@@ -192,7 +191,10 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			// moviendo los modelos y controladores
 			this.updateTextArea("\nCopiando los modelos y controladores");
 			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
-		}
+			
+			util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
+		}else
+			util.ventanaDeMensaje(this, "El procesamiento se ha detenido, verifique los mensajes de error en la consola..", "Error en Generación de MVC", (short) 0);
 
 	}
 	

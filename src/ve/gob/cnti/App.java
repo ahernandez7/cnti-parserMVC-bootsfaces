@@ -138,33 +138,6 @@ public class App {
 
 	}
 
-	private void generateFiles() {
-		GenerateFiles gf = new GenerateFiles(this.pxf.parse());
-
-		gf.setPathSnippetBean(this.snippetFileBean);
-		gf.setPathOutputFileBean(this.pathBeanOutputFile);
-		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", "tramites"));
-
-		gf.setPathSnippetController(this.snippetFileController);
-		gf.setPathOutputFileController(this.pathControllerOutputFile);
-		gf.setPackageNameController(this.namePackageController.replaceAll("%\\{institucion\\}", this.dirNameInstitucion));
-
-		gf.setPathSnippetView(this.snippetFileView);
-		gf.setPathSnippetViewTab(this.snippetFileViewTab);
-		gf.setPathSnippetViewTabSummay(this.snippetFileViewTabSummary);
-		gf.setPathSnippetViewSuccess(this.snippetFileViewSuccess);
-		gf.setSnippetFileViewCaseConsult(this.snippetFileViewCaseConsult);
-		gf.setSnippetFileViewCaseConsultTab(this.snippetFileViewCaseConsultTab);
-		gf.setPathOutputFileView(this.pathViewOutputFile);
-		gf.setDirNameAndPathFormToInstitucion(this.dirNameInstitucion + this.pathDirFormView);
-		gf.setInstitucion(this.dirNameInstitucion);
-
-		gf.setControllerButtonNameSubmit(this.controllerButtonNameSubmit);
-		gf.setControllerButtonIdSubmit(this.controllerButtonIdSubmit);
-
-		gf.generate();
-	}
-
 	public void generateFiles(String xml) throws JDOMException, IOException {
 
 		GenerateFiles gf = new GenerateFiles(new PaserXmltoForm(xml).parse());
@@ -197,8 +170,10 @@ public class App {
 		Application tp;
 		try {
 			tp = new PaserXmltoForm(xml).parse();
-			if(new ValidateForm(tp).isAppFormValid())
+			if(new ValidateForm(tp).isAppFormValid()==false)
 				return false;
+			else
+				this.printFormDetails(xml);
 		} catch (JDOMException | IOException e) {
 			System.out.println("La validación del formulario fallo.");
 			e.printStackTrace();
@@ -206,60 +181,49 @@ public class App {
 		}
 		return true;
 	}
-
-	public static void main(String[] args) {
-
-		// App tp = new App();
-		// tp.generateFiles();
-		//
-		// // Test t = new Test();
-		// // t.showListOutput(tp.pxf.parse());
-		//
-		// System.out.println("Listo...");
-
+	
+	private void printFormDetails(String xml){
 		try {
-			Application tp = new PaserXmltoForm("resources/inputs/forms/forms.xml").parse();
+			Application tp = new PaserXmltoForm(xml).parse();
 			Map<String, Form> mapForms = tp.getMapForms();
-
-			
-			if(new ValidateForm(tp).isAppFormValid()){
-				printHeader();
-				System.out.println("Nombre de Proceso =============>> " + tp.getAppName());
-				System.out.println("Numero de tareas humanas ======>> " + mapForms.size());
-				System.out.println("Tareas: ");
-				for (String key : mapForms.keySet()) {
-					System.out.println("=====>> " + mapForms.get(key).getNameForm());
-				}
-				printHeader();
-				for (String key : mapForms.keySet()) {
-					Form task = mapForms.get(key);
-					System.out.println("  Nombre de la tarea ===============>> " + task.getNameForm());
-					System.out.println("  Numero de tabs en la tarea =======>> " + task.getListPages().size());
-					for (Page tab : task.getListPages()) {
-						System.out.println("\n    Identificador del tab ==========>> " + tab.getId());
-						System.out.println("    Nombre del tab =================>> " + tab.getName());
-						System.out.println("    Campos:");
-						for (Field field : tab.getListField()) {
-							if (!field.getTypeField().contentEquals("BUTTON_SUBMIT") && 
-									!field.getTypeField().contentEquals("BUTTON_PREVIOUS") && 
-									!field.getTypeField().contentEquals("BUTTON_NEXT")) {
-								System.out.println("\n\t VarName ==================>> " + field.getVarName());
-								System.out.println("\t ReturnType ===============>> " + field.getReturnType());
-								System.out.println("\t TypeField ================>> " + field.getTypeField());
-								System.out.println("\t Label ====================>> " + field.getLabelField());
-								System.out.println("\t Descripción ==============>> " + field.getDescription());
-							}
+			printHeader();
+			System.out.println("Nombre de Proceso =============>> " + tp.getAppName());
+			System.out.println("Numero de tareas humanas ======>> " + mapForms.size());
+			System.out.println("Tareas: ");
+			for (String key : mapForms.keySet()) {
+				System.out.println("=====>> " + mapForms.get(key).getNameForm());
+			}
+			printHeader();
+			for (String key : mapForms.keySet()) {
+				Form task = mapForms.get(key);
+				System.out.println("  Nombre de la tarea ===============>> " + task.getNameForm());
+				System.out.println("  Numero de tabs en la tarea =======>> " + task.getListPages().size());
+				for (Page tab : task.getListPages()) {
+					System.out.println("\n    Identificador del tab ==========>> " + tab.getId());
+					System.out.println("    Nombre del tab =================>> " + tab.getName());
+					System.out.println("    Campos:");
+					for (Field field : tab.getListField()) {
+						if (!field.getTypeField().contentEquals("BUTTON_SUBMIT") && 
+								!field.getTypeField().contentEquals("BUTTON_PREVIOUS") && 
+								!field.getTypeField().contentEquals("BUTTON_NEXT")) {
+							System.out.println("\n\t VarName ==================>> " + field.getVarName());
+							System.out.println("\t ReturnType ===============>> " + field.getReturnType());
+							System.out.println("\t TypeField ================>> " + field.getTypeField());
+							System.out.println("\t Label ====================>> " + field.getLabelField());
+							System.out.println("\t Descripción ==============>> " + field.getDescription());
 						}
 					}
-					printHeader();
-				}	
-			}
+				}
+				printHeader();
+			}	
 			
-
 		} catch (JDOMException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		
 	}
 
 	private static void printHeader() {
