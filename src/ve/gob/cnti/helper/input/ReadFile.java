@@ -1,6 +1,8 @@
 package ve.gob.cnti.helper.input;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,4 +34,18 @@ public class ReadFile {
 	    return sb.toString();
 		
 	}
+	
+	public File streamTofile(InputStream in) throws IOException {
+        final File tempFile = File.createTempFile("cntiTempTransversalVarsfile", ".tmp");
+        tempFile.deleteOnExit();
+        try (FileOutputStream out = new FileOutputStream(tempFile)) {
+            int read = 0;
+    		byte[] bytes = new byte[1024];
+
+    		while ((read = in.read(bytes)) != -1) {
+    			out.write(bytes, 0, read);
+    		}
+        }
+        return tempFile;
+    }
 }
