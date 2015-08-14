@@ -29,7 +29,6 @@ public class ReadXml {
                 Node dataDefinition = listOfDataDefinition.item(s);
                 if(dataDefinition.getNodeType() == Node.ELEMENT_NODE){
                 	Element element = (Element)dataDefinition;
-                    System.out.println(element.getAttribute("name"));
                     if(element.getAttribute("name").contentEquals(tv.getVarName()))
                     	return true;                     
                 }
@@ -40,7 +39,6 @@ public class ReadXml {
                 Node dataDefinition = listOfDataDefinition.item(s);
                 if(dataDefinition.getNodeType() == Node.ELEMENT_NODE){
                 	Element element = (Element)dataDefinition;
-                    System.out.println(element.getAttribute("name"));
                     if(element.getAttribute("name").contentEquals(tv.getVarName()))
                     	return true;                     
                 }
