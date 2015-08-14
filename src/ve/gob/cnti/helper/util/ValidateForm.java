@@ -1,5 +1,6 @@
 package ve.gob.cnti.helper.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import ve.gob.cnti.helper.form.Application;
 import ve.gob.cnti.helper.form.Field;
 import ve.gob.cnti.helper.form.Form;
 import ve.gob.cnti.helper.form.Page;
+import ve.gob.cnti.windows.swing.ParserProcessing;
 
 public class ValidateForm {
 
@@ -24,7 +26,7 @@ public class ValidateForm {
 		this.processDesignXml = processDesignXml;
 	}
 
-	public boolean isAppFormValid() {
+	public boolean isAppFormValid(ParserProcessing pp) throws IOException {
 
 		boolean isValid = true;
 		Map<String, Form> mapForms = this.app.getMapForms();
@@ -51,9 +53,16 @@ public class ValidateForm {
 			System.out.println("*****************************************************************************************");
 			System.out.println("\nNúmero de Errores: "+errorsDetails.size());
 			System.out.println("Detalle de errores: \n");
-			for (String error : errorsDetails) {
+			
+			String errores = "El proceso "+this.app.getAppName()+" tiene errores\n";
+			errores += "\nNúmero de Errores: "+errorsDetails.size();
+			errores += "\nErrores: ";
+			for (String error : errorsDetails) {				
 				System.err.println(error);
+				errores += "\n====>>>> "+error;
 			}
+			
+			pp.saveLogErrors(errores, pp,this.app.getAppName());
 		}
 
 		return isValid;

@@ -14,6 +14,7 @@ import ve.gob.cnti.helper.form.Page;
 import ve.gob.cnti.helper.util.LibUtils;
 import ve.gob.cnti.helper.util.ValidateForm;
 import ve.gob.cnti.output.GenerateFiles;
+import ve.gob.cnti.windows.swing.ParserProcessing;
 
 public class App {
 
@@ -168,11 +169,11 @@ public class App {
 		gf.generate();
 	}
 	
-	public boolean isFormValid(String xml,String XmlProcessDesign) {
+	public boolean isFormValid(String xml,String XmlProcessDesign,ParserProcessing pp) {
 		Application tp;
 		try {
 			tp = new PaserXmltoForm(xml).parse();
-			if(new ValidateForm(tp,XmlProcessDesign).isAppFormValid()==false)
+			if(new ValidateForm(tp,XmlProcessDesign).isAppFormValid(pp)==false)
 				return false;
 			else
 				this.printFormDetails(xml);

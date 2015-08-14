@@ -1,9 +1,11 @@
 package ve.gob.cnti.windows.swing;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTextArea;
 
 import java.awt.Color;
@@ -14,7 +16,9 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -44,8 +48,10 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private String pathTemp;
 
-	@SuppressWarnings("unused")
 	private PrintStream standardOut;
+	
+	public ParserProcessing(){			
+	}
 
 	public ParserProcessing(String rutaPorleth, File[] archivos) {
 
@@ -174,7 +180,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
 		
 		// Parseando Aplicación		
-		if(paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml",(pathTemp + "bars/bar" + n + "/process-design.xml"))){
+		if(paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml",(pathTemp + "bars/bar" + n + "/process-design.xml"),this)){
 			
 			this.updateTextArea("\n\nParseando archivo bar\n");
 			try {
@@ -193,9 +199,33 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/docroot/WEB-INF/src/");
 			
 			util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
-		}else
-			util.ventanaDeMensaje(this, "El procesamiento se ha detenido, verifique los mensajes de error en la consola..", "Error en Generación de MVC", (short) 0);
+		}
 
+	}
+	
+	public void saveLogErrors(String log,ParserProcessing pp,String name) throws IOException {
+		
+		util.ventanaDeMensaje(pp, "El procesamiento se ha detenido, verifique los mensajes de error en la consola..", "Error en Generación de MVC", (short) 0);
+	    JFileChooser chooser = new JFileChooser("Guardar log de errores");
+	    
+	    File f = new File(new File("ERRORS_LOG_"+name+".txt").getCanonicalPath());	    
+	    FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt");
+	    
+		chooser.setFileFilter(filter);
+		chooser.setAcceptAllFileFilterUsed(false);	
+		chooser.setSelectedFile(f);	
+		chooser.setDialogTitle("Guardar log de errores");
+	    int retrival = chooser.showSaveDialog(null);
+	    
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	        try {
+	        	PrintWriter writer = new PrintWriter(chooser.getSelectedFile()+".txt", "UTF-8");
+	        	writer.append(log);
+	        	writer.close();	            
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    }
 	}
 	
 	private void createPathTemp() {
@@ -216,6 +246,12 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private void updateTextArea(final String text) {
 		System.out.println(text);
+	}
+
+	@Override
+	public String toString() {
+		return "ParserProcessing [contentPane=" + contentPane + ", textArea=" + textArea + ", outScroll=" + outScroll + ", btnCerrar=" + btnCerrar + ", btnIniciar=" + btnIniciar + ", lblProcesar=" + lblProcesar + ", util=" + util + ", rutaPorleth=" + rutaPorleth + ", archivos="
+				+ Arrays.toString(archivos) + ", pathTemp=" + pathTemp + ", standardOut=" + standardOut + "]";
 	}
 
 }
