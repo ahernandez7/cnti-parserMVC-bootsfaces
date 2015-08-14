@@ -172,9 +172,9 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		this.updateTextArea("\nDescomprimiendo  " + pathTemp + "bars/file" + n + " a carpeta temporal " + pathTemp + "bars/bar" + n);
 		util.executeCommand("mkdir " + pathTemp + "bars/bar" + n);
 		util.executeCommand("unzip " + pathTemp + "bars/file" + n + " -d " + pathTemp + "bars/bar" + n);
-
+		
 		// Parseando Aplicación		
-		if(paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml")){
+		if(paser.isFormValid(pathTemp + "bars/bar" + n + "/resources/forms/forms.xml",(pathTemp + "bars/bar" + n + "/process-design.xml"))){
 			
 			this.updateTextArea("\n\nParseando archivo bar\n");
 			try {

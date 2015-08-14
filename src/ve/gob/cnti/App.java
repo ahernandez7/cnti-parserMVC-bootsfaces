@@ -19,6 +19,7 @@ public class App {
 
 	private static final String FILE_PROPS = "configuracion.properties";
 
+	@SuppressWarnings("unused")
 	private PaserXmltoForm pxf = null;
 
 	private String xmlFile = null;
@@ -38,6 +39,7 @@ public class App {
 	private String snippetFileViewCaseConsult = null;
 	private String snippetFileViewCaseConsultTab = null;
 	private String pathViewOutputFile = null;
+	@SuppressWarnings("unused")
 	private String dirNameInstitucion = null;
 	private String pathDirFormView = null;
 
@@ -166,11 +168,11 @@ public class App {
 		gf.generate();
 	}
 	
-	public boolean isFormValid(String xml) {
+	public boolean isFormValid(String xml,String XmlProcessDesign) {
 		Application tp;
 		try {
 			tp = new PaserXmltoForm(xml).parse();
-			if(new ValidateForm(tp).isAppFormValid()==false)
+			if(new ValidateForm(tp,XmlProcessDesign).isAppFormValid()==false)
 				return false;
 			else
 				this.printFormDetails(xml);

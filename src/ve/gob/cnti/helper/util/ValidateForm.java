@@ -1,6 +1,7 @@
 package ve.gob.cnti.helper.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,11 +15,13 @@ import ve.gob.cnti.helper.form.Page;
 public class ValidateForm {
 
 	private Application app;
+	private String processDesignXml;
 
 	private List<String> errorsDetails = new ArrayList<String>();
 
-	public ValidateForm(Application app) {
+	public ValidateForm(Application app,String processDesignXml) {
 		this.app = app;
+		this.processDesignXml = processDesignXml;
 	}
 
 	public boolean isAppFormValid() {
@@ -128,12 +131,13 @@ public class ValidateForm {
 
 		try {
 			for (String key : mapForms.keySet()) {
+				Map<String,Field> fieldsComplete = new HashMap<String, Field>();
 				Form task = mapForms.get(key);
-				List<String> varNames = new ArrayList<String>();
-				// TODO Validar que la tarea carga tenga las variables transversales.
+				List<String> varNames = new ArrayList<String>();				
 				if (!task.getNameForm().contentEquals("SGI")) {
 					for (Page tab : task.getListPages()) {
 						for (Field field : tab.getListField()) {
+							fieldsComplete.put(field.getVarName(), field);
 							if (!field.getTypeField().contentEquals("BUTTON_SUBMIT") && 
 									!field.getTypeField().contentEquals("BUTTON_PREVIOUS") && 
 									!field.getTypeField().contentEquals("BUTTON_NEXT")) {
@@ -178,16 +182,55 @@ public class ValidateForm {
 						}
 					}
 				}
+				//TODO validar variable transverasles								
+				isValid = isTransversalCompleteIntoTask(task.getNameForm(),fieldsComplete);
 			}
 		} catch (Exception e) {
 			System.err.println("Error en ve.gob.cnti.helper.util.ValidateForm.isFieldsValid");
 			e.printStackTrace();
 			isValid = false;
 		}
+		
+		isValid = isTransversalCompleteIntoPool();	
 
 		return isValid;
 	}
-
+	
+	private boolean isTransversalCompleteIntoPool(){
+		
+				
+		List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoPool();
+		
+		for(TransversalVar tv : lVars){
+			
+			if(!tv.isPresentVarIntoPool(tv,processDesignXml)){
+				errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
+						+ "la tarea de ");
+				return false;
+			}
+			
+		}
+	
+		return true;
+	}
+	
+	private boolean isTransversalCompleteIntoTask(String nameTask,Map<String,Field> fieldsComplete){
+		
+		if(!"SGI".contentEquals(nameTask.toUpperCase())){		
+			List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoTask(nameTask);
+			for(TransversalVar tv : lVars){
+				
+				if(!fieldsComplete.containsKey(tv.getVarName())){
+					errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
+							+ "la tarea de "+nameTask);
+					return false;
+				}
+				
+			}
+		}
+		return true;
+	}
+	
 	private boolean isStringValid(String string) {
 		try {
 			final String PATTERN = "^([A-Za-z]+)$";
