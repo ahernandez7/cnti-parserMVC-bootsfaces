@@ -224,13 +224,14 @@ public class ValidateForm {
 	}
 	
 	private boolean isTransversalCompleteIntoTask(String nameTask,Map<String,Field> fieldsComplete,boolean isValid){
-		
-		if(!"SGI".contentEquals(nameTask.toUpperCase())){		
-			List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoTask(nameTask);
+		String name = nameTask.toLowerCase();
+		name = name.replaceAll(" ", "");		
+		if(!"sgi".contentEquals(name)){		
+			List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoTask(name);
 			for(TransversalVar tv : lVars){
 				if(fieldsComplete.containsKey(tv.getVarName())==false){
 					errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
-							+ "la tarea de "+nameTask);
+							+ "la tarea de "+name);
 					isValid = false;
 				}
 			}			
