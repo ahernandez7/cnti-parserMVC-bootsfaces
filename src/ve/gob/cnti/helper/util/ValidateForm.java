@@ -191,8 +191,8 @@ public class ValidateForm {
 						}
 					}
 				}
-				//TODO validar variable transverasles								
-				isValid = isTransversalCompleteIntoTask(task.getNameForm(),fieldsComplete);
+				//TODO validar variable transverasles	
+				isValid = isTransversalCompleteIntoTask(task.getNameForm(),fieldsComplete,isValid);
 			}
 		} catch (Exception e) {
 			System.err.println("Error en ve.gob.cnti.helper.util.ValidateForm.isFieldsValid");
@@ -200,12 +200,12 @@ public class ValidateForm {
 			isValid = false;
 		}
 		
-		isValid = isTransversalCompleteIntoPool();	
+		isValid = isTransversalCompleteIntoPool(isValid);	
 
 		return isValid;
 	}
 	
-	private boolean isTransversalCompleteIntoPool(){
+	private boolean isTransversalCompleteIntoPool(boolean isValid){
 		
 				
 		List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoPool();
@@ -215,29 +215,27 @@ public class ValidateForm {
 			if(!tv.isPresentVarIntoPool(tv,processDesignXml)){
 				errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
 						+ "la tarea de ");
-				return false;
+				isValid = false;
 			}
 			
 		}
 	
-		return true;
+		return isValid;
 	}
 	
-	private boolean isTransversalCompleteIntoTask(String nameTask,Map<String,Field> fieldsComplete){
+	private boolean isTransversalCompleteIntoTask(String nameTask,Map<String,Field> fieldsComplete,boolean isValid){
 		
 		if(!"SGI".contentEquals(nameTask.toUpperCase())){		
 			List<TransversalVar> lVars = new TransversalVar().getTranversalsVarsIntoTask(nameTask);
 			for(TransversalVar tv : lVars){
-				
-				if(!fieldsComplete.containsKey(tv.getVarName())){
+				if(fieldsComplete.containsKey(tv.getVarName())==false){
 					errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
 							+ "la tarea de "+nameTask);
-					return false;
+					isValid = false;
 				}
-				
-			}
+			}			
 		}
-		return true;
+		return isValid;
 	}
 	
 	private boolean isStringValid(String string) {
