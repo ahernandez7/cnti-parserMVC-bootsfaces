@@ -22,7 +22,7 @@ public class ReadXml {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse (new File(processDesignXml));
             
-            doc.getDocumentElement ().normalize ();
+            doc.getDocumentElement().normalize();
 
             NodeList listOfDataDefinition = doc.getElementsByTagName("textDataDefinition");
             for(int s=0; s<listOfDataDefinition.getLength() ; s++){
@@ -43,6 +43,36 @@ public class ReadXml {
                     	return true;                     
                 }
             }
+        }catch (SAXParseException err) {
+        System.out.println ("** Parsing error" + ", line " 
+             + err.getLineNumber () + ", uri " + err.getSystemId ());
+        System.out.println(" " + err.getMessage ());
+
+        }catch (SAXException e) {
+        Exception x = e.getException ();
+        ((x == null) ? e : x).printStackTrace ();
+
+        }catch (Throwable t) {
+        t.printStackTrace ();
+        }
+		
+		return false;
+	}
+	
+	public boolean isDescriptionPresentIntoBar(String processDesignXml){
+		
+		try {
+
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = docBuilder.parse (new File(processDesignXml));            
+            
+            doc.getDocumentElement().normalize();
+            
+            if(doc.getDocumentElement().getAttribute("description").length()>0)
+            	return true;
+
+            
         }catch (SAXParseException err) {
         System.out.println ("** Parsing error" + ", line " 
              + err.getLineNumber () + ", uri " + err.getSystemId ());

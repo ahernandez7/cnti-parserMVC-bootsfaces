@@ -33,6 +33,9 @@ public class ValidateForm {
 
 		if (!isNameFormValid(this.app.getAppName()))
 			isValid = false;
+		
+		if(!isDescriptionPresent(this.app.getAppName()))
+			isValid = false;
 
 		if (!is4TaskPresentAndValid(mapForms))
 			isValid = false;
@@ -81,6 +84,24 @@ public class ValidateForm {
 				return false;
 			} else if (!isStringValid(name)) {
 				errorsDetails.add("Proceso: El nombre del proceso \"" + name + "\" es incorrecto.");
+				return false;
+			}
+		} catch (Exception e) {
+			System.err.println("Error en ve.gob.cnti.helper.util.ValidateForm.isNameFormValid");
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Valida que la descripcion del trámite este presente.
+	 *
+	 */
+	private boolean isDescriptionPresent(String name) {
+		try {
+			if (!new ReadXml().isDescriptionPresentIntoBar(processDesignXml)){
+				errorsDetails.add("Proceso: La descripcion del proceso \"" + name + "\" no esta presente.");
 				return false;
 			}
 		} catch (Exception e) {
