@@ -46,21 +46,7 @@
 				value="CheckboxList1"
 				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
 				 />
-				
-			<p:outputLabel for="emailSGI" value="Enviar expedinte a:"
-				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
-			<p:inputText id="emailSGI"
-				value="#{%{nameTask}.bean.emailSGI}"
-				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}"
-				required="#{%{nameTask}.bean.revision == 'Aprobado'}"
-				requiredMessage="Requerido">
-				<f:validator validatorId="EmailValidator"></f:validator>
-			</p:inputText>
-			<p:message for="emailSGI" id="emailSGIMessage" style="color:red"
-				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
-			<p:tooltip id="toolTipEmailSGI" for="emailSGI" value="direccion1"
-				rendered="#{%{nameTask}.bean.revision == 'Aprobado'}" />
-
+			
 		</h:panelGrid>
 		
 		<div align="right">
