@@ -233,7 +233,14 @@ public class ValidateForm {
 					errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") no esta definida en "
 							+ "la tarea de "+name);
 					isValid = false;
-				}
+				}else{
+					Field f = fieldsComplete.get(tv.getVarName());
+					if(!f.getReturnType().contentEquals(tv.getType())){
+						errorsDetails.add("Variable Transversal (" + tv.getVarName()+ ") está definida erroneamente, retorna "
+								+f.getReturnType()+ " y el valor esperado es "+ tv.getType() +"; tarea ==> "+name);
+						isValid = false;
+					}
+				}				
 			}			
 		}
 		return isValid;

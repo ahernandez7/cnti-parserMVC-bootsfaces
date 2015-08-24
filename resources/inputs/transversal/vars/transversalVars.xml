@@ -6,42 +6,42 @@
 				<var>
 					<name>Nombre</name>
 					<varName>nombre</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>	
 				<var>
 					<name>Apellido</name>
 					<varName>apellido</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>
 				<var>
 					<name>Correo Electrónico</name>
 					<varName>email</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>
 				<var>
 					<name>Nacionalidad</name>
 					<varName>nacionalidad</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>
 				<var>
 					<name>Cédula</name>
 					<varName>cedula</varName>
-					<type>String</type>			
+					<type>java.lang.Integer</type>			
 				</var>
 				<var>
 					<name>Sexo</name>
 					<varName>sexo</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>
 				<var>
 					<name>Fecha de Nacimiento</name>
 					<varName>f_nacimiento</varName>
-					<type>Date</type>			
+					<type>java.util.Date</type>			
 				</var>
 				<var>
 					<name>Estado Civil</name>
 					<varName>edo_civil</varName>
-					<type>String</type>			
+					<type>java.lang.String</type>			
 				</var>
 			</vars>
 		</carga>
@@ -50,12 +50,12 @@
 				<var>
 					<name>Causas de devolución</name>
 					<varName>causasDevolucion</varName>
-					<type>List</type>
+					<type>java.util.List</type>
 				</var>
 				<var>
 					<name>Revisión</name>
 					<varName>revision</varName>
-					<type>String</type>
+					<type>java.lang.String</type>
 				</var>
 			</vars>
 		</revision>
@@ -64,17 +64,17 @@
 				<var>
 					<name>Causas de devolución</name>
 					<varName>causasDevolucion</varName>
-					<type>List</type>
+					<type>java.util.List</type>
 				</var>	
 				<var>
 					<name>Fecha de Cita</name>
 					<varName>f_cita</varName>
-					<type>Date</type>			
+					<type>java.util.Date</type>			
 				</var>
 				<var>
 					<name>Documento de Decisión</name>
 					<varName>_FILE_decision</varName>
-					<type>List</type>			
+					<type>java.util.List</type>			
 				</var>
 			</vars>
 		</notificacion>
@@ -84,7 +84,7 @@
 			<var>
 				<name>Datos Básicos</name>
 				<varName>_FILE_datosBasicos</varName>
-				<type>String</type>
+				<type>java.lang.String</type>
 			</var>
 		</vars>
 	</pool>
