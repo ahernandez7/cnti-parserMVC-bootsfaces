@@ -150,7 +150,7 @@ public class %{NameController} {
 		
 		if(task.getName().contentEquals("revision")){
 			
-			String revision = "",emailSGI = "";			
+			String revision = "",emailSGI = "N/A";			
 			List<String> causasDevolucion = new ArrayList<String>();
 			
 			Field[] atributos = this.bean.getClass().getDeclaredFields();
@@ -166,8 +166,8 @@ public class %{NameController} {
 					if(atributo.getName().contentEquals("causasDevolucion"))
 						causasDevolucion =  (List<String>) atributo.get(this.bean);
 					
-					if(atributo.getName().contentEquals("emailSGI"))
-						emailSGI = (String) atributo.get(this.bean);
+					//if(atributo.getName().contentEquals("emailSGI"))
+					//	emailSGI = (String) atributo.get(this.bean);
 						
 				}
 			}
