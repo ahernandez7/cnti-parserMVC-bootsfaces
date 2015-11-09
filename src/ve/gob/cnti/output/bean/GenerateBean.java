@@ -175,14 +175,15 @@ public class GenerateBean {
 	}
 
 	public String createGetMethod(String name, String type, String typeInput) {
-
 		String method = null;
 		if (type.equals("List") && !name.matches("^_FILE_.*$")) {
 			method = "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
-			method += "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "Option" + "() {\n" + "\t return this." + name + "Option" + ";\n" + "}\n";
+			method += "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "Option" + "() {\n" + "\t "
+					+ "return new Utils().convertlistStringToListStringUTF8(this." + name + "Option" + ");\n" + "}\n";
 		} else if (typeInput.equals("LISTBOX_SIMPLE") || typeInput.equals("RADIOBUTTON_GROUP") || typeInput.equals("CHECKBOX_GROUP")) {
 			method = "public " + "String" + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
-			method += "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "Option" + "() {\n" + "\t return this." + name + "Option" + ";\n" + "}\n";
+			method += "public " + "List<String>" + " get" + LibUtils.firstLetterUpper(name) + "Option" + "() {\n" + "\t "
+					+ "return new Utils().convertlistStringToListStringUTF8(this." + name + "Option" + ");\n" + "}\n";
 		} else {
 			method = "public " + LibUtils.changeToPrimitiveType(type) + " get" + LibUtils.firstLetterUpper(name) + "() {\n" + "\t return this." + name + ";\n" + "}\n";
 		}
