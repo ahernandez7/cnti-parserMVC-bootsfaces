@@ -87,7 +87,13 @@ public class %{NameController} {
         
         iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(this.bean));
         
-        new JMSImp().sendMessage(idCase);
+        try {
+        	new JMSImp().sendMessage(idCase);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Error en jms");
+			e.printStackTrace();
+		}
         
         return "%{DirViewSuccess}";
     }
