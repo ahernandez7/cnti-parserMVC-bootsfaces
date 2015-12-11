@@ -111,7 +111,22 @@ public class GenerateView {
 		String toolTip = field.getDescription();
 
 		String fieldInput = "";
-
+		
+		// TODO:Arreglar aqui estan definidas los readonly de las variables transversales
+		if ("nombre".equalsIgnoreCase(name) || "apellido".equalsIgnoreCase(name) ||
+				"email".equalsIgnoreCase(name)	|| "nacionalidad".equalsIgnoreCase(name) || "cedula".equalsIgnoreCase(name) ||
+				"sexo".equalsIgnoreCase(name) || "edo_civil".equalsIgnoreCase(name)||"estado".equalsIgnoreCase(name)||
+				"municipio".equalsIgnoreCase(name)||"parroquia".equalsIgnoreCase(name)||"direccion".equalsIgnoreCase(name)||"pais".equalsIgnoreCase(name)
+				||"tlf_local".equalsIgnoreCase(name)||"tlf_movil".equalsIgnoreCase(name)
+		){
+				this.readOnly = "readonly=\"true\"";
+		}	
+		
+		if("f_nacimiento".equalsIgnoreCase(name)){
+			
+			this.readOnly = "showOn=\"none\" readonly=\"true\"";
+			
+		}
 		// Construye el label
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (name.matches("^_FILE_.*$")) {
