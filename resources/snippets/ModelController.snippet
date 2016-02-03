@@ -41,6 +41,8 @@ import ve.gob.cnti.gestion.controller.TaskController;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFile;
 import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
 import ve.gob.cnti.gestion.jms.JMSImp;
+import ve.gob.cnti.gestion.exceptions.ConnectionComponentException;
+import ve.gob.cnti.gestion.utils.Utils;
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
@@ -69,33 +71,41 @@ public class %{NameController} {
 			NoSuchFieldException, SecurityException,
 			UnsupportedEncodingException, IllegalStateException, JSONException,
 			IOException, InterruptedException {
-    	// variable del caso
-    	String idCase = facesHandler.getParam("idCase");
+
+    	   	
+		try {
+			Utils util=new Utils();
+			// se verifican que los componentes de la plataforma esten activos
+			util.validateComponents();
+		    	   	
+    		// variable del caso
+    		String idCase = facesHandler.getParam("idCase");
     	
-    	// Alfreco Path Folder
-    	String alfrescoPath = "%{institucion}/%{processName}/"
+    		// Alfreco Path Folder
+    		String alfrescoPath = "%{institucion}/%{processName}/"
     					+ idCase;
     	
-    	this.task = new TaskImpl().getTaskbyCaseId(idCase);
+    		this.task = new TaskImpl().getTaskbyCaseId(idCase);
     	
-    	this.uploadFilesToAlfresco(alfrescoPath);  
+    		this.uploadFilesToAlfresco(alfrescoPath);  
         
-        if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
-			this.createPDF(alfrescoPath, idCase);
-		else
-			this.createPDFAction(alfrescoPath, idCase);
+        	if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
+				this.createPDF(alfrescoPath, idCase);
+			else
+				this.createPDFAction(alfrescoPath, idCase);
         
-        iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(this.bean));
-        
-        try {
+       		iController.completeTask(facesHandler.getParam("idTask"), util.convertObjectToListMap(this.bean));
+
         	new JMSImp().sendMessage(idCase);
-		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("Error en jms");
-			e.printStackTrace();
-		}
+
+        	return "%{DirViewSuccess}";
         
-        return "%{DirViewSuccess}";
+        } catch (ConnectionComponentException e) {        					
+			e.printStackTrace();
+			return "/views/layout/errorSistema.xhtml?faces-redirect=true";
+							
+		}
+    	
     }
     
     public void createPDF(String alfrescoPath, String idCase)
