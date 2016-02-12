@@ -102,7 +102,10 @@ public class %{NameController} {
         
         } catch (ConnectionComponentException e) {        					
 			e.printStackTrace();
-			return "/views/layout/errorSistema.xhtml?faces-redirect=true";
+		    if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
+				return "/views/interfazportalciudadano/errorSistema.xhtml?faces-redirect=true";
+			else
+				return "/views/interfazportalfuncionario/errorSistema.xhtml?faces-redirect=true";			
 							
 		}
     	
