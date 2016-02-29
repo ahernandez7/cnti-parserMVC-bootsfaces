@@ -136,7 +136,7 @@ public class ConfigForm extends JFrame implements ActionListener {
 	}
 
 	private boolean pathExist(String rootPath) {
-		String path = rootPath + "/docroot/WEB-INF/src/ve/gob/cnti/gestion/resources";
+		String path = rootPath + "/WebContent/WEB-INF/src/ve/gob/cnti/gestion/resources";
 		if (new File(path).isDirectory()) {
 			return true;
 		}
