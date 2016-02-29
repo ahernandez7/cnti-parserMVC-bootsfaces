@@ -196,7 +196,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 	
 			// moviendo los modelos y controladores
 			this.updateTextArea("\nCopiando los modelos y controladores");
-			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/WebContent/WEB-INF/src/");
+			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/src/");
 			
 			util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		}
