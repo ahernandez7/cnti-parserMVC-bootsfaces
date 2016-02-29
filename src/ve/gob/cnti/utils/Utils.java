@@ -168,7 +168,7 @@ public class Utils {
 	}
 	
 	private boolean pathExist(String rootPath) {
-		String path = rootPath + "/WebContent/WEB-INF/src/ve/gob/cnti/gestion/resources";
+		String path = rootPath + "/src/ve/gob/cnti/gestion/resources";
 		if (new File(path).isDirectory()) {
 			return true;
 		}
