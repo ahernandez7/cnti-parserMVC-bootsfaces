@@ -43,6 +43,9 @@ import ve.gob.cnti.gestion.controller.beanFiles.BeanFileServices;
 import ve.gob.cnti.gestion.jms.JMSImp;
 import ve.gob.cnti.gestion.exceptions.ConnectionComponentException;
 import ve.gob.cnti.gestion.utils.Utils;
+import ve.gob.cnti.gestion.exceptions.ConnectionComponentException;
+import ve.gob.cnti.gestion.formfile.FileManager;
+import ve.gob.cnti.gestion.formfile.FolderManager;
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
@@ -252,32 +255,26 @@ public class %{NameController} {
 			IllegalArgumentException, IllegalAccessException {
 
 		Iterator<BeanFile> it = beanFiles.iterator();
+		FacesHandler faceHandler=new FacesHandler();
+		FolderManager folderManager=new FolderManager(task.getCaseId());
+		FileManager fileManager=null;
 		while (it.hasNext()) {
 			BeanFile beanF = it.next();
-
-			Field variable = this.getClass().getDeclaredField(
-					beanF.getVarName());
-
 			Field archVar = bean.getClass()
 					.getDeclaredField(beanF.getVarName());
-
 			archVar.setAccessible(true);
-			variable.setAccessible(true);
-
-			List<UploadedFile> temp = new ArrayList<UploadedFile>();
 			List<String> stringTemps = new ArrayList<String>();
-
-			temp = (List<UploadedFile>) variable.get(this);
 			int i = 1;
-			for (UploadedFile arch : temp) {
+			for (String arch : beanF.getFileNames()) {
+				fileManager=folderManager.getFileManager(arch);
 				if (!beanF.isMultiple()) {
 					archVar.set(
 							bean,
-							iCmis.uploadDocument(arch, pathFolder, beanF
+							iCmis.uploadDocument(fileManager.findFile(), pathFolder, beanF
 									.getVarName().replaceAll("_FILE_", "")
 									.toUpperCase()+".pdf"));
 				} else {
-					stringTemps.add(iCmis.uploadDocument(arch, pathFolder,
+					stringTemps.add(iCmis.uploadDocument(fileManager.findFile(), pathFolder,
 							beanF.getVarName().replaceAll("_FILE_", "")
 							.toUpperCase() + "_" + i+".pdf"));
 				}
@@ -287,7 +284,7 @@ public class %{NameController} {
 				archVar.set(bean, stringTemps);
 
 		}
-
+		folderManager.deleteFolder();
 		return true;
 	}
 	
@@ -298,31 +295,30 @@ public class %{NameController} {
 			NoSuchFieldException, SecurityException {
 
 		FileUpload uploadComponent = (FileUpload) e.getComponent();
-
 		fileBean = fileServices.obtenerBeanFile(archivosProcesados,
 				uploadComponent, beanFiles);
-
+		System.out.println("paso por el "+task.getCaseId());
+		FacesHandler faceHandler=new FacesHandler();
+		FolderManager folderManager=new FolderManager(task.getCaseId());
+		FileManager fileManager=null;
 		if (fileServices.archivoValido(fileBean, e.getFile(),beanFiles)) {
 
-			Field variable = this.getClass().getDeclaredField(
-					uploadComponent.getId());
-
-			variable.setAccessible(true);
-			List<UploadedFile> temp = new ArrayList<UploadedFile>();
-
-			if (!fileBean.isMultiple() && fileBean.getFileNames().size() > 0) {
-
+            
+			if (!fileBean.isMultiple() && fileBean.getFileNames().size() > 0) {				
+				
+				String name=fileBean.getFileNames().get(0);				
+				fileManager=folderManager.getFileManager(name);
+				fileManager.remove();
 				fileBean.getFileNames().set(0, e.getFile().getFileName());
-
-				temp.add(e.getFile());
-				variable.set(this, temp);
+				fileManager=folderManager.getFileManager(e.getFile().getFileName());				
+                fileManager.addFile(e.getFile());
+                
+			        				
 
 			} else {
-				if (variable.get(this) != null)
-					temp = (List<UploadedFile>) variable.get(this);
-				temp.add(e.getFile());
-				variable.set(this, temp);
-				fileBean.getFileNames().add(e.getFile().getFileName());
+     			fileBean.getFileNames().add(e.getFile().getFileName());
+				fileManager=folderManager.getFileManager(e.getFile().getFileName());
+                fileManager.addFile(e.getFile());	
 			}
 
 			if (!archivosProcesados.containsKey(uploadComponent.getId())) {
@@ -346,18 +342,19 @@ public class %{NameController} {
 
 		fileBean = beanFiles.get(i_bean);
 
-		Field variable = this.getClass()
-				.getDeclaredField(fileBean.getVarName());
-		variable.setAccessible(true);
-		List<UploadedFile> temp = new ArrayList<UploadedFile>();
-
-		if (fileBean.getFileNames().size() == 1) {
+		FacesHandler faceHandler=new FacesHandler();
+		FolderManager folderManager=new FolderManager(task.getCaseId());
+		FileManager fileManager=null;
+		
+		
+		if (fileBean.getFileNames().size() == 1) {			
 			archivosProcesados.remove(fileBean.getVarName());
-			beanFiles.remove(i_bean);
-			variable.set(this, temp);
+			fileManager=folderManager.getFileManager(beanFiles.get(0).getVarName());
+			beanFiles.remove(i_bean);			
+
 		} else {
-			temp = (List<UploadedFile>) variable.get(this);
-			temp.remove(i_archivo);
+			
+			fileManager=folderManager.getFileManager(fileBean.getFileNames().get(i_archivo));
 			fileBean.getFileNames().remove(i_archivo);
 			beanFiles.set(i_bean, fileBean); 
 		}
@@ -366,8 +363,11 @@ public class %{NameController} {
 
 	public String onFlowProcess(FlowEvent e) throws NoSuchFieldException,
 			SecurityException, IllegalArgumentException, IllegalAccessException {
-
+		FacesHandler faceHandler=new FacesHandler();
+		FolderManager folderManager=new FolderManager(task.getCaseId());
+		FileManager fileManager=null;
 		String temp = null;
+		System.out.println("paso por el onflow"+task.getCaseId());
 		try {
 			temp = (String) facesHandler.findComponent("files").getAttributes()
 					.get("tabsNames");
@@ -382,26 +382,30 @@ public class %{NameController} {
 						temp = (String) facesHandler.findComponent("files")
 								.getAttributes().get(tabs[i]);
 						String archivos[] = temp.split(",");
-						Field variable;
+
 						String mandatory = "";
 						for (int k = 0; k < archivos.length; k++) {
 							mandatory = (String) facesHandler
 									.findComponent("files").getAttributes()
 									.get(archivos[k]);
-							variable = this.getClass().getDeclaredField(
-									archivos[k]);
-							if (variable.get(this) == null
+
+							String name=null;
+							BeanFile bean=null;
+							for(BeanFile beanFind:beanFiles){
+								if(archivos[k].equals(beanFind.getVarName()))	
+									bean=beanFind;
+							}
+						
+							if (bean.getFileNames().get(0) == null
 									&& "requerido".contentEquals(mandatory)) {
 								util.setMessageToView(
 										"Tiene documentos pendientes por subir",
 										1);
 								return e.getOldStep();
-							} else if (variable.get(this) != null
+							} else if (bean.getFileNames().get(0) != null
 									&& "requerido".contentEquals(mandatory)) {
-								@SuppressWarnings("unchecked")
-								List<UploadedFile> t = (List<UploadedFile>) variable
-										.get(this);
-								if (t.size() == 0) {
+								fileManager=folderManager.getFileManager(beanFiles.get(0).getVarName());
+								if (fileManager.findFile().length() == 0) {
 									util.setMessageToView(
 											"Tiene documentos pendientes por subir",
 											1);
@@ -452,7 +456,18 @@ public class %{NameController} {
 
 	public void setUploadfile(UploadedFile uploadfile) {
 		this.uploadfile = uploadfile;
+	} 
+	
+    public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
 	}     
+	
+	
+	    
 	
 	%{set_get_file_decision}
 
