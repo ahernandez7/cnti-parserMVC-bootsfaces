@@ -405,11 +405,11 @@ public class GenerateView {
 		if ("java.util.List".contentEquals(field.getReturnType())) {
 			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\"" + valueBean + "\">\n";
 			outputElement += "<p:column>\n";
-			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"" + name + "_#{index+1}.show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
+			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"PF('" + name + "_#{index+1}').show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
 			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "_#{index+1}\" widgetVar=\"" + name + "_#{index+1}\" resizable=\"false\" \n";
 			outputElement += "rendered=\"" + renderedvalueBean + "\"> \n";
 			outputElement += "<p:media width=\"900px\" height=\"500px\" player=\"pdf\" \n";
-			outputElement += "value=\"#{" + controller + ".get_FILE()}\">\n";
+			outputElement += "value=\"#{" + controller + "._FILE}\">\n";
 			outputElement += "<f:param name=\"id\" value=\"#{archivos}\" />\n";
 			outputElement += "<p:outputPanel layout=\"block\"><h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder \n";
 			outputElement += "examinar el documento, debe actualizar su navegador a una versión que pemita visualizar \n";
@@ -423,11 +423,11 @@ public class GenerateView {
 			outputElement += "</p:dataTable>\n";
 
 		} else {
-			outputElement += "<p:commandButton value=\"Visor PDF.\" onclick=\"" + name + ".show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
+			outputElement += "<p:commandButton value=\"Visor PDF.\" onclick=\"PF('" + name + "').show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
 			outputElement += "<p:dialog header=\"Visor PDF\" id=\"" + name + "\" widgetVar=\"" + name + "\" resizable=\"false\" \n";
 			outputElement += "rendered=\"" + renderedvalueBean + "\"> \n";
 			outputElement += "<p:media width=\"900px\" height=\"500px\" player=\"pdf\" \n";
-			outputElement += "value=\"#{" + controller + ".get_FILE()}\">\n";
+			outputElement += "value=\"#{" + controller + "._FILE}\">\n";
 			outputElement += "<f:param name=\"id\" value=\"" + valueBean + "\" />\n";
 			outputElement += "<p:outputPanel layout=\"block\"><h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder \n";
 			outputElement += "examinar el documento, debe actualizar su navegador a una versión que pemita visualizar \n";
