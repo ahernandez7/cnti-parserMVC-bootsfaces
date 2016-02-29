@@ -18,11 +18,18 @@
 	
 	<p:messages id="messagesConsulTab" showDetail="true" autoUpdate="true" closable="true" />
 	
-	<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelConsultTab">
+	<b:container id="container">
+			<h3>
+				<b:row>
+					<h:outputText
+						value="#{ProcessController.getProcessDisplayName(TaskController.task.processId)}" />
+				</b:row>
+				<b:row>
+					<h:outputText value="Caso N° #{TaskController.task.caseId}" />
+				</b:row>
+			</h3>
+				%{tabsElements}
+	</b:container>
 	
-	%{tabsElements}
-	
-	</p:panel>
-
 	</h:body>
 </f:view>

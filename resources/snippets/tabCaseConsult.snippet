@@ -11,19 +11,12 @@
 		<h:form>
 		
 		<p:tooltip />
-
-			<p:panel header="Expediente Nro: #{TaskController.task.caseId}">
-			</p:panel>
-
-			<p:panel header="Datos Básicos">
-
-				<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
-
+			
+			<h:panelGroup>
+				<h:panelGrid styleClass="table table-bordered table-striped" columns="2">
 					%{outputsElements}
-
 				</h:panelGrid>
-				
-			</p:panel>
+			</h:panelGroup>
 
 			<p:panel header="Documentos Anexos">
 
