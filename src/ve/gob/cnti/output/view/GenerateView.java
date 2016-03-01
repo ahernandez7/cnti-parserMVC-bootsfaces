@@ -398,9 +398,10 @@ public class GenerateView {
 		String valueBean = "#{" + controller + ".bean." + name + "}";
 		String outputElement = "";
 
-		outputElement += "<p:row rendered=\"" + renderedvalueBean + "\">\n";
-		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\"><h:outputText value=\"" + label + "\" /></p:column>\n";
-
+		//outputElement += "<p:row rendered=\"" + renderedvalueBean + "\">\n";
+		//outputElement += "<p:column rendered=\"" + renderedvalueBean + "\"><h:outputLabel value=\"" + label + "\" /></p:column>\n";
+		outputElement += "<h:outputLabel value=\"" + label + "\" rendered=\"" + renderedvalueBean + "\" />\n";
+		
 		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\">\n";
 		if ("java.util.List".contentEquals(field.getReturnType())) {
 			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\"" + valueBean + "\">\n";
@@ -440,7 +441,7 @@ public class GenerateView {
 		}
 		outputElement += "</p:column>\n";
 
-		outputElement += "</p:row>\n";
+		//outputElement += "</p:row>\n";
 		this.documentElements += outputElement;
 
 	}
