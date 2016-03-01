@@ -4,18 +4,32 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
 
 	<h:head></h:head>
 	<h:body>
+	<c:if test="#{userManager.insertCiudadanoComponentsOnView()}">
+		<ui:include src="/views/layout/headerCiudadano.xhtml" />
+	</c:if>
+	<c:if test="#{userManager.insertFuncionarioComponentsOnView()}">
+		<ui:include src="/views/layout/headerFuncionario.xhtml" />
+	</c:if>
 	
 	<p:messages id="messagesConsulTab" showDetail="true" autoUpdate="true" closable="true" />
 	
-	<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelConsultTab">
+	<b:container id="container">
+			<h3>
+				<b:row>
+					<h:outputText
+						value="#{ProcessController.getProcessDisplayName(TaskController.task.processId)}" />
+				</b:row>
+				<b:row>
+					<h:outputText value="Caso N° #{TaskController.task.caseId}" />
+				</b:row>
+			</h3>
+				%{tabsElements}
+	</b:container>
 	
-	%{tabsElements}
-	
-	</p:panel>
-
 	</h:body>
 </f:view>

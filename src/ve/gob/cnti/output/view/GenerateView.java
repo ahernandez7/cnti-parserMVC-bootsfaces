@@ -366,11 +366,11 @@ public class GenerateView {
 
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type)) {
 
-			String outputElement = "<p:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
-			outputElement += "<p:outputLabel id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\">\n";
+			String outputElement = "<h:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
+			outputElement += "<h:outputText id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\">\n";
 			if(field.getReturnType().contentEquals("java.util.Date"))
 				outputElement += "<f:convertDateTime pattern=\"dd/mm/yyyy\"/>\n";
-			outputElement += "</p:outputLabel>\n";
+			outputElement += "</h:outputText>\n";
 			this.outputElements += outputElement;
 		}
 	}
@@ -398,9 +398,10 @@ public class GenerateView {
 		String valueBean = "#{" + controller + ".bean." + name + "}";
 		String outputElement = "";
 
-		outputElement += "<p:row rendered=\"" + renderedvalueBean + "\">\n";
-		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\"><h:outputText value=\"" + label + "\" /></p:column>\n";
-
+		//outputElement += "<p:row rendered=\"" + renderedvalueBean + "\">\n";
+		//outputElement += "<p:column rendered=\"" + renderedvalueBean + "\"><h:outputLabel value=\"" + label + "\" /></p:column>\n";
+		outputElement += "<h:outputLabel value=\"" + label + "\" rendered=\"" + renderedvalueBean + "\" />\n";
+		
 		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\">\n";
 		if ("java.util.List".contentEquals(field.getReturnType())) {
 			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\"" + valueBean + "\">\n";
@@ -440,7 +441,7 @@ public class GenerateView {
 		}
 		outputElement += "</p:column>\n";
 
-		outputElement += "</p:row>\n";
+		//outputElement += "</p:row>\n";
 		this.documentElements += outputElement;
 
 	}
