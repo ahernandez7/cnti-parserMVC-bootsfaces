@@ -8,6 +8,7 @@
 		<p:tab id="tabconsulta" title="Consulta" rendered="#{TaskController.isStartCase==null}">
 		#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
    		#{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
+		#{%{nameTask}.setTask(TaskController.task)}
 		<h:form>
 		
 		<p:tooltip />
