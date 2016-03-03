@@ -149,9 +149,9 @@ public class GenerateView {
 				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\"> ";
 				fieldInput += " </p:fileUpload>";
 			} else {
-				fieldInput += "<p:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
+				fieldInput += "<b:inputText id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" " + this.required + " " + this.readOnly + ">\n";
 				fieldInput += this.validator;
-				fieldInput += "</p:inputText>\n";
+				fieldInput += "</b:inputText>\n";
 			}
 
 		} else if ("DATE".equalsIgnoreCase(type)) {
