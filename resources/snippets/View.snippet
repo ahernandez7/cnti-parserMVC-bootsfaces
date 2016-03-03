@@ -5,7 +5,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:b="http://bootsfaces.net/ui">
 
      <h:head></h:head>
      <h:body>
@@ -22,23 +23,36 @@
 	</c:if>
      
      <p:tooltip />
+     <b:container id="panelC">
 		<h:form enctype="multipart/form-data" id="form">
-			<div style="">
 			
-			<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelC">
+			<b:row>
+				<h2>
+				<h:outputText
+					value="#{ProcessController.getProcessDisplayName(TaskController.task.processId)}" />
+				</h2>
+			</b:row>
+			<b:row>
+				<h3>
+				<h:outputText
+					value="#{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" />
+				</h3>
+			</b:row>
+			<b:panel>
 			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
-				flowListener="#{%{nameTask}.onFlowProcess}">	
+				flowListener="#{%{nameTask}.onFlowProcess}" >	
 				
 				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
 				
 				%{tabsElements}
 			     				
-			</p:wizard>
-			</p:panel>
-     		</div>
+			</p:wizard>     		
      		
      		%{filesInTabs}
      		
+     		</b:panel>
+     		
 		</h:form>
+	</b:container>
     </h:body>
 </f:view>
