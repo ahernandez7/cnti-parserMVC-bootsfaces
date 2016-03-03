@@ -124,7 +124,7 @@ public class GenerateView {
 		
 		if("f_nacimiento".equalsIgnoreCase(name)){
 			
-			this.readOnly = "showOn=\"none\" readonly=\"true\"";
+			this.readOnly = "showOn=\"none\" readonly=\"true\" disabled=\"true\" ";
 			
 		}
 		// Construye el label
@@ -156,10 +156,10 @@ public class GenerateView {
 
 		} else if ("DATE".equalsIgnoreCase(type)) {
 
-			fieldInput += "<p:calendar id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" ";
+			fieldInput += "<b:datepicker id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" locale=\"es\" navigator=\"true\" pattern=\"dd-mm-yyyy\" mode=\"icon-popup\" ";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
-			fieldInput += "</p:calendar>\n";
+			fieldInput += "</b:datepicker>\n";
 
 		} else if ("CHECKBOX".equalsIgnoreCase(type)) {
 
