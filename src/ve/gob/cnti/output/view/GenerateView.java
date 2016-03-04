@@ -184,12 +184,12 @@ public class GenerateView {
 			fieldInput += "<h:outputText id=\"display\"/>";
 
 		} else if ("LISTBOX_SIMPLE".equalsIgnoreCase(type)) {
-			fieldInput += "<p:selectOneMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"\n";
+			fieldInput += "<b:selectOneMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
 			fieldInput += "<f:selectItems itemLabel=\"\" itemValue=\"\" />\n";
 			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\"/>\n";
-			fieldInput += "</p:selectOneMenu>\n";
+			fieldInput += "</b:selectOneMenu>\n";
 
 		} else if ("RICH_TEXTAREA".equalsIgnoreCase(type)) {
 
