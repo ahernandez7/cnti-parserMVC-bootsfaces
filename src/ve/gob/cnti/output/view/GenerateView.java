@@ -130,9 +130,9 @@ public class GenerateView {
 		// Construye el label
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (name.matches("^_FILE_.*$")) {
-				fieldInput = "<p:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+				fieldInput = "<h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			} else {
-				fieldInput = "<p:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+				fieldInput = "<h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			}
 		}
 			
@@ -228,11 +228,11 @@ public class GenerateView {
 			}
 
 		} else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)) {
-			fieldInput += "<p:selectOneRadio id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
+			fieldInput += "<b:selectOneMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
 			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" itemLabel=\"#{" + name + "}\" itemValue=\"#{" + name + "}\"/>\n";
-			fieldInput += "</p:selectOneRadio>\n";
+			fieldInput += "</b:selectOneMenu>\n";
 		} else if ("SUGGESTBOX".equalsIgnoreCase(type)) {
 
 		}
