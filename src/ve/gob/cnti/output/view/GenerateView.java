@@ -130,9 +130,9 @@ public class GenerateView {
 		// Construye el label
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (name.matches("^_FILE_.*$")) {
-				fieldInput = "<h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+				fieldInput = "<b:column span='6'><h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			} else {
-				fieldInput = "<h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+				fieldInput = "<b:column span='6'><h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
 			}
 		}
 			
@@ -243,6 +243,7 @@ public class GenerateView {
 				fieldInput += "<h:outputText />";
 			fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
 			fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
+			fieldInput += "</b:column>";
 		}
 		fieldInput +="\n";
 		this.readOnly="";
