@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-		<p:tab id="tabconsulta" title="Consulta">
+		<p:tab id="tabconsulta" title="Consulta" rendered="#{TaskController.isStartCase==null}">
 		#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
    		#{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
 		#{%{nameTask}.setTask(TaskController.task)}
