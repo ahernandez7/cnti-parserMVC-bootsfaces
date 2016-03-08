@@ -184,12 +184,11 @@ public class GenerateView {
 			fieldInput += "<h:outputText id=\"display\"/>";
 
 		} else if ("LISTBOX_SIMPLE".equalsIgnoreCase(type)) {
-			fieldInput += "<b:selectOneMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\"\n";
+			fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" nonSelectedText=\"Por Favor Selecione\" maxSelectedText=\"Por Favor Selecione\" filterMatchMode=\"startsWith\" buttonWidth=\"250px\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
-			fieldInput += "<f:selectItems itemLabel=\"\" itemValue=\"\" />\n";
-			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\"/>\n";
-			fieldInput += "</b:selectOneMenu>\n";
+			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
+			fieldInput += "</b:selectMultiMenu>\n";
 
 		} else if ("RICH_TEXTAREA".equalsIgnoreCase(type)) {
 
@@ -199,11 +198,11 @@ public class GenerateView {
 
 		} else if ("CHECKBOX_GROUP".equalsIgnoreCase(type)) {
 			
-			fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
+			fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" \n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
 			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
-			fieldInput += "</p:selectCheckboxMenu>\n";
+			fieldInput += "</b:selectMultiMenu>\n";
 
 		} else if ("DURATION".equalsIgnoreCase(type)) {
 
@@ -220,11 +219,11 @@ public class GenerateView {
 				fieldInput += "<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
 			} else {
 
-				fieldInput += "<p:selectCheckboxMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" filter=\"true\" filterMatchMode=\"startsWith\" panelStyle=\"width:250px\"\n";
+				fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" \n";
 				fieldInput += this.required + " " + this.readOnly + ">\n";
 				fieldInput += this.validator;
 				fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
-				fieldInput += "</p:selectCheckboxMenu>\n";
+				fieldInput += "</b:selectMultiMenu>\n";
 			}
 
 		} else if ("RADIOBUTTON_GROUP".equalsIgnoreCase(type)) {
