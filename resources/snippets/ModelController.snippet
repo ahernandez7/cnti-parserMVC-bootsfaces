@@ -297,7 +297,7 @@ public class %{NameController} {
 		FileUpload uploadComponent = (FileUpload) e.getComponent();
 		fileBean = fileServices.obtenerBeanFile(archivosProcesados,
 				uploadComponent, beanFiles);
-		System.out.println("paso por el "+task.getCaseId());
+		
 		FacesHandler faceHandler=new FacesHandler();
 		FolderManager folderManager=new FolderManager(task.getCaseId());
 		FileManager fileManager=null;
@@ -367,7 +367,7 @@ public class %{NameController} {
 		FolderManager folderManager=new FolderManager(task.getCaseId());
 		FileManager fileManager=null;
 		String temp = null;
-		System.out.println("paso por el onflow"+task.getCaseId());
+		
 		try {
 			temp = (String) facesHandler.findComponent("files").getAttributes()
 					.get("tabsNames");
