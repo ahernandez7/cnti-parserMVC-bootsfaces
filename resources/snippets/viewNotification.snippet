@@ -14,6 +14,14 @@
      #{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
      #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
      #{%{nameTask}.setTask(TaskController.task)}
+     
+	<c:if test="#{userManager.insertCiudadanoComponentsOnView()}">
+		<ui:include src="/views/layout/headerCiudadano.xhtml" />
+	</c:if>
+	<c:if test="#{userManager.insertFuncionarioComponentsOnView()}">
+		<ui:include src="/views/layout/headerFuncionario.xhtml" />
+	</c:if>
+     
      <p:tooltip />
 		<h:form enctype="multipart/form-data" id="form">
 			<div style="">
