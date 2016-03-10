@@ -198,7 +198,7 @@ public class GenerateView {
 
 		} else if ("CHECKBOX_GROUP".equalsIgnoreCase(type)) {
 			
-			fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" \n";
+			fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" allSelectedText=\"Todos los Elementos Seleccionados\" nSelectedText=\"Elementos Seleccionados\" nonSelectedText=\"Seleccione sus Opciones\" buttonWidth=\"550\" \n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
 			fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
@@ -219,7 +219,7 @@ public class GenerateView {
 				fieldInput += "<f:attribute name=\"limiteDeArchivos\" value=\"10\" /></p:fileUpload>";
 			} else {
 
-				fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" \n";
+				fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" allSelectedText=\"Todos los Elementos Seleccionados\" nSelectedText=\"Elementos Seleccionados\" nonSelectedText=\"Seleccione sus Opciones\" buttonWidth=\"550\" \n";
 				fieldInput += this.required + " " + this.readOnly + ">\n";
 				fieldInput += this.validator;
 				fieldInput += "\t<f:selectItems value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "Option" + "}\" />\n";
