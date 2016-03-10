@@ -35,13 +35,13 @@
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"
 				>
 				<p:column>
-					<p:commandButton value="Documento"
-						onclick="_FILE_constancias.show();"	></p:commandButton>
+					<p:commandButton position="top"  value="Documento"
+						onclick="PF('_FILE_constancias').show();"	></p:commandButton>
 					
 					<p:dialog header="Visor PDF" id="_FILE_constancias"
 						widgetVar="_FILE_constancias" resizable="false">
 						<p:media width="900px" height="500px" player="pdf"
-							value="#{%{nameTask}.get_FILE()}">
+							value="#{%{nameTask}._FILE}">
 							<f:param name="id" value="#{archivos}" />
 							<p:outputPanel layout="block">
 								<h:form> Su navegador es incompatible para la visualización de documentos PDF. Para poder 
