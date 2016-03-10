@@ -35,10 +35,10 @@
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"
 				>
 				<p:column>
-					<p:commandButton position="top"  value="Documento"
+					<p:commandButton   value="Documento"
 						onclick="PF('_FILE_constancias').show();"	></p:commandButton>
 					
-					<p:dialog header="Visor PDF" id="_FILE_constancias"
+					<p:dialog position="top" header="Visor PDF" id="_FILE_constancias"
 						widgetVar="_FILE_constancias" resizable="false">
 						<p:media width="900px" height="500px" player="pdf"
 							value="#{%{nameTask}._FILE}">
