@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<f:view
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:b="http://bootsfaces.net/ui">
+
+     <h:head></h:head>
+     <h:body>
+     
+     #{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
+     #{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
+     #{%{nameTask}.setTask(TaskController.task)}
+     
+	<c:if test="#{userManager.insertCiudadanoComponentsOnView()}">
+		<ui:include src="/views/layout/headerCiudadano.xhtml" />
+	</c:if>
+	<c:if test="#{userManager.insertFuncionarioComponentsOnView()}">
+		<ui:include src="/views/layout/headerFuncionario.xhtml" />
+	</c:if>
+     
+     <p:tooltip />
+     
+     <b:container id="panelC">
+		<h:form enctype="multipart/form-data" id="form">
+			
+			<b:row>
+				<h2>
+				<h:outputText
+					value="#{ProcessController.getProcessDisplayName(TaskController.task.processId)}" />
+				</h2>
+			</b:row>
+			<b:row>
+				<h3>
+				<h:outputText
+					value="#{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" />
+				</h3>
+			</b:row>
+			<b:panel>
+			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
+				flowListener="#{%{nameTask}.onFlowProcess}">	
+				
+				<ui:include src="#{TaskController.caseConsultTab(ProcessController.getProcessName(TaskController.task.processId))}"/>
+				
+				%{tabsElements}
+			     				
+			</p:wizard>
+			</b:panel>     		
+     		
+     		
+     		
+     		
+     		
+		</h:form>
+	</b:container>
+     
+		<b:row>
+		<b:column span='12' style="height:100px;">
+			<ui:include src="/views/layout/footer.xhtml"/>
+		</b:column>
+		</b:row>
+    </h:body>
+</f:view>

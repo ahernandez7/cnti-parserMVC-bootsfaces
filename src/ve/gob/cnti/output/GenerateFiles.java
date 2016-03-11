@@ -228,7 +228,7 @@ public class GenerateFiles {
 	
 	private void replaceReview(){
 		
-		GenerateView gv_tab = new GenerateView("resources/snippets/viewNotification.snippet", getPathOutputFileView(), this.nameApp);
+		GenerateView gv_tab = new GenerateView("resources/snippets/viewReview.snippet", getPathOutputFileView(), this.nameApp);
 		gv_tab.setNameBean("revision");gv_tab.replaceNameTask("revision");
 		gv_tab.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		
