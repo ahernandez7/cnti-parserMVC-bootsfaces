@@ -442,6 +442,7 @@ public class GenerateView {
 		outputElement += "</p:column>\n";
 
 		//outputElement += "</p:row>\n";
+		
 		this.documentElements += outputElement;
 
 	}
@@ -472,10 +473,12 @@ public class GenerateView {
 
 			filesInTabs += "</h:inputHidden>";
 		}
-
+		
+		
 		this.snippetFile = LibUtils.replacePattern("%\\{filesInTabs\\}", filesInTabs, this.snippetFile);
+		
 	}
-
+	
 	private void replaceOutputsElements() {
 
 		this.snippetFile = LibUtils.replacePattern("%\\{outputsElements\\}", this.outputElements, this.snippetFile);
