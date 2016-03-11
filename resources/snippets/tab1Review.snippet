@@ -3,7 +3,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:b="http://bootsfaces.net/ui">
 
 	<p:tab id="tab1" title="Revisión">
 	
@@ -24,21 +25,56 @@
 					itemLabel="#{revision}" itemValue="#{revision}" />
 				<p:ajax update="panelRevision" />
 			</p:selectOneRadio>
+			
 			<p:message for="revision" id="revisionMessage" style="color:red" />
 			<p:tooltip id="toolTipRevision" for="revision" value="revision1" />
 
 
-			<p:outputLabel for="causasDevolucion" value="Causas de devolución"
+			<h:outputLabel for="causasDevolucion" value="Causas de devolución"
 				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />
-			<p:selectCheckboxMenu id="causasDevolucion"
+			
+			<b:selectMultiMenu id="causasDevolucion"
 				value="#{%{nameTask}.bean.causasDevolucion}"
-				filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
 				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
 				required="#{%{nameTask}.bean.revision == 'Rechazado'}"
-				requiredMessage="Requerido">				
+				requiredMessage="Requerido"
+				allSelectedText="Todos los Elementos Seleccionados"
+				nSelectedText="Elementos Seleccionados"
+				nonSelectedText="Seleccione los motivos">				
 				<f:selectItems
 					value="#{%{nameTask}.bean.causasDevolucionOption}" />
-			</p:selectCheckboxMenu>
+			</b:selectMultiMenu>
+			
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
 				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />

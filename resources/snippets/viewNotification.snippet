@@ -23,10 +23,23 @@
 	</c:if>
      
      <p:tooltip />
+     
+     <b:container id="panelC">
 		<h:form enctype="multipart/form-data" id="form">
-			<div style="">
 			
-			<p:panel header="#{ProcessController.getProcessDisplayName(TaskController.task.processId)} - #{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" id="panelC">
+			<b:row>
+				<h2>
+				<h:outputText
+					value="#{ProcessController.getProcessDisplayName(TaskController.task.processId)}" />
+				</h2>
+			</b:row>
+			<b:row>
+				<h3>
+				<h:outputText
+					value="#{TaskController.task.displayName} - Caso N° #{TaskController.task.caseId}" />
+				</h3>
+			</b:row>
+			<b:panel>
 			<p:wizard nextLabel="Siguiente" backLabel="Anterior"
 				flowListener="#{%{nameTask}.onFlowProcess}">	
 				
@@ -35,10 +48,15 @@
 				%{tabsElements}
 			     				
 			</p:wizard>
-			</p:panel>
-     		</div>
+			</b:panel>     		
+     		
+     		%{filesInTabs}
+     		
+     		
      		
 		</h:form>
+	</b:container>
+     
 		<b:row>
 		<b:column span='12' style="height:100px;">
 			<ui:include src="/views/layout/footer.xhtml"/>
