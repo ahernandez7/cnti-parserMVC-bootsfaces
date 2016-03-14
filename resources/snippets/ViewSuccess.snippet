@@ -7,23 +7,39 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:b="http://bootsfaces.net/ui">
 
-	<h:head></h:head>
+	<h:head>
+		
+	</h:head>
 	<h:body>
+	
+		<c:if test="#{userManager.insertCiudadanoComponentsOnView()}">
+			<f:event listener="#{userManager.isCiudadano}" type="preRenderView"/>
+			<ui:include src="/views/layout/headerCiudadano.xhtml" />
+		</c:if>
+		<c:if test="#{userManager.insertFuncionarioComponentsOnView()}">
+			<f:event listener="#{userManager.isFuncionario}" type="preRenderView"/>
+			<ui:include src="/views/layout/headerFuncionario.xhtml" />
+		</c:if>
+		<b:container>
 		<h:form>
-				<p:panel header="El Envío de su formulario se ha procesado exitosamente." 
-					rendered="#{TaskController.task.name == 'carga'}">				
+				
+				<h2><h:outputText value="El Envío de su solicitud se ha procesado exitosamente." 
+					rendered="#{TaskController.task.name == 'carga'}" /></h2>			
 				<p:outputLabel rendered="#{TaskController.dbn.sexo == 'F'}" value="Estimada: "/>
 				<p:outputLabel rendered="#{TaskController.dbn.sexo == 'M'}" value="Estimado: "/>
 				#{TaskController.dbn.primerNombre} #{TaskController.dbn.segundoNombre} 
 				#{TaskController.dbn.primerApellido} #{TaskController.dbn.segundoApellido},
 				Se ha creado un nuevo caso n° #{TaskController.task.caseId} por concepto de 
 				#{TaskController.task.displayName}, en los próximos días será notificado sobre los avances del caso. 
-				</p:panel>
 				
-				<p:panel header="El Envío de su formulario se ha procesado exitosamente." rendered="#{TaskController.task.name != 'carga'}">
-				La actividad de #{TaskController.task.displayName}, se ha realizado exitosamente.
-				</p:panel>
+				<h2>
+					<h:outputText
+						value="El Envío de su formulario se ha procesado exitosamente. La actividad de #{TaskController.task.displayName}, se ha realizado exitosamente."
+						rendered="#{TaskController.task.name != 'carga'}" />
+				</h2>				
+				
 		</h:form>
+		</b:container>
 		<b:row>
 		<b:column span='12' style="height:100px;">
 			<ui:include src="/views/layout/footer.xhtml"/>
