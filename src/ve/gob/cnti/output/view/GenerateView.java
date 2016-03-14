@@ -394,7 +394,7 @@ public class GenerateView {
 		String label = field.getLabelField();
 		String name = field.getVarName();
 		String controller = this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller";
-		String renderedvalueBean = "#{" + controller + ".bean." + name + "!=null and not empty " + controller + ".bean." + name + " }";
+		String renderedvalueBean = "#{" + controller + ".bean." + name + "!=null and not empty " + controller + ".bean." + name + " and " + controller + ".bean." + name + "!='[]' }";
 		String valueBean = "#{" + controller + ".bean." + name + "}";
 		String outputElement = "";
 
@@ -404,7 +404,7 @@ public class GenerateView {
 		
 		outputElement += "<p:column rendered=\"" + renderedvalueBean + "\">\n";
 		if ("java.util.List".contentEquals(field.getReturnType())) {
-			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" value=\"" + valueBean + "\">\n";
+			outputElement += "<p:dataTable var=\"archivos\" rowIndexVar=\"index\" rendered=\"" + renderedvalueBean + "\" value=\"" + valueBean + "\">\n";
 			outputElement += "<p:column>\n";
 			outputElement += "<p:commandButton value=\"Documento n° #{index+1}\" onclick=\"PF('" + name + "_#{index+1}').show();\" rendered=\"" + renderedvalueBean + "\"></p:commandButton>\n";
 			outputElement += "<p:dialog position=\"top\" header=\"Visor PDF\" id=\"" + name + "_#{index+1}\" widgetVar=\"" + name + "_#{index+1}\" resizable=\"false\" \n";
