@@ -394,7 +394,7 @@ public class GenerateView {
 		String label = field.getLabelField();
 		String name = field.getVarName();
 		String controller = this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller";
-		String renderedvalueBean = "#{" + controller + ".bean." + name + "!=null}";
+		String renderedvalueBean = "#{" + controller + ".bean." + name + "!=null and not empty " + controller + ".bean." + name + " }";
 		String valueBean = "#{" + controller + ".bean." + name + "}";
 		String outputElement = "";
 
