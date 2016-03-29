@@ -9,6 +9,7 @@
 	
 	<p:tab id="tabResumen" title="Resumen">
 	
+	<h:outputScript library="js" name="modalConfirmacion.js" />
 	<p:blockUI block="confirmacion" widgetVar="blockUI">
 		<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
 		<br />
@@ -33,14 +34,12 @@
 	
 	<div align="right">
 	<p:commandButton value="Enviar Datos" type="button"
-	onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-	confirmDialog.content.parent().css('left', '25%');" />
+	onclick="PF('blockUI').hide(); PF('confirmDialog').show();" />
 	</div>
 
 	<p:confirmDialog message="¿Estás seguro de enviar los datos?"
 		header="Inciando envio de datos" severity="alert"
-		widgetVar="confirmDialog" id="confirmacion"
-		tyle="position:fixed;">
+		widgetVar="confirmDialog" id="confirmacion">
 
 		<p:commandButton value="Si" update="panelC"
 		action="#{%{nameTask}.executeTask}"
