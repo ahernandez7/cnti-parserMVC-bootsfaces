@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:tab id="tab1" title="Notificación">
-
+		<h:outputScript library="js" name="modalConfirmacion.js" />
 		<p:blockUI block="confirmacion" widgetVar="blockUI">
 			<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
 			<br />
@@ -15,19 +15,19 @@
 		<br/><br/>
 		<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
 
-			<p:outputLabel value="Su trámite fue devuelto debido a: "
+			<p:outputLabel value="el tramite con el caso N° #{TaskController.task.caseId}  fue  rechazado por: "
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>			
 
-			<p:outputLabel value="Su trámite le otorga una cita en la fecha: " 
+			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado  y la cita fue asignada para:"
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.f_cita}" 
 				rendered="#{%{nameTask}.bean.f_cita!=null}">
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</p:outputLabel>
 			
-			<p:outputLabel value="Su trámite le otorga el siguiente documento" 
+			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado, el documento generado es el siguiente:"
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"/>
 				
 			<p:dataTable var="archivos" rowIndexVar="index"
@@ -69,7 +69,7 @@ archivos de extensión pdf directamente en el navegador o descargue el documento
 	confirmDialog.content.parent().css('left', '25%');" />
 		</div>
 
-		<p:confirmDialog message="¿Estás seguro de enviar los resultados del trámite?"
+		<p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
 			header="Inciando envio de datos" severity="alert"
 			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
 

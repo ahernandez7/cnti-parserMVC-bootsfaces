@@ -7,7 +7,7 @@
 	xmlns:b="http://bootsfaces.net/ui">
 
 	<p:tab id="tab1" title="Revisión">
-	
+	    <h:outputScript library="js" name="modalConfirmacion.js" />
 		<p:blockUI block="confirmacion" widgetVar="blockUI">
 			<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
 			<br />
@@ -16,34 +16,43 @@
 
 		<h:panelGrid columns="4" styleClass="gestorTramiteGrid"
 			id="panelRevision">
-
-			<p:outputLabel for="revision" value="Resulta/Decisión:" />
-			<p:selectOneRadio id="revision" 
-				value="#{%{nameTask}.bean.revision}">
-				<f:selectItems
-					value="#{%{nameTask}.bean.revisionOption}" 
-					itemLabel="#{revision}" itemValue="#{revision}" />
-				<p:ajax update="panelRevision" />
-			</p:selectOneRadio>
+          	<h:panelGrid columns="4">
+				<p:outputLabel for="revision" value="Decisión:" />
+				<p:selectOneRadio id="revision" 
+					value="#{%{nameTask}.bean.revision}">
+					<f:selectItems
+						value="#{%{nameTask}.bean.revisionOption}" 
+						itemLabel="#{revision}" itemValue="#{revision}" />
+					<p:ajax update="panelRevision" />
+				</p:selectOneRadio>
+			
+			
+			</h:panelGrid>
+			
 			
 			<p:message for="revision" id="revisionMessage" style="color:red" />
 			<p:tooltip id="toolTipRevision" for="revision" value="revision1" />
 
-
-			<h:outputLabel for="causasDevolucion" value="Causas de devolución"
-				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:panelGrid columns="4">
+				
+				<h:outputLabel for="causasDevolucion" value="Causas de devolución"
+					rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />
+				
+				<b:selectMultiMenu id="causasDevolucion"
+					value="#{%{nameTask}.bean.causasDevolucion}"
+					rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
+					required="#{%{nameTask}.bean.revision == 'Rechazado'}"
+					requiredMessage="Requerido"
+					allSelectedText="Todos los Elementos Seleccionados"
+					nSelectedText="Elementos Seleccionados"
+					nonSelectedText="Seleccione los motivos">				
+					<f:selectItems
+						value="#{%{nameTask}.bean.causasDevolucionOption}" />
+				</b:selectMultiMenu>
 			
-			<b:selectMultiMenu id="causasDevolucion"
-				value="#{%{nameTask}.bean.causasDevolucion}"
-				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}"
-				required="#{%{nameTask}.bean.revision == 'Rechazado'}"
-				requiredMessage="Requerido"
-				allSelectedText="Todos los Elementos Seleccionados"
-				nSelectedText="Elementos Seleccionados"
-				nonSelectedText="Seleccione los motivos">				
-				<f:selectItems
-					value="#{%{nameTask}.bean.causasDevolucionOption}" />
-			</b:selectMultiMenu>
+			</h:panelGrid>
+			
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
 				rendered="#{%{nameTask}.bean.revision == 'Rechazado'}" />

@@ -6,7 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<p:tab id="tabResumen" title="Resumen">
-
+	<h:outputScript library="js" name="modalConfirmacion.js" />
 		<p:blockUI block="confirmacion" widgetVar="blockUI">
 			<p:graphicImage value="#{resource['images/ajax_loader.gif']}"></p:graphicImage>
 			<br />
