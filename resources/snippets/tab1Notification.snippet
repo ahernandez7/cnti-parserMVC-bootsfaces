@@ -27,6 +27,12 @@
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</p:outputLabel>
 			
+		    <div align="left">
+				<p:commandButton value="Aceptar" type="button"
+					onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+		            confirmDialog.content.parent().css('left', '25%');" />
+			</div>
+			<h:outputText value="&lt;br /&gt;" escape="false" />
 			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado, el documento generado es el siguiente:"
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"/>
 				
@@ -63,12 +69,6 @@ archivos de extensión pdf directamente en el navegador o descargue el documento
 
 		</h:panelGrid>
 		
-		<div align="right">
-			<p:commandButton value="Enviar resultado de trámite" type="button"
-				onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-	confirmDialog.content.parent().css('left', '25%');" />
-		</div>
-
 		<p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
 			header="Inciando envio de datos" severity="alert"
 			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
