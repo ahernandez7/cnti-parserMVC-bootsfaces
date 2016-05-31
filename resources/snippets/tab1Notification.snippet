@@ -16,9 +16,9 @@
 		<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
 
 			<p:outputLabel value="el tramite con el caso N° #{TaskController.task.caseId}  fue  rechazado por: "
-				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null and #{%{nameTask}.bean.causasDevolucion!='[]'}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
-				rendered="#{%{nameTask}.bean.causasDevolucion!=null}"/>			
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null and #{%{nameTask}.bean.causasDevolucion!='[]'}"/>			
 
 			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado  y la cita fue asignada para:"
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
