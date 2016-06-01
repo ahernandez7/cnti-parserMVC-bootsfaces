@@ -101,12 +101,13 @@ public class %{NameController} {
 
         	new JMSImp().sendMessage(idCase);
 
-			Utils.addGlobalInfoFlashMessage("Su solicitud ha sido creada exitosamente bajo el Nro."+idCase);  	        	
-            
-            if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
-				return "/views/interfazportalciudadano/view.xhtml?faces-redirect=true";
-			else
-				return "/views/interfazportalfuncionario/view.xhtml?faces-redirect=true";
+           if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class)){
+            	Utils.addGlobalInfoFlashMessage("Su solicitud ha sido creada exitosamente bajo el Nro."+idCase);  	        	
+                return "/views/interfazportalciudadano/view.xhtml?faces-redirect=true";
+            }else{
+            	Utils.addGlobalInfoFlashMessage("La solicitud Nro:"+idCase+" ha sido procesada");  	        	
+                return "/views/interfazportalfuncionario/view.xhtml?faces-redirect=true";
+            }
         
         } catch (ConnectionComponentException e) {        					
 			e.printStackTrace();
