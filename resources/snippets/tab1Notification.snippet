@@ -13,12 +13,33 @@
 			<p:outputLabel>Por favor espere mientras se procesa su petición...</p:outputLabel>
 		</p:blockUI>
 		<br/><br/>
-		<h:panelGrid columns="2" styleClass="gestorTramiteGrid">
+		<p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
+				header="Inciando envio de datos" severity="alert"
+				widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
+	
+				<p:commandButton value="Si"
+					action="#{%{nameTask}.executeTask}"
+					oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
+					onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
+					icon="ui-icon-check">
+	
+					<f:param name="idTask" value="#{TaskController.task.id}" />
+					<f:param name="idCase" value="#{TaskController.task.caseId}" />
+					<f:param name="processId" value="#{TaskController.task.processId}" />
+	
+				</p:commandButton>
+	
+				<p:commandButton value="No" widgetVar="cancelButton"
+					onclick="PF('confirmDialog').hide();" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+	
+		</p:confirmDialog>
+		<h:panelGrid columns="4" styleClass="gestorTramiteGrid">
 
 			<p:outputLabel value="el tramite con el caso N° #{TaskController.task.caseId}  fue  rechazado por: "
-				rendered="#{%{nameTask}.bean.causasDevolucion!=null and #{%{nameTask}.bean.causasDevolucion!='[]'}"/>
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null and %{nameTask}.bean.causasDevolucion!='[]'}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
-				rendered="#{%{nameTask}.bean.causasDevolucion!=null and #{%{nameTask}.bean.causasDevolucion!='[]'}"/>			
+				rendered="#{%{nameTask}.bean.causasDevolucion!=null and %{nameTask}.bean.causasDevolucion!='[]'}"/>			
 
 			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado  y la cita fue asignada para:"
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
@@ -32,6 +53,7 @@
 					onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
 		            confirmDialog.content.parent().css('left', '25%');" />
 			</div>
+
 			<h:outputText value="&lt;br /&gt;" escape="false" />
 			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado, el documento generado es el siguiente:"
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"/>
@@ -69,28 +91,6 @@ archivos de extensión pdf directamente en el navegador o descargue el documento
 
 		</h:panelGrid>
 		
-		<p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
-			header="Inciando envio de datos" severity="alert"
-			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
-
-			<p:commandButton value="Si"
-				action="#{%{nameTask}.executeTask}"
-				oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
-				onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check">
-
-				<f:param name="idTask" value="#{TaskController.task.id}" />
-				<f:param name="idCase" value="#{TaskController.task.caseId}" />
-				<f:param name="processId" value="#{TaskController.task.processId}" />
-
-			</p:commandButton>
-
-			<p:commandButton value="No" widgetVar="cancelButton"
-				onclick="PF('confirmDialog').hide();" type="button"
-				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-
-		</p:confirmDialog>
-
 	</p:tab>
 
 </ui:composition>

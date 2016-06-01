@@ -25,8 +25,33 @@
 						itemLabel="#{revision}" itemValue="#{revision}" />
 					<p:ajax update="panelRevision" />
 				</p:selectOneRadio>
+				<div align="right">
+					<p:commandButton value="Aceptar" type="button"
+						onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+			confirmDialog.content.parent().css('left', '25%');" />
+				</div>
+				
+				<p:confirmDialog message="¿Estás seguro de enviar los resultados del trámite?"
+						header="Inciando envio de datos" severity="alert"
+						widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
 			
+						<p:commandButton value="Si" update="panelC"
+							action="#{%{nameTask}.executeTask}"
+							oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
+							onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
+							icon="ui-icon-check">
 			
+							<f:param name="idTask" value="#{TaskController.task.id}" />
+							<f:param name="idCase" value="#{TaskController.task.caseId}" />
+							<f:param name="processId" value="#{TaskController.task.processId}" />
+			
+						</p:commandButton>
+			
+						<p:commandButton value="No" widgetVar="cancelButton"
+							onclick="PF('confirmDialog').hide();" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			
+				</p:confirmDialog>			
 			</h:panelGrid>
 			
 			
@@ -63,33 +88,9 @@
 			
 		</h:panelGrid>
 		
-		<div align="right">
-			<p:commandButton value="Enviar resultado de trámite" type="button"
-				onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-	confirmDialog.content.parent().css('left', '25%');" />
-		</div>
 
-		<p:confirmDialog message="¿Estás seguro de enviar los resultados del trámite?"
-			header="Inciando envio de datos" severity="alert"
-			widgetVar="confirmDialog" id="confirmacion" tyle="position:fixed;">
 
-			<p:commandButton value="Si" update="panelC"
-				action="#{%{nameTask}.executeTask}"
-				oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
-				onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
-				icon="ui-icon-check">
 
-				<f:param name="idTask" value="#{TaskController.task.id}" />
-				<f:param name="idCase" value="#{TaskController.task.caseId}" />
-				<f:param name="processId" value="#{TaskController.task.processId}" />
-
-			</p:commandButton>
-
-			<p:commandButton value="No" widgetVar="cancelButton"
-				onclick="PF('confirmDialog').hide();" type="button"
-				styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-
-		</p:confirmDialog>
 
 	</p:tab>
 
