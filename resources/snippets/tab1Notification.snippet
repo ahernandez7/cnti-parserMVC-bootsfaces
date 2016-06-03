@@ -14,10 +14,10 @@
 		</p:blockUI>
 		<br/><br/>
 		
-		<h:panelGrid columns="4">			
+		<h:panelGrid columns="4"  id="panelDialog">			
 		   <p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
 				header="Inciando envio de datos" severity="alert"
-				widgetVar="confirmDialog" id="confirmacion">
+				widgetVar="confirmDialog" id="confirmacion" >
 	
 				<p:commandButton value="Si"
 					action="#{%{nameTask}.executeTask}"
@@ -40,27 +40,24 @@
 		<h:panelGrid columns="4" styleClass="gestorTramiteGrid">
 
 
-			<p:outputLabel value="el tramite con el caso N° #{TaskController.task.caseId}  fue  rechazado por: "
+			<p:outputLabel value="El tramite con el caso N° #{TaskController.task.caseId}  fue  rechazado por: "
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null and %{nameTask}.bean.causasDevolucion!='[]'}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.causasDevolucion}"
 				rendered="#{%{nameTask}.bean.causasDevolucion!=null and %{nameTask}.bean.causasDevolucion!='[]'}"/>			
 
-			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado  y la cita fue asignada para:"
+			<p:outputLabel value="El caso N° #{TaskController.task.caseId} fue aprobado  y la cita fue asignada para:"
 				rendered="#{%{nameTask}.bean.f_cita!=null}"/>
 			<p:outputLabel value="#{%{nameTask}.bean.f_cita}" 
 				rendered="#{%{nameTask}.bean.f_cita!=null}">
 				<f:convertDateTime pattern="dd/MM/yyyy" />
 			</p:outputLabel>
 			
-		    <div align="left">
-				<p:commandButton value="Aceptar" type="button"
-					onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-		            confirmDialog.content.parent().css('left', '25%');" />
-			</div>
-
-			<h:outputText value="&lt;br /&gt;" escape="false" />
-			<p:outputLabel value="el caso N° #{TaskController.task.caseId} fue aprobado, el documento generado es el siguiente:"
+			<p:outputLabel value="El caso N° #{TaskController.task.caseId} fue aprobado. El documento generado es el siguiente:"
 				rendered="#{%{nameTask}.bean._FILE_decision!=null}"/>
+			
+		    <h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />	
 				
 			<p:dataTable var="archivos" rowIndexVar="index"
 				value="#{%{nameTask}.bean._FILE_decision}"
@@ -92,6 +89,28 @@ archivos de extensión pdf directamente en el navegador o descargue el documento
 					</p:dialog>
 				</p:column>
 			</p:dataTable>
+
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" rendered="#{%{nameTask}.bean._FILE_decision!=null}" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+		     <div align="left">
+				<p:commandButton value="Aceptar" type="button"
+					onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+		            confirmDialog.content.parent().css('left', '25%');" />
+			</div>
+		    <h:outputText value="&lt;br /&gt;" escape="false" />
+		    <h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
 
 		</h:panelGrid>
 		

@@ -13,13 +13,13 @@
 			<br />
 			<p:outputLabel>Por favor espere mientras se procesa su petición...</p:outputLabel>
 		</p:blockUI>
-		<h:panelGrid columns="4">
+		<h:panelGrid columns="4" id="panelDialog">
 			<p:confirmDialog  message="¿Estás seguro de enviar los resultados del trámite?"
 							header="Inciando envio de datos" severity="alert"
 							widgetVar="confirmDialog" id="confirmacion">
 				
 							<p:commandButton value="Si" update="panelC"
-								action="#{MPPEUCTAutenticacionDeTitulosUniversitariosE_revisionController.executeTask}"
+								action="#{%{nameTask}.executeTask}"							
 								oncomplete="PF('confirmDialog').hide()" widgetVar="saveButton"
 								onclick="PF('blockUI').show()" styleClass="ui-confirmdialog-yes"
 								icon="ui-icon-check">
@@ -47,12 +47,7 @@
 						itemLabel="#{revision}" itemValue="#{revision}" />
 					<p:ajax update="panelRevision" />
 				</p:selectOneRadio>
-				<div align="right">
-					<p:commandButton value="Aceptar" type="button"
-						onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-			confirmDialog.content.parent().css('left', '25%');" />
-				</div>
-				
+			
 		
 			</h:panelGrid>
 			
@@ -79,6 +74,16 @@
 				</b:selectMultiMenu>
 			
 			</h:panelGrid>
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+		    <div align="right">
+					<p:commandButton value="Aceptar" type="button"
+						onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+			confirmDialog.content.parent().css('left', '25%');" />
+			</div>
+			
+			<h:outputText value="&lt;br /&gt;" escape="false" />
+			<h:outputText value="&lt;br /&gt;" escape="false" />
 			
 			<p:message for="causasDevolucion" id="causasDevolucionMessage"
 				style="color:red"
