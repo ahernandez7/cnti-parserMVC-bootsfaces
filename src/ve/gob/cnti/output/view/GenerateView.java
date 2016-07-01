@@ -62,7 +62,7 @@ public class GenerateView {
 		// TODO:Completar los validadores restantes
 		if ("mandatory".equalsIgnoreCase(nameValidator)) 
 			this.required = "required=\"true\" requiredMessage=\"Requerido\"";
-		if ("readonly".equalsIgnoreCase(nameValidator)) 
+		if ("Readonly".equalsIgnoreCase(nameValidator)) 
 			this.readOnly = "readonly=\"true\"";
 		if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\"" + nameField + "\"/>\n";
@@ -85,6 +85,8 @@ public class GenerateView {
 			this.validator += "\t<f:validator validatorId=\"LongValidator\" for=\"" + nameField + "\"/>\n";
 		}else if ("PhoneNumberValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validator validatorId=\"PhoneValidator\" for=\"" + nameField + "\"/>\n";
+		}else if(!("mandatory".equalsIgnoreCase(nameValidator)||"readonly".equalsIgnoreCase(nameValidator))) {
+			this.validator += "\t<f:validator validatorId=\""+nameValidator+"\" for=\"" + nameField + "\"/>\n";
 		}
 	}
 

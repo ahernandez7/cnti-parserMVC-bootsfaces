@@ -199,10 +199,11 @@ public class PaserXmltoForm {
 
 						for (int k = 0; k < validators.size(); k++) {
 							Element validator = validators.get(k);
-
 							validatorClassName = validator.getChild("classname").getValue();
 							validatorClassName = validatorClassName.substring(validatorClassName.lastIndexOf(".") + 1);
-
+							if(validatorClassName.contentEquals("GroovyFieldValidator")){
+								validatorClassName=validator.getAttributeValue("id");	
+							}							
 							Validator val = new Validator();
 							val.setNameValidator(validatorClassName);
 							field.addValidator(val);

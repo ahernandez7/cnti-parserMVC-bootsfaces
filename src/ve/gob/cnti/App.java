@@ -32,7 +32,10 @@ public class App {
 	private String snippetFileController = null;
 	private String pathControllerOutputFile = null;
 	private String namePackageController = null;
-
+	
+	private String namePackageValidator = null;
+	private String pathValidatorOutputFile = null;
+	
 	private String snippetFileView = null;
 	private String snippetFileViewTab = null;
 	private String snippetFileViewTabSummary = null;
@@ -54,9 +57,11 @@ public class App {
 		String XML_FILE = props.getProperty("XML_FILE");
 		String ROOT_VIEW = props.getProperty("ROOT_VIEW");
 		String ROOT_CONTROLLER = props.getProperty("ROOT_CONTROLLER");
-		String ROOT_BEAN = props.getProperty("ROOT_BEAN");
+		String ROOT_BEAN = props.getProperty("ROOT_BEAN");		
+		String ROOT_VALIDATOR = props.getProperty("ROOT_VALIDATOR");
 		String ROOT_SNIPPET = props.getProperty("ROOT_SNIPPET");
 		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKAGE_BEAN");
+		String NAME_PACKEGE_VALIDATOR = props.getProperty("NAME_PACKAGE_VALIDATOR");
 		String NAME_PACKE_CONTROLLER = props.getProperty("NAME_PACKAGE_CONTROLLER");
 		String DIR_INSTITUCION = props.getProperty("DIR_INSTITUCION");
 		String PATH_DIR_FORM_VIEW = props.getProperty("PATH_DIR_FORM_VIEW");
@@ -74,6 +79,9 @@ public class App {
 		this.pathControllerOutputFile = ROOT_CONTROLLER;
 		this.namePackageController = NAME_PACKE_CONTROLLER;
 
+		this.pathValidatorOutputFile=ROOT_VALIDATOR;
+		this.namePackageValidator = NAME_PACKEGE_VALIDATOR;
+		
 		this.snippetFileView = ROOT_SNIPPET + "View.snippet";
 		this.snippetFileViewTab = ROOT_SNIPPET + "Tab.snippet";
 		this.snippetFileViewTabSummary = ROOT_SNIPPET + "TabSummary.snippet";
@@ -105,9 +113,11 @@ public class App {
 		Properties props = LibUtils.loadFileProperties(FILE_PROPS);
 
 		String ROOT_VIEW = pathROOT + "views/";
+		String ROOT_VALIDATOR=pathROOT+"validators/";
 		pathROOT += "beansANDcontrollers/";
 		String ROOT_CONTROLLER = pathROOT;
-		String ROOT_BEAN = pathROOT;
+		String ROOT_BEAN = pathROOT;		
+		
 
 		String ROOT_SNIPPET = props.getProperty("ROOT_SNIPPET");
 		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKAGE_BEAN");
@@ -118,6 +128,11 @@ public class App {
 		String CONTROLLER_BUTTON_NAME_SUBMIT = props.getProperty("CONTROLLER_BUTTON_NAME_SUBMIT");
 		String CONTROLLER_BUTTON_ID_SUBMIT = props.getProperty("CONTROLLER_BUTTON_ID_SUBMIT");
 
+		String NAME_PACKE_VALIDATOR = props.getProperty("NAME_PACKAGE_VALIDATOR");
+		
+		this.namePackageValidator=NAME_PACKE_VALIDATOR;
+		this.pathValidatorOutputFile = ROOT_VALIDATOR;
+		
 		this.snippetFileBean = ROOT_SNIPPET + "Bean.snippet";
 		this.pathBeanOutputFile = ROOT_BEAN;
 		this.namePackageBean = NAME_PACKEGE_BEAN;
@@ -145,6 +160,7 @@ public class App {
 
 		GenerateFiles gf = new GenerateFiles(new PaserXmltoForm(xml).parse());
 
+		
 		gf.setPathSnippetBean(this.snippetFileBean);
 		gf.setPathOutputFileBean(this.pathBeanOutputFile);
 		gf.setPackageNameBean(this.namePackageBean.replaceAll("%\\{institucion\\}", "tramites"));
@@ -153,6 +169,9 @@ public class App {
 		gf.setPathOutputFileController(this.pathControllerOutputFile);
 		gf.setPackageNameController(this.namePackageController.replaceAll("%\\{institucion\\}", "tramites"));
 
+		gf.setPackageNameValidator(this.namePackageValidator);
+		gf.setPathOutputFileValidator(this.pathValidatorOutputFile);
+		
 		gf.setPathSnippetView(this.snippetFileView);
 		gf.setPathSnippetViewTab(this.snippetFileViewTab);
 		gf.setPathSnippetViewTabSummay(this.snippetFileViewTabSummary);

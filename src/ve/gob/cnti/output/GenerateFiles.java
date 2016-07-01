@@ -12,6 +12,7 @@ import ve.gob.cnti.helper.form.Page;
 import ve.gob.cnti.helper.form.Validator;
 import ve.gob.cnti.output.bean.GenerateBean;
 import ve.gob.cnti.output.controller.GenerateController;
+import ve.gob.cnti.output.validator.GenerateValidator;
 import ve.gob.cnti.output.view.GenerateView;
 
 public class GenerateFiles {
@@ -27,7 +28,9 @@ public class GenerateFiles {
 	private String snippetFileViewCaseConsult = null;
 	private String snippetFileViewCaseConsultTab = null;
 	private String pathOutputFileView = null;
+	private String pathOutputFileValidator = null;
 	private String packageNameBean = null;
+	private String packageNameValidator = null;
 	private String packageNameController = null;
 	private String dirNameAndPathFormToInstitucion = null;
 	private String institucion;
@@ -56,7 +59,7 @@ public class GenerateFiles {
 		// definidos en el configuracion.properties
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
-		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
+		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());		
 		for (String key : this.mapForms.keySet()) {
 
 			// Tareas
@@ -129,6 +132,13 @@ public class GenerateFiles {
 						for (int k = 0; k < validators.size(); k++) {
 							Validator validator = validators.get(k);
 							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
+							if(nameBean.contentEquals("carga")&&
+							   !validator.getNameValidator().contentEquals("Readonly")&&
+							   !validator.getNameValidator().contentEquals("mandatory")
+							 ){	
+								
+								this.generateValidator(validator.getNameValidator(),field.getNameField(),this.nameApp);
+							}
 						}
 						
 						gv_tab.createInputElement(field,String.valueOf(i+1));
@@ -192,15 +202,27 @@ public class GenerateFiles {
 			
 			if(nameBean.contentEquals("carga")){
 				this.generateCaseConsult(fieldsComplete);
-				this.generatePdfReview(fieldsComplete);
+				this.generatePdfReview(fieldsComplete);			
 			}else if("revision".contentEquals(nameBean)){
 				this.replaceReview();
 			}else if("notificacion".contentEquals(nameBean)){
 				this.replaceNotification();
 			}
 		}
-		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());
-
+		gvSuccess.writeFileAndCreateViewSuccess(getDirNameAndPathFormToInstitucion());		
+	}
+	
+	private void generateValidator(String validator, String field, String app){
+		GenerateValidator gb = new GenerateValidator("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
+		gb.createPackageDirsBean(getPackageNameValidator());
+		gb.replaceNameBeanAndNameClassBean(validator);
+		gb.replacePackagesNameBean(getPackageNameValidator());	
+		gb.setImports("");
+		gb.setAttributes("");
+		gb.setSetAndGetMethods("");
+		gb.replaceVaraiablesAndWriteFile(validator);
+		
+	
 	}
 	
 	private void replaceNotification(){
@@ -471,5 +493,23 @@ public class GenerateFiles {
 	public void setSnippetFileViewCaseConsultTab(String snippetFileViewCaseConsultTab) {
 		this.snippetFileViewCaseConsultTab = snippetFileViewCaseConsultTab;
 	}
+
+	public String getPackageNameValidator() {
+		return packageNameValidator;
+	}
+
+	public void setPackageNameValidator(String packageNameValidator) {
+		this.packageNameValidator = packageNameValidator;
+	}
+
+	public String getPathOutputFileValidator() {
+		return pathOutputFileValidator;
+	}
+
+	public void setPathOutputFileValidator(String pathOutputFileValidator) {
+		this.pathOutputFileValidator = pathOutputFileValidator;
+	}
+	
+	
 
 }

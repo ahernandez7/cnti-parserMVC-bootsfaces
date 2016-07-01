@@ -74,11 +74,18 @@
 			</p:column>
 		</p:dataTable>
 
-		<div align="left">
-			<p:commandButton value="Enviar Datos" type="button"
-				onclick="PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
-	confirmDialog.content.parent().css('left', '25%');" />
-		</div>
+    	<h:outputText value="&lt;br /&gt;" escape="false" />
+	    <h:outputText value="&lt;br /&gt;" escape="false" />
+	
+      <div align="right">  
+		<h:panelGrid columns="4">
+			  
+						<p:commandButton value="Aceptar" type="button"
+							onclick="PF('blockUI').hide(); PF('confirmDialog').show(); confirmDialog.content.parent().css('position', 'fixed');
+				confirmDialog.content.parent().css('left', '25%');" />
+				
+		   </h:panelGrid>
+	</div>
 
 
 

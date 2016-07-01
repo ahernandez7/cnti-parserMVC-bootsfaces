@@ -8,16 +8,16 @@ import ve.gob.cnti.helper.util.LibUtils;
 
 public class GenerateBean {
 
-	private String snippetFile = null;
-	private String origSnippetFile = null;
-	private WriteFile wf = null;
-	private String pathOutputFile = null;
+	protected String snippetFile = null;
+	protected String origSnippetFile = null;
+	protected WriteFile wf = null;
+	protected String pathOutputFile = null;
 
-	private String imports = null;
-	private String attributes = null;
-	private String values = null;
-	private String setAndGetMethods = null;
-	private String nameApp = null;
+	protected String imports = null;
+	protected String attributes = null;
+	protected String values = null;
+	protected String setAndGetMethods = null;
+	protected String nameApp = null;
 
 	public GenerateBean(String pathFile, String pathOutputFile, String nameApp) {
 
@@ -96,7 +96,6 @@ public class GenerateBean {
 		this.snippetFile = LibUtils.replacePattern("%\\{attributes\\}", this.attributes, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{values\\}", this.values, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{setAndGetMethods\\}", this.setAndGetMethods, snippetFile);
-
 		this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameBean) + ".java", this.snippetFile);
 	}
 
