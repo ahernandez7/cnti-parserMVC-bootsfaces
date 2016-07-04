@@ -204,9 +204,9 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			
 			// VERIFICO SI FUERON GENERADO VALIDADORES SI ES ASI LOS COPIA EN LA APLICACION			
 
-			System.out.println("ruta"+pathTemp + "MVC_APPS/validators/ve");
+			
 			File d = new File(pathTemp + "MVC_APPS/validators/ve");		
-			if(d.list().length>0)			{ 
+			if(d.list()!=null&&d.list().length>0)			{ 
 				this.updateTextArea("\nCopiando los validadores");
 				util.executeCommand("cp -r " + pathTemp + "MVC_APPS/validators/ve/ " + rutaPorleth + "/src/");
 			}
