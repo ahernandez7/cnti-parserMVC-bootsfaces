@@ -26,6 +26,8 @@ import javax.swing.JLabel;
 
 import org.jdom2.JDOMException;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
+
 import ve.gob.cnti.App;
 import ve.gob.cnti.utils.CustomOutputStream;
 import ve.gob.cnti.utils.Utils;
@@ -164,7 +166,7 @@ public class ParserProcessing extends JFrame implements ActionListener {
 
 	private void unzipFileBarAndParserApp(String archivo, int n) {
 
-		App paser = new App(pathTemp + "MVC_APPS/");
+		App paser = new App(pathTemp + "MVC_APPS/",rutaPorleth + "/src/");
 		
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS");
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/beansANDcontrollers");
@@ -200,8 +202,14 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			this.updateTextArea("\nCopiando los modelos y controladores");
 			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/src/");
 			
-			this.updateTextArea("\nCopiando los validadores");
-			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/validators/ve/ " + rutaPorleth + "/src/");
+			// VERIFICO SI FUERON GENERADO VALIDADORES SI ES ASI LOS COPIA EN LA APLICACION			
+
+			System.out.println("ruta"+pathTemp + "MVC_APPS/validators/ve");
+			File d = new File(pathTemp + "MVC_APPS/validators/ve");		
+			if(d.list().length>0)			{ 
+				this.updateTextArea("\nCopiando los validadores");
+				util.executeCommand("cp -r " + pathTemp + "MVC_APPS/validators/ve/ " + rutaPorleth + "/src/");
+			}
 			
 			util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);
 		

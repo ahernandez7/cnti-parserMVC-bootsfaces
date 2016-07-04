@@ -1,5 +1,6 @@
 package ve.gob.cnti.output;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import ve.gob.cnti.helper.form.Field;
 import ve.gob.cnti.helper.form.Form;
 import ve.gob.cnti.helper.form.Page;
 import ve.gob.cnti.helper.form.Validator;
+import ve.gob.cnti.helper.util.LibUtils;
 import ve.gob.cnti.output.bean.GenerateBean;
 import ve.gob.cnti.output.controller.GenerateController;
 import ve.gob.cnti.output.validator.GenerateValidator;
@@ -40,11 +42,14 @@ public class GenerateFiles {
 
 	private Map<String, Form> mapForms = null;
 	private String nameApp = null;
+	
+	private String pathApp=null;
 
 	public GenerateFiles(Application app) {
 
 		this.mapForms = app.getMapForms();
 		this.nameApp = app.getAppName();
+		
 	}
 
 	// Método constructor del MVC de la aplicación
@@ -213,15 +218,27 @@ public class GenerateFiles {
 	}
 	
 	private void generateValidator(String validator, String field, String app){
-		GenerateValidator gb = new GenerateValidator("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
-		gb.createPackageDirsBean(getPackageNameValidator());
-		gb.replaceNameBeanAndNameClassBean(validator);
-		gb.replacePackagesNameBean(getPackageNameValidator());	
-		gb.setImports("");
-		gb.setAttributes("");
-		gb.setSetAndGetMethods("");
-		gb.replaceVaraiablesAndWriteFile(validator);
 		
+		// OBTENGO LA RUTA DONDE ESTA LA CLASE SI YA FUE GENERADA ANTERIORMENTE
+		
+		String pathClass=this.getPathApp()+getPackageNameValidator()
+		.replace("%{processName}", this.nameApp)
+		.replace(".","/");		
+		pathClass+="/"+this.nameApp + "_" + LibUtils.firstLetterLower(validator)+".java";		
+		File f = new File(pathClass);
+		
+		// SE EJECUTA SOLO SI EXISTEN VALIDADORES CUSTOM NUEVOS
+		
+		if(!f.exists()) { 	
+			GenerateBean gb = new GenerateBean("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
+			gb.createPackageDirsBean(getPackageNameValidator());		    
+			gb.replaceNameBeanAndNameClassBean(validator);
+			gb.replacePackagesNameBean(getPackageNameValidator());	
+			gb.setImports("");
+			gb.setAttributes("");
+			gb.setSetAndGetMethods("");
+			gb.replaceVaraiablesAndWriteFile(this.nameApp + "_" + LibUtils.firstLetterLower(validator));
+		}
 	
 	}
 	
@@ -509,7 +526,14 @@ public class GenerateFiles {
 	public void setPathOutputFileValidator(String pathOutputFileValidator) {
 		this.pathOutputFileValidator = pathOutputFileValidator;
 	}
-	
+
+	public String getPathApp() {
+		return pathApp;
+	}
+
+	public void setPathApp(String pathApp) {
+		this.pathApp = pathApp;
+	}	
 	
 
 }

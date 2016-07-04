@@ -25,6 +25,8 @@ public class App {
 
 	private String xmlFile = null;
 
+	private String pathApp=null;
+	
 	private String snippetFileBean = null;
 	private String pathBeanOutputFile = null;
 	private String namePackageBean = null;
@@ -50,7 +52,7 @@ public class App {
 	private String controllerButtonNameSubmit = null;
 	private String controllerButtonIdSubmit = null;
 
-	public App() {
+	public App(String pathApp) {
 
 		Properties props = LibUtils.loadFileProperties(FILE_PROPS);
 
@@ -71,6 +73,8 @@ public class App {
 
 		this.xmlFile = XML_FILE;
 
+		this.pathApp=pathApp;
+		
 		this.snippetFileBean = ROOT_SNIPPET + "Bean.snippet";
 		this.pathBeanOutputFile = ROOT_BEAN;
 		this.namePackageBean = NAME_PACKEGE_BEAN;
@@ -108,7 +112,7 @@ public class App {
 
 	}
 
-	public App(String pathROOT) {
+	public App(String pathROOT,String pathApp) {
 
 		Properties props = LibUtils.loadFileProperties(FILE_PROPS);
 
@@ -132,6 +136,9 @@ public class App {
 		
 		this.namePackageValidator=NAME_PACKE_VALIDATOR;
 		this.pathValidatorOutputFile = ROOT_VALIDATOR;
+		
+		
+		this.pathApp=pathApp;
 		
 		this.snippetFileBean = ROOT_SNIPPET + "Bean.snippet";
 		this.pathBeanOutputFile = ROOT_BEAN;
@@ -159,7 +166,9 @@ public class App {
 	public void generateFiles(String xml) throws JDOMException, IOException {
 
 		GenerateFiles gf = new GenerateFiles(new PaserXmltoForm(xml).parse());
-
+		
+		
+		gf.setPathApp(this.pathApp);
 		
 		gf.setPathSnippetBean(this.snippetFileBean);
 		gf.setPathOutputFileBean(this.pathBeanOutputFile);
@@ -243,7 +252,8 @@ public class App {
 			e.printStackTrace();
 		}
 	}
-
+	
+	
 	public static void main(String[] args) {
 		
 	}

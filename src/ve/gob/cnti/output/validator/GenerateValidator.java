@@ -12,7 +12,7 @@ public class GenerateValidator extends GenerateBean{
 	}
 	
 	
-	public void replaceNameBeanAndNameClassBean(String nameBean) {
+	/*public void replaceNameBeanAndNameClassBean(String nameBean) {
 
 		// Para colocar la variable con el snippet original en la siguiente iteración
 		this.snippetFile = this.origSnippetFile;
@@ -21,7 +21,16 @@ public class GenerateValidator extends GenerateBean{
 		this.snippetFile = LibUtils.replacePattern("%\\{NameBean\\}", nameBean, this.snippetFile);
 
 
-	}
+	}*/
+	
+	
+/*	public void replaceNameBeanAndNameClassBean(String nameBean) {
+
+		// Para colocar la variable con el snippet original en la siguiente iteración
+		this.snippetFile = this.origSnippetFile;		
+		this.snippetFile = LibUtils.replacePattern("%\\{nameBean\\}", this.nameApp + "_" + LibUtils.firstLetterLower(nameBean), this.snippetFile);
+		
+	}*/
 	
 	
 	

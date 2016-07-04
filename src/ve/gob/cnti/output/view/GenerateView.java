@@ -86,7 +86,7 @@ public class GenerateView {
 		}else if ("PhoneNumberValidator".equalsIgnoreCase(nameValidator)) {
 			this.validator += "\t<f:validator validatorId=\"PhoneValidator\" for=\"" + nameField + "\"/>\n";
 		}else if(!("mandatory".equalsIgnoreCase(nameValidator)||"readonly".equalsIgnoreCase(nameValidator))) {
-			this.validator += "\t<f:validator validatorId=\""+nameValidator+"\" for=\"" + nameField + "\"/>\n";
+			this.validator += "\t<f:validator validatorId=\""+ this.nameApp + "_" + LibUtils.firstLetterLower(nameValidator)+"\" for=\"" + nameField + "\"/>\n";
 		}
 	}
 
