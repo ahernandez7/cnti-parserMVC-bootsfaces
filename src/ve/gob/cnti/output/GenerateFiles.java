@@ -221,23 +221,25 @@ public class GenerateFiles {
 		
 		// OBTENGO LA RUTA DONDE ESTA LA CLASE SI YA FUE GENERADA ANTERIORMENTE
 		
-		String pathClass=this.getPathApp()+getPackageNameValidator()
+	/*	String pathClass=this.getPathApp()+getPackageNameValidator()
 		.replace("%{processName}", this.nameApp)
 		.replace(".","/");		
 		pathClass+="/"+this.nameApp + "_" + LibUtils.firstLetterLower(validator)+".java";		
-		File f = new File(pathClass);
+		File f = new File(pathClass);*/
 		
 		// SE EJECUTA SOLO SI EXISTEN VALIDADORES CUSTOM NUEVOS
 		
-		if(!f.exists()) { 	
-			GenerateBean gb = new GenerateBean("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
+		GenerateValidator gb = new GenerateValidator("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
+				
+		if(!gb.validatorExist(getPackageNameValidator(), validator, this.getPathApp())) { 	
+			
 			gb.createPackageDirsBean(getPackageNameValidator());		    
 			gb.replaceNameBeanAndNameClassBean(validator);
 			gb.replacePackagesNameBean(getPackageNameValidator());	
 			gb.setImports("");
 			gb.setAttributes("");
 			gb.setSetAndGetMethods("");
-			gb.replaceVaraiablesAndWriteFile(this.nameApp + "_" + LibUtils.firstLetterLower(validator));
+			gb.replaceVaraiablesAndWriteFile(validator);
 		}
 	
 	}
