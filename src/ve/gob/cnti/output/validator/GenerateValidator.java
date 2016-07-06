@@ -15,7 +15,7 @@ public class GenerateValidator extends GenerateBean{
 	
 	
 	
-	public void replaceVaraiablesAndWriteFile(String nameBean) {
+	public void replaceVaraiablesAndWriteFile(String nameBean,String packageNameValidator,String appPath) {
 		
 		
 		nameBean=this.nameApp + "_" + LibUtils.firstLetterLower(nameBean);
@@ -23,19 +23,25 @@ public class GenerateValidator extends GenerateBean{
 		this.snippetFile = LibUtils.replacePattern("%\\{attributes\\}", this.attributes, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{values\\}", this.values, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{setAndGetMethods\\}", this.setAndGetMethods, snippetFile);
-		this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameBean) + ".java", this.snippetFile);
+		System.out.println("ver"+this.validatorExist(nameBean,packageNameValidator,  appPath));
+		if (!this.validatorExist(nameBean,packageNameValidator,  appPath))
+			this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameBean) + ".java", this.snippetFile);
 	}
 	
-	public Boolean validatorExist(String packageNameValidator, String validator,String appPath){
+	public Boolean validatorExist( String nameBean,String packageNameValidator,String appPath){
 		
 		String pathClass=appPath+ packageNameValidator
 		.replace("%{processName}", this.nameApp)
-		.replace(".","/");		
-		pathClass+="/"+this.nameApp + "_" + LibUtils.firstLetterLower(validator)+".java";		
+		.replace(".","/");	
+		pathClass+="/"+nameBean+".java";		
 		File f = new File(pathClass);
+		System.out.println("ruta"+pathClass);
 		return f.exists();
 		
 	}
+	
+	
+	
 	
 	
 	

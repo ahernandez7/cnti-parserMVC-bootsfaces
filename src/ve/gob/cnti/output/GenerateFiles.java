@@ -219,28 +219,16 @@ public class GenerateFiles {
 	
 	private void generateValidator(String validator, String field, String app){
 		
-		// OBTENGO LA RUTA DONDE ESTA LA CLASE SI YA FUE GENERADA ANTERIORMENTE
-		
-	/*	String pathClass=this.getPathApp()+getPackageNameValidator()
-		.replace("%{processName}", this.nameApp)
-		.replace(".","/");		
-		pathClass+="/"+this.nameApp + "_" + LibUtils.firstLetterLower(validator)+".java";		
-		File f = new File(pathClass);*/
-		
-		// SE EJECUTA SOLO SI EXISTEN VALIDADORES CUSTOM NUEVOS
 		
 		GenerateValidator gb = new GenerateValidator("resources/snippets/Validator.snippet", getPathOutputFileValidator(), this.nameApp);
-				
-		if(!gb.validatorExist(getPackageNameValidator(), validator, this.getPathApp())) { 	
-			
-			gb.createPackageDirsBean(getPackageNameValidator());		    
-			gb.replaceNameBeanAndNameClassBean(validator);
-			gb.replacePackagesNameBean(getPackageNameValidator());	
-			gb.setImports("");
-			gb.setAttributes("");
-			gb.setSetAndGetMethods("");
-			gb.replaceVaraiablesAndWriteFile(validator);
-		}
+		gb.createPackageDirsBean(getPackageNameValidator());		    
+		gb.replaceNameBeanAndNameClassBean(validator);
+		gb.replacePackagesNameBean(getPackageNameValidator());	
+		gb.setImports("");
+		gb.setAttributes("");
+		gb.setSetAndGetMethods("");
+		gb.replaceVaraiablesAndWriteFile(validator,getPackageNameValidator(),this.pathApp);
+		
 	
 	}
 	
