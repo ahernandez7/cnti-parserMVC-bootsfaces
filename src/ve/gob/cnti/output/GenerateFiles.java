@@ -139,7 +139,8 @@ public class GenerateFiles {
 							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
 							if(nameBean.contentEquals("carga")&&
 							   !validator.getNameValidator().contentEquals("Readonly")&&
-							   !validator.getNameValidator().contentEquals("mandatory")
+							   !validator.getNameValidator().contentEquals("mandatory")&&
+							   validator.getClassType().contains("GroovyFieldValidator")
 							 ){	
 								
 								this.generateValidator(validator.getNameValidator(),field.getNameField(),this.nameApp);

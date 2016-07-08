@@ -198,14 +198,16 @@ public class PaserXmltoForm {
 						List<Element> validators = widget.getChild("validators").getChildren("validator");
 
 						for (int k = 0; k < validators.size(); k++) {
-							Element validator = validators.get(k);
+							Element validator = validators.get(k);							
 							validatorClassName = validator.getChild("classname").getValue();
+							String classType=validatorClassName;
 							validatorClassName = validatorClassName.substring(validatorClassName.lastIndexOf(".") + 1);
 							if(validatorClassName.contentEquals("GroovyFieldValidator")){
 								validatorClassName=validator.getAttributeValue("id");	
 							}							
 							Validator val = new Validator();
 							val.setNameValidator(validatorClassName);
+							val.setClassType(classType);
 							field.addValidator(val);
 						}
 					}
