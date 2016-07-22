@@ -172,6 +172,8 @@ public class ParserProcessing extends JFrame implements ActionListener {
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/beansANDcontrollers");
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/views");
 		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/validators");
+		util.executeCommand("mkdir " + pathTemp + "MVC_APPS/dependents");
+
 		
 
 		// copiando bar a carpeta temporal
@@ -209,6 +211,12 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			if(d.list()!=null&&d.list().length>0)			{ 
 				this.updateTextArea("\nCopiando los validadores");
 				util.executeCommand("cp -r " + pathTemp + "MVC_APPS/validators/ve/ " + rutaPorleth + "/src/");
+			}
+			
+			d = new File(pathTemp + "MVC_APPS/dependents/ve");		
+			if(d.list()!=null&&d.list().length>0)			{ 
+				this.updateTextArea("\nCopiando los combos");
+				util.executeCommand("cp -r " + pathTemp + "MVC_APPS/dependents/ve/ " + rutaPorleth + "/src/");
 			}
 			
 			util.ventanaDeMensaje(this, "El procesamiento ha terminado exitosamente", "Generación de MVC", (short) 1);

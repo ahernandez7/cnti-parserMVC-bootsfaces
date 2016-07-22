@@ -133,9 +133,15 @@ public class GenerateView {
 		if (!"BUTTON_SUBMIT".equalsIgnoreCase(type) && !"BUTTON_NEXT".equalsIgnoreCase(type) && !"BUTTON_PREVIOUS".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {
 			if (name.matches("^_FILE_.*$")) {
 				fieldInput = "<b:column span='6'><h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
-			} else {
-				fieldInput = "<b:column span='6'><h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+			}else if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.startsWith("c_")){
+				fieldInput = "<b:column span='6'><div class=\"form-group\"><h:outputLabel for=\"" + name + "\" value=\"" + label.replace("_FILE_", "") + "\"/>\n";
+			}else {
+				fieldInput = "<b:column span='6'><h:outputLabel for=\"" + name + "\" value=\"" + label+ "\"/>\n";
 			}
+		}
+		
+		if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.indexOf("c_")>0){
+			
 		}
 			
 
@@ -185,7 +191,23 @@ public class GenerateView {
 			fieldInput += this.validator;
 			fieldInput += "<h:outputText id=\"display\"/>";
 
-		} else if ("LISTBOX_SIMPLE".equalsIgnoreCase(type)) {
+		}else if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.startsWith("c_")){ 			
+			String[] name_field=name.split("_");
+			String combo=name_field[1];			
+			String ajax="";
+			System.out.println("valor"+field.getOptionValue().get(0));
+			if(field.getOptionValue().get(0)!=null&&!field.getOptionValue().isEmpty()&&!field.getOptionValue().get(0).equals("")){		
+				System.out.println("paso");
+				ajax="<p:ajax listener=\"#{"+combo+".getBuscar"+name+"("+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name +")}\"  update=\""+field.getOptionValue().get(0)+"\" />\n";
+			}			
+			fieldInput +="<p:selectOneMenu styleClass=\"form-control\" style = \"width:100%;padding:0px 0px;\" id=\""+name+"\" value=\"#{"+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
+			fieldInput +=this.required+" "+this.readOnly+" >\n";
+			fieldInput +=this.validator;
+			fieldInput +="\t"+ajax;			
+			fieldInput +="\t<f:selectItem itemLabel=\"Selecione el "+label+"\" noSelectionOption=\"true\" />\n";
+			fieldInput +="\t<f:selectItems value=\"#{"+this.nameApp + "_" +combo+"."+name+"}\" />\n";	
+			fieldInput +="</p:selectOneMenu>\n";			
+		}else if ("LISTBOX_SIMPLE".equalsIgnoreCase(type)) {
 			fieldInput += "<b:selectMultiMenu id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" nonSelectedText=\"Por Favor Selecione\" maxSelectedText=\"Por Favor Selecione\" filterMatchMode=\"startsWith\" buttonWidth=\"250px\"\n";
 			fieldInput += this.required + " " + this.readOnly + ">\n";
 			fieldInput += this.validator;
@@ -244,7 +266,11 @@ public class GenerateView {
 				fieldInput += "<h:outputText />";
 			fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
 			fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
-			fieldInput += "</b:column>";
+			if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.startsWith("c_"))	
+				fieldInput += "</div></b:column>";
+			else
+				fieldInput += "</b:column>";
+			
 		}
 		fieldInput +="\n";
 		this.readOnly="";

@@ -37,6 +37,10 @@ public class App {
 	
 	private String namePackageValidator = null;
 	private String pathValidatorOutputFile = null;
+
+	private String pathDependentOutputFile = null;
+	private String namePackageDependent = null;
+	
 	
 	private String snippetFileView = null;
 	private String snippetFileViewTab = null;
@@ -61,10 +65,12 @@ public class App {
 		String ROOT_CONTROLLER = props.getProperty("ROOT_CONTROLLER");
 		String ROOT_BEAN = props.getProperty("ROOT_BEAN");		
 		String ROOT_VALIDATOR = props.getProperty("ROOT_VALIDATOR");
+		String ROOT_DEPENDENT = props.getProperty("ROOT_DEPENDENT");
 		String ROOT_SNIPPET = props.getProperty("ROOT_SNIPPET");
 		String NAME_PACKEGE_BEAN = props.getProperty("NAME_PACKAGE_BEAN");
 		String NAME_PACKEGE_VALIDATOR = props.getProperty("NAME_PACKAGE_VALIDATOR");
 		String NAME_PACKE_CONTROLLER = props.getProperty("NAME_PACKAGE_CONTROLLER");
+		String NAME_PACKE_DEPENDENT = props.getProperty("NAME_PACKAGE_DEPENDENT");
 		String DIR_INSTITUCION = props.getProperty("DIR_INSTITUCION");
 		String PATH_DIR_FORM_VIEW = props.getProperty("PATH_DIR_FORM_VIEW");
 
@@ -83,6 +89,11 @@ public class App {
 		this.pathControllerOutputFile = ROOT_CONTROLLER;
 		this.namePackageController = NAME_PACKE_CONTROLLER;
 
+		
+		this.pathDependentOutputFile = ROOT_DEPENDENT;
+		this.namePackageDependent = NAME_PACKE_DEPENDENT;
+		
+		
 		this.pathValidatorOutputFile=ROOT_VALIDATOR;
 		this.namePackageValidator = NAME_PACKEGE_VALIDATOR;
 		
@@ -118,7 +129,9 @@ public class App {
 
 		String ROOT_VIEW = pathROOT + "views/";
 		String ROOT_VALIDATOR=pathROOT+"validators/";
+		String ROOT_DEPENDENT=pathROOT+"dependents/";
 		pathROOT += "beansANDcontrollers/";
+		
 		String ROOT_CONTROLLER = pathROOT;
 		String ROOT_BEAN = pathROOT;		
 		
@@ -133,10 +146,15 @@ public class App {
 		String CONTROLLER_BUTTON_ID_SUBMIT = props.getProperty("CONTROLLER_BUTTON_ID_SUBMIT");
 
 		String NAME_PACKE_VALIDATOR = props.getProperty("NAME_PACKAGE_VALIDATOR");
+		String NAME_PACKE_DEPENDENT = props.getProperty("NAME_PACKAGE_DEPENDENT");
 		
 		this.namePackageValidator=NAME_PACKE_VALIDATOR;
 		this.pathValidatorOutputFile = ROOT_VALIDATOR;
 		
+		this.namePackageDependent=NAME_PACKE_DEPENDENT;
+		this.pathDependentOutputFile = ROOT_DEPENDENT;		
+		
+		System.out.println("pquetes"+NAME_PACKE_DEPENDENT+" "+ROOT_DEPENDENT);
 		
 		this.pathApp=pathApp;
 		
@@ -180,6 +198,9 @@ public class App {
 
 		gf.setPackageNameValidator(this.namePackageValidator);
 		gf.setPathOutputFileValidator(this.pathValidatorOutputFile);
+		
+		gf.setPackageNameDependent(this.namePackageDependent);
+		gf.setPathOutputFileDependent(this.pathDependentOutputFile);
 		
 		gf.setPathSnippetView(this.snippetFileView);
 		gf.setPathSnippetViewTab(this.snippetFileViewTab);

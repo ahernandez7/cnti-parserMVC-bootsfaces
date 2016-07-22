@@ -14,6 +14,7 @@ import ve.gob.cnti.helper.form.Validator;
 import ve.gob.cnti.helper.util.LibUtils;
 import ve.gob.cnti.output.bean.GenerateBean;
 import ve.gob.cnti.output.controller.GenerateController;
+import ve.gob.cnti.output.dependent.GenerateDependent;
 import ve.gob.cnti.output.validator.GenerateValidator;
 import ve.gob.cnti.output.view.GenerateView;
 
@@ -31,8 +32,10 @@ public class GenerateFiles {
 	private String snippetFileViewCaseConsultTab = null;
 	private String pathOutputFileView = null;
 	private String pathOutputFileValidator = null;
+	private String pathOutputFileDependent = null;
 	private String packageNameBean = null;
 	private String packageNameValidator = null;
+	private String packageNameDependent = null;
 	private String packageNameController = null;
 	private String dirNameAndPathFormToInstitucion = null;
 	private String institucion;
@@ -176,7 +179,10 @@ public class GenerateFiles {
 						gc.insertFilesInController(fields);
 						gb.createImpAttAndMethos(field);
 						
-					}	
+					}
+					
+					if(field.getNameField().startsWith("c_")&&nameBean.contentEquals("carga"))
+						this.generateDependent(field.getNameField(), this.nameApp);
 
 				}
 				
@@ -232,6 +238,25 @@ public class GenerateFiles {
 		
 	
 	}
+	
+	
+	private void generateDependent(String field, String app){
+		
+		
+		GenerateDependent gb = new GenerateDependent("resources/snippets/Bean.snippet", getPathOutputFileDependent(), this.nameApp);
+		System.out.println("paso"+getPackageNameDependent());
+		
+		gb.createPackageDirsBean(getPackageNameDependent());		    
+		gb.replaceNameBeanAndNameClassBean(field);
+		gb.replacePackagesNameBean(getPackageNameDependent());	
+		gb.setImports("");
+		gb.setAttributes("");
+		gb.setSetAndGetMethods("");
+		gb.replaceVaraiablesAndWriteFile(field,getPackageNameDependent(),this.pathApp);
+		
+	
+	}
+	
 	
 	private void replaceNotification(){
 		//PRIMER SNIPPET
@@ -524,7 +549,25 @@ public class GenerateFiles {
 
 	public void setPathApp(String pathApp) {
 		this.pathApp = pathApp;
-	}	
+	}
+
+	public String getPathOutputFileDependent() {
+		return pathOutputFileDependent;
+	}
+
+	public void setPathOutputFileDependent(String pathOutputFileDependent) {
+		this.pathOutputFileDependent = pathOutputFileDependent;
+	}
+
+	public String getPackageNameDependent() {
+		return packageNameDependent;
+	}
+
+	public void setPackageNameDependent(String packageNameDependent) {
+		this.packageNameDependent = packageNameDependent;
+	}
+	
+	
 	
 
 }
