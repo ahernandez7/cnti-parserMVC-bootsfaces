@@ -198,7 +198,7 @@ public class GenerateView {
 			System.out.println("valor"+field.getOptionValue().get(0));
 			if(field.getOptionValue().get(0)!=null&&!field.getOptionValue().isEmpty()&&!field.getOptionValue().get(0).equals("")){		
 				System.out.println("paso");
-				ajax="<p:ajax listener=\"#{"+combo+".getBuscar"+name+"("+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name +")}\"  update=\""+field.getOptionValue().get(0)+"\" />\n";
+				ajax="<p:ajax listener=\"#{"+this.nameApp + "_" + combo+".getFind"+name+"("+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name +")}\"  update=\""+field.getOptionValue().get(0)+"\" />\n";
 			}			
 			fieldInput +="<p:selectOneMenu styleClass=\"form-control\" style = \"width:100%;padding:0px 0px;\" id=\""+name+"\" value=\"#{"+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";
 			fieldInput +=this.required+" "+this.readOnly+" >\n";

@@ -18,7 +18,7 @@ public class GenerateValidator extends GenerateBean{
 	public void replaceVaraiablesAndWriteFile(String nameBean,String packageNameValidator,String appPath) {
 		
 		
-		nameBean=this.nameApp + "_" + LibUtils.firstLetterLower(nameBean);
+		//nameBean=this.nameApp + "_" + LibUtils.firstLetterLower(nameBean);
 		this.snippetFile = LibUtils.replacePattern("%\\{imports\\}", this.imports, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{attributes\\}", this.attributes, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{values\\}", this.values, snippetFile);

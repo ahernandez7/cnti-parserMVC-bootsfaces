@@ -3,8 +3,10 @@ package ve.gob.cnti.output;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import ve.gob.cnti.helper.form.Application;
 import ve.gob.cnti.helper.form.Field;
@@ -67,7 +69,7 @@ public class GenerateFiles {
 		// definidos en el configuracion.properties
 		gb.createPackageDirsBean(getPackageNameBean());
 		gc.createPackageDirsController(getPackageNameController());
-		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());		
+		gv.createDirViewAndFormToInst(getDirNameAndPathFormToInstitucion());
 		for (String key : this.mapForms.keySet()) {
 
 			// Tareas
@@ -84,7 +86,7 @@ public class GenerateFiles {
 			gv.setTabsReferences("");
 
 			List<Field> fieldsComplete = new ArrayList<Field>();
-			
+			Map<String,Field> dependentCombo=new HashMap<String,Field>();
 			String fileVars = "";
 			int nTabsWithFiles = 0;
 			Map<String,String> archivos = new HashMap<String, String>();
@@ -181,8 +183,13 @@ public class GenerateFiles {
 						
 					}
 					
+					  System.out.println("todas las varialves"+field.getNameField());
+					
 					if(field.getNameField().startsWith("c_")&&nameBean.contentEquals("carga"))
-						this.generateDependent(field.getNameField(), this.nameApp);
+					{
+						   System.out.println("paso por la carga"+field.getNameField());
+						    dependentCombo.put(field.getNameField(), field);
+					}
 
 				}
 				
@@ -194,9 +201,12 @@ public class GenerateFiles {
 					fileVars="";
 				}
 				
+
+				
 				gv_tab.writeFileAndCreateDirToView(nameBean, "tab" + (i + 1));
 				gv.createTabReference(nameBean, "tab" + (i + 1), getDirNameAndPathFormToInstitucion());
 			}
+			
 			gb.replaceVaraiablesAndWriteFile(nameBean);
 			
 			gv.setNameBean(nameBean);
@@ -213,6 +223,7 @@ public class GenerateFiles {
 			gc.writeFileConroller(nameBean);
 			
 			if(nameBean.contentEquals("carga")){
+				this.generateDependent(dependentCombo, this.nameApp);
 				this.generateCaseConsult(fieldsComplete);
 				this.generatePdfReview(fieldsComplete);			
 			}else if("revision".contentEquals(nameBean)){
@@ -240,21 +251,46 @@ public class GenerateFiles {
 	}
 	
 	
-	private void generateDependent(String field, String app){
+	private void generateDependent(Map<String,Field> dependentCombo, String app){		
 		
-		
-		GenerateDependent gb = new GenerateDependent("resources/snippets/Bean.snippet", getPathOutputFileDependent(), this.nameApp);
-		System.out.println("paso"+getPackageNameDependent());
-		
-		gb.createPackageDirsBean(getPackageNameDependent());		    
-		gb.replaceNameBeanAndNameClassBean(field);
-		gb.replacePackagesNameBean(getPackageNameDependent());	
-		gb.setImports("");
-		gb.setAttributes("");
-		gb.setSetAndGetMethods("");
-		gb.replaceVaraiablesAndWriteFile(field,getPackageNameDependent(),this.pathApp);
-		
-	
+		if(!dependentCombo.isEmpty()){			
+			Iterator<Entry<String, Field>> entries =dependentCombo.entrySet().iterator();
+			GenerateDependent gdependent = new GenerateDependent("resources/snippets/Dependent.snippet", getPathOutputFileDependent(), this.nameApp);
+			gdependent.setImports("");
+			gdependent.setAttributes("");
+			gdependent.setSetAndGetMethods("");
+			Field field=(Field) dependentCombo.values().toArray()[0];
+			String[] nameClassArray=field.getNameField().split("_");
+			String nameClass=nameClassArray[1];
+			String[] nameClassArrayInner=null;
+			String nameClassInner=null;			
+			while (entries.hasNext()) {
+			  Entry<String,Field> thisEntry = (Entry<String,Field>) entries.next();
+			  Field value = thisEntry.getValue();
+			  nameClassArrayInner=field.getNameField().split("_");
+			  nameClassInner=nameClassArrayInner[1];
+			  if(!nameClassInner.equals(nameClass)){				  
+	    		  gdependent.createPackageDirsBean(getPackageNameDependent());		    
+				  gdependent.replaceNameBeanAndNameClassBean(nameClass);
+				  gdependent.replacePackagesNameBean(getPackageNameDependent());	
+				  gdependent.replaceVaraiablesAndWriteFile(nameClass,getPackageNameDependent(),this.pathApp);				 
+				  nameClass=nameClassInner;				 
+				  gdependent.setImports("");
+				  gdependent.setAttributes("");
+				  gdependent.setSetAndGetMethods("");
+				  
+			  }
+			 
+			  gdependent.createImpAttAndMethos(value);
+
+			}
+			
+			gdependent.createPackageDirsBean(getPackageNameDependent());		    
+			gdependent.replaceNameBeanAndNameClassBean(nameClass);
+			gdependent.replacePackagesNameBean(getPackageNameDependent());	
+			gdependent.replaceVaraiablesAndWriteFile(nameClass,getPackageNameDependent(),this.pathApp);				 
+			  
+		}	
 	}
 	
 	

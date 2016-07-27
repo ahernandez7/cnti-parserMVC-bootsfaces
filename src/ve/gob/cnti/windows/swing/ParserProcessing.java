@@ -205,7 +205,6 @@ public class ParserProcessing extends JFrame implements ActionListener {
 			util.executeCommand("cp -r " + pathTemp + "MVC_APPS/beansANDcontrollers/ve/ " + rutaPorleth + "/src/");
 			
 			// VERIFICO SI FUERON GENERADO VALIDADORES SI ES ASI LOS COPIA EN LA APLICACION			
-
 			
 			File d = new File(pathTemp + "MVC_APPS/validators/ve");		
 			if(d.list()!=null&&d.list().length>0)			{ 

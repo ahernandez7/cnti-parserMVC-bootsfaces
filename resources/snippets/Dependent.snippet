@@ -1,0 +1,28 @@
+package %{packages};
+
+%{imports}
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import java.io.Serializable;
+
+%{anotacion}
+@ManagedBean(name = "%{nameBean}", eager = true)
+@ViewScoped
+public class %{NameBean}  implements Serializable {
+
+
+    @PostConstruct
+    public void init() {
+
+        
+    }
+
+	%{attributes}
+	
+    public %{NameBean}() {}
+
+	%{setAndGetMethods} 
+
+}
