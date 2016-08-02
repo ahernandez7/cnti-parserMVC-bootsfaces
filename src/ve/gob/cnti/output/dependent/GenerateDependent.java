@@ -46,7 +46,6 @@ public class GenerateDependent extends GenerateBean{
 	@SuppressWarnings("unused")
 	private String createAttribute(String name, String type, String typeInput, boolean isReadOnly, List<String> options) {
 	     	
-			System.out.println("paso es unset");
 			return "private " + "Map<String,String>" + " " + name + ";\n";
 		
 
@@ -76,8 +75,7 @@ public class GenerateDependent extends GenerateBean{
 		String pathClass=appPath+ packageNameDependent
 		.replace("%{processName}", this.nameApp)
 		.replace(".","/");	
-		pathClass+="/"+LibUtils.firstLetterUpper(nameBean)+".java";
-		System.out.println("clase"+pathClass);
+		pathClass+="/"+LibUtils.firstLetterUpper(nameBean)+".java";		
 		File f = new File(pathClass);		
 		return f.exists();
 		

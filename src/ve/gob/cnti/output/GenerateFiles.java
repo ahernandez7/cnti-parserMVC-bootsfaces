@@ -183,11 +183,9 @@ public class GenerateFiles {
 						
 					}
 					
-					  System.out.println("todas las varialves"+field.getNameField());
 					
 					if(field.getNameField().startsWith("c_")&&nameBean.contentEquals("carga"))
 					{
-						   System.out.println("paso por la carga"+field.getNameField());
 						    dependentCombo.put(field.getNameField(), field);
 					}
 

@@ -140,9 +140,7 @@ public class GenerateView {
 			}
 		}
 		
-		if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.indexOf("c_")>0){
-			
-		}
+
 			
 
 		if ("TEXTBOX".equalsIgnoreCase(type) && !"_Datos_Basicos".contentEquals(name)) {

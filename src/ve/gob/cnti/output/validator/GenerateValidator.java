@@ -23,7 +23,6 @@ public class GenerateValidator extends GenerateBean{
 		this.snippetFile = LibUtils.replacePattern("%\\{attributes\\}", this.attributes, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{values\\}", this.values, snippetFile);
 		this.snippetFile = LibUtils.replacePattern("%\\{setAndGetMethods\\}", this.setAndGetMethods, snippetFile);
-		System.out.println("ver"+this.validatorExist(nameBean,packageNameValidator,  appPath));
 		if (!this.validatorExist(nameBean,packageNameValidator,  appPath))
 			this.wf.writeFile(this.pathOutputFile + "/" + LibUtils.firstLetterUpper(nameBean) + ".java", this.snippetFile);
 	}
@@ -34,8 +33,7 @@ public class GenerateValidator extends GenerateBean{
 		.replace("%{processName}", this.nameApp)
 		.replace(".","/");	
 		pathClass+="/"+nameBean+".java";		
-		File f = new File(pathClass);
-		System.out.println("ruta"+pathClass);
+		File f = new File(pathClass);		
 		return f.exists();
 		
 	}
