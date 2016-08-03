@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import ve.gob.cnti.helper.form.Field;
+import ve.gob.cnti.helper.form.Validator;
 import ve.gob.cnti.helper.output.WriteFile;
 import ve.gob.cnti.helper.util.LibUtils;
 
@@ -57,15 +58,15 @@ public class GenerateView {
 		this.snippetFile = LibUtils.replacePattern("%\\{nameTask\\}", (this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller"), this.snippetFile);
 	}
 
-	public void createValidator(String nameValidator, String nameField) {
-
+	public void createValidator(Validator validator , String nameField) {
+		String nameValidator=validator.getNameValidator();
 		// TODO:Completar los validadores restantes
 		if ("mandatory".equalsIgnoreCase(nameValidator)) 
 			this.required = "required=\"true\" requiredMessage=\"Requerido\"";
 		if ("Readonly".equalsIgnoreCase(nameValidator)) 
 			this.readOnly = "readonly=\"true\"";
 		if ("LengthValidator".equalsIgnoreCase(nameValidator)) {
-			this.validator += "\t<f:validateLength maximum=\"20\" minimum=\"3\" for=\"" + nameField + "\"/>\n";
+			this.validator += "\t<f:validateLength maximum=\""+validator.getMaximun()+"\" minimum=\""+validator.getMinimun()+"\" for=\"" + nameField + "\"/>\n";
 		} else if ("EmailValidator".equalsIgnoreCase(nameValidator)) {
 			//TODO Agregar el rango maximo y minimo al validador de longitud
 			this.validator += "\t<f:validator validatorId=\"EmailValidator\" for=\"" + nameField + "\"/>\n";

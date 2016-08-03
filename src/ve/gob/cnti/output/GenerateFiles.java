@@ -141,7 +141,7 @@ public class GenerateFiles {
 						List<Validator> validators = field.getListValidators();
 						for (int k = 0; k < validators.size(); k++) {
 							Validator validator = validators.get(k);
-							gv_tab.createValidator(validator.getNameValidator(), field.getNameField());
+							gv_tab.createValidator(validator, field.getNameField());
 							if(nameBean.contentEquals("carga")&&
 							   !validator.getNameValidator().contentEquals("Readonly")&&
 							   !validator.getNameValidator().contentEquals("mandatory")&&

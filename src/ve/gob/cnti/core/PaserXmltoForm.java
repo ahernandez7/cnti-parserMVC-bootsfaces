@@ -202,12 +202,28 @@ public class PaserXmltoForm {
 							validatorClassName = validator.getChild("classname").getValue();
 							System.out.println("nombre"+validatorClassName);
 							String classType=validatorClassName;
+							String max="0";
+							String size = null,min="0";							
 							validatorClassName = validatorClassName.substring(validatorClassName.lastIndexOf(".") + 1);
+							if(validatorClassName.contentEquals("LengthValidator")){
+								size=validator.getChild("parameter")
+													.getChild("expression").getChild("expression-content").getValue();	
+								if(size.indexOf(",")>0){							    	
+							    	String[] sizeValues=size.split(",");
+							    	min=sizeValues[0];
+							    	max=sizeValues[1];
+							    }else{
+							    	max=size;
+							    }
+							}		
+							
 							if(validatorClassName.contentEquals("GroovyFieldValidator")){
 								validatorClassName=validator.getAttributeValue("id");	
 							}							
 							Validator val = new Validator();
 							val.setNameValidator(validatorClassName);
+							val.setMinimun(min);
+							val.setMaximun(max);
 							val.setClassType(classType);
 							field.addValidator(val);
 						}
