@@ -150,7 +150,7 @@ public class GenerateView {
 				fieldInput += "<p:fileUpload id=\"" + name + "\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.uploadfile}\" ";
 				fieldInput += " update=\"t" + nPage + "\" mode=\"advanced\" auto=\"true\" ";
 				fieldInput += " fileUploadListener=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.fileUploadListener}\" ";
-				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\"Subir documento\" ";
+				fieldInput += " allowTypes=\"/(\\\\.|\\\\/)(pdf)\\$/\" label=\""+field.getLabelField()+"\" ";
 				fieldInput += " sizeLimit=\"2097152\" multiple=\"false\" " + this.required + " ";
 				fieldInput += " invalidFileMessage=\"Solo se permiten archivos con extensión PDF\" ";
 				fieldInput += " invalidSizeMessage=\"El archivo no puede superar los 2MB\"> ";
@@ -194,9 +194,7 @@ public class GenerateView {
 			String[] name_field=name.split("_");
 			String combo=name_field[1];			
 			String ajax="";
-			System.out.println("valor"+field.getOptionValue().get(0));
 			if(field.getOptionValue().get(0)!=null&&!field.getOptionValue().isEmpty()&&!field.getOptionValue().get(0).equals("")){		
-				System.out.println("paso");
 				ajax="<p:ajax listener=\"#{"+this.nameApp + "_" + combo+".getFind"+name+"("+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name +")}\"  update=\""+field.getOptionValue().get(0)+"\" />\n";
 			}			
 			fieldInput +="<p:selectOneMenu styleClass=\"form-control\" style = \"width:100%;padding:0px 0px;\" id=\""+name+"\" value=\"#{"+ this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\" ";

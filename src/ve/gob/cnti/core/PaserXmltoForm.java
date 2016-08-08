@@ -199,8 +199,7 @@ public class PaserXmltoForm {
 
 						for (int k = 0; k < validators.size(); k++) {
 							Element validator = validators.get(k);							
-							validatorClassName = validator.getChild("classname").getValue();
-							System.out.println("nombre"+validatorClassName);
+							validatorClassName = validator.getChild("classname").getValue();							
 							String classType=validatorClassName;
 							String max="0";
 							String size = null,min="0";							
