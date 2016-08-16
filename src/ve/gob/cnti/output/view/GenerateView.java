@@ -394,7 +394,7 @@ public class GenerateView {
 			String outputElement = "<h:outputLabel for=\"" + name + "_info\" value=\"" + label + "\"/>\n";
 			outputElement += "<h:outputText id=\"" + name + "_info\" value=\"#{" + this.nameApp + "_" + LibUtils.firstLetterLower(getNameBean()) + "Controller.bean." + name + "}\">\n";
 			if(field.getReturnType().contentEquals("java.util.Date"))
-				outputElement += "<f:convertDateTime pattern=\"dd/mm/yyyy\"/>\n";
+				outputElement += "<f:convertDateTime pattern=\"dd/MM/yyyy\"/>\n";
 			outputElement += "</h:outputText>\n";
 			this.outputElements += outputElement;
 		}

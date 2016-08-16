@@ -9,6 +9,9 @@
 		#{FacesHandler.removeBeanFromSessionScoped("%{nameTask}")}
    		#{%{nameTask}.setBean(%{nameTask}.getBeanToBPM(TaskController.task.caseId,TaskController.dbn,TaskController.isHistoryConsult))}
 		#{%{nameTask}.setTask(TaskController.task)}
+		<h:outputText value="&lt;br /&gt;" escape="false" />
+		<h:outputLabel for="process"  value="La solicitud esta siendo procesada"/>
+		<h:outputText value="&lt;br /&gt;" escape="false" />
 		<h:form>
 		
 		<p:tooltip />

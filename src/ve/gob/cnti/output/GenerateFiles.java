@@ -275,7 +275,6 @@ public class GenerateFiles {
 			  if(!nameClassInner.equals(nameClass)){
 				  gdependent.replaceVaraiablesAndWriteFile(nameClass,getPackageNameDependent(),this.pathApp);				 
 				  nameClass=nameClassInner;	
-				  System.out.println("paso"+nameClass);
 				  gdependent = new GenerateDependent("resources/snippets/Dependent.snippet", getPathOutputFileDependent(), this.nameApp);	
 				  gdependent.setImports("");
 				  gdependent.setAttributes("");

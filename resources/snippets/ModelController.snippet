@@ -46,6 +46,8 @@ import ve.gob.cnti.gestion.utils.Utils;
 import ve.gob.cnti.gestion.exceptions.ConnectionComponentException;
 import ve.gob.cnti.gestion.formfile.FileManager;
 import ve.gob.cnti.gestion.formfile.FolderManager;
+import ve.gob.cnti.gestion.bonitaImpl.UserImpl;
+import ve.gob.cnti.gestion.bonita.IUser;
 import %{packageBean}.%{NameBean};
 
 @SuppressWarnings("unused")
@@ -89,6 +91,28 @@ public class %{NameController} {
     					+ idCase;
     	
     		this.task = new TaskImpl().getTaskbyCaseId(idCase);
+    		
+    		if(this.task==null){
+    			Utils.addGlobalInfoFlashMessage("El tramite no se encuentra activo");  	        	
+   			 if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
+   					return "/views/interfazportalciudadano/view.xhtml?faces-redirect=true";
+   				else
+   					return "/views/interfazportalfuncionario/view.xhtml?faces-redirect=true";
+    		}
+    		
+    		IUser user = new UserImpl();
+			String idUser=user.getIdByuserName(facesHandler
+					.getUserSession().get("user"));
+    	
+    		if(!idUser.equals(this.task.getAssigned_id())){
+    			Utils.addGlobalInfoFlashMessage("El caso Nro."+idCase+" no esta asignado al usuario");  	        	
+    			 if(bean.getClass().isAnnotationPresent(BeanIsInitCase.class))
+    					return "/views/interfazportalciudadano/view.xhtml?faces-redirect=true";
+    				else
+    					return "/views/interfazportalfuncionario/view.xhtml?faces-redirect=true";	
+    			
+    		}
+    		
     	
     		this.uploadFilesToAlfresco(alfrescoPath);  
         
