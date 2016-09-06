@@ -397,49 +397,43 @@ public class %{NameController} {
 		FacesHandler faceHandler=new FacesHandler();
 		FolderManager folderManager=new FolderManager(task.getCaseId());
 		FileManager fileManager=null;
-		String temp = null;
-		
+		String temp = null;		
 		try {
-			temp = (String) facesHandler.findComponent("files").getAttributes()
-					.get("tabsNames");
-			String tabs[] = temp.split(",");
-			temp = (String) facesHandler.findComponent("files").getAttributes()
-					.get("tabs");
-			int nTabs = Integer.parseInt(temp);
-			for (int i = 0; i < nTabs; i++) {
-				if (e.getOldStep().contentEquals(tabs[i])) {
-					if (facesHandler.findComponent("files").getAttributes()
-							.containsKey(tabs[i])) {
-						temp = (String) facesHandler.findComponent("files")
-								.getAttributes().get(tabs[i]);
-						String archivos[] = temp.split(",");
-
-						String mandatory = "";
-						for (int k = 0; k < archivos.length; k++) {
-							mandatory = (String) facesHandler
-									.findComponent("files").getAttributes()
-									.get(archivos[k]);
-
-							String name=null;
-							BeanFile bean=null;
-							for(BeanFile beanFind:beanFiles){
-								if(archivos[k].equals(beanFind.getVarName()))	
-									bean=beanFind;
-							}
-						
-							if (bean.getFileNames().get(0) == null
-									&& "requerido".contentEquals(mandatory)) {
-								util.setMessageToView(
-										"Tiene documentos pendientes por subir",
-										1);
-								return e.getOldStep();
-							} else if (bean.getFileNames().get(0) != null
-									&& "requerido".contentEquals(mandatory)) {
-								fileManager=folderManager.getFileManager(beanFiles.get(0).getVarName());
-								if (fileManager.findFile().length() == 0) {
+			if(facesHandler.findComponent("files")!=null){
+				temp = (String) facesHandler.findComponent("files").getAttributes()
+						.get("tabsNames");
+				String tabs[] = temp.split(",");
+				temp = (String) facesHandler.findComponent("files").getAttributes()
+						.get("tabs");
+				int nTabs = Integer.parseInt(temp);
+				for (int i = 0; i < nTabs; i++) {
+					if (e.getOldStep().contentEquals(tabs[i])) {
+						if (facesHandler.findComponent("files").getAttributes()
+								.containsKey(tabs[i])) {
+							temp = (String) facesHandler.findComponent("files")
+									.getAttributes().get(tabs[i]);
+							String archivos[] = temp.split(",");
+							String mandatory = "";
+							for (int k = 0; k < archivos.length; k++) {
+								mandatory = (String) facesHandler
+										.findComponent("files").getAttributes()
+										.get(archivos[k]);
+	
+								String name=null;
+								BeanFile bean=null;
+								for(BeanFile beanFind:beanFiles){
+									if(archivos[k].contentEquals(beanFind.getVarName())){	
+										bean=beanFind;									
+									}
+	
+								}	
+								
+								if (bean == null
+										&& "requerido".contentEquals(mandatory)) {
 									util.setMessageToView(
 											"Tiene documentos pendientes por subir",
 											1);
+									
 									return e.getOldStep();
 								}
 							}
@@ -447,7 +441,9 @@ public class %{NameController} {
 					}
 				}
 			}
-		} catch (Exception e2) {}
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 
 		return e.getNewStep();
 	}
