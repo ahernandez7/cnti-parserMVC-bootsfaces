@@ -262,7 +262,7 @@ public class GenerateView {
 			if(!"TEXTAREA".equalsIgnoreCase(type))
 				fieldInput += "<h:outputText />";
 			fieldInput += "<p:message for=\"" + name + "\" id=\"" + name + "Message\" style=\"color:red\"/>\n";
-			fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" value=\"" + field.getDescription() + "\" />\n";
+			fieldInput += "<p:tooltip id=\"toolTip" + LibUtils.firstLetterUpper(name) + "\" for=\"" + name + "\" showEvent=\"focus\" hideEvent=\"blur\" value=\"" + field.getDescription() + "\" />\n";
 			if("LISTBOX_SIMPLE".equalsIgnoreCase(type)&&name.startsWith("c_"))	
 				fieldInput += "</div></b:column>";
 			else
