@@ -160,16 +160,20 @@ public class %{NameController} {
 		
 			if (atributo.isAnnotationPresent(FieldIsActuacion.class) && atributo.get(bean)!=null) {
 				
-				if (atributo.get(this.bean) instanceof Date)
+				if (atributo.get(this.bean) instanceof Date&&!atributo.get(this.bean).toString().equals("null"))
 					htmlContent = htmlContent.replaceAll(
 							"%\\{" + atributo.getName() + "\\}", util
-									.getFormattedDate("dd/mm/yyyy",
+									.getFormattedDate("dd/MM/yyyy",
 											(String) atributo.get(this.bean)
 													.toString()));
-				else if(!atributo.getName().startsWith("_FILE_"))
+				else if(!atributo.getName().startsWith("_FILE_")&&!atributo.get(this.bean).toString().equals("null"))
 					htmlContent = htmlContent.replaceAll(
 							"%\\{" + atributo.getName() + "\\}",
 							atributo.get(this.bean).toString());
+				else if(!atributo.getName().startsWith("_FILE_"))
+					htmlContent = htmlContent.replaceAll(
+							"%\\{" + atributo.getName() + "\\}",
+							"");			   
 			}
 		}
 		htmlContent = htmlContent.replaceAll("%\\{ProcessDisplayName\\}",
